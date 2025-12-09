@@ -409,7 +409,11 @@ class BaseGraph(ABC):
         
         return repo_properties
     
-    def generate_suggested_config(self, output_path: Optional[Path] = None) -> Dict[str, Any]:
+    def generate_suggested_config(
+        self,
+        output_path: Optional[Path] = None,
+        properties_limit: int = 50,
+    ) -> Dict[str, Any]:
         """
         Generate a suggested configuration based on introspection.
         
@@ -419,7 +423,7 @@ class BaseGraph(ABC):
         
         # Discover properties
         print("  Discovering properties...")
-        properties = self.introspect_properties(limit=50)
+        properties = self.introspect_properties(limit=properties_limit)
         
         # Discover entity types
         print("  Discovering entity types...")

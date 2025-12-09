@@ -94,7 +94,10 @@ def introspect(graph_id: str, output: Path, properties_limit: int):
             raise click.Abort()
         
         # Run introspection
-        config = graph.generate_suggested_config(output_path=output)
+        config = graph.generate_suggested_config(
+            output_path=output,
+            properties_limit=properties_limit,
+        )
         
         if not output:
             # Print summary if no output file specified
