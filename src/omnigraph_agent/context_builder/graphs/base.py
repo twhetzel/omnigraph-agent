@@ -5,6 +5,8 @@ Provides general SPARQL query functionality and introspection methods
 that can be used across different knowledge graphs.
 """
 
+APPROX_DISTINCT_THRESHOLD = 10000
+
 import yaml
 from abc import ABC, abstractmethod
 from pathlib import Path

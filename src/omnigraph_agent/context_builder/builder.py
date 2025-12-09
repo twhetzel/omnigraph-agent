@@ -16,6 +16,7 @@ from .model.context_schema import (
     RepositoryStats
 )
 from .graphs import get_graph_handler
+from .graphs.base import APPROX_DISTINCT_THRESHOLD
 
 
 class ContextBuilder:
@@ -71,7 +72,7 @@ class ContextBuilder:
             dimension = Dimension(
                 name=dim_config.get('property', dim_config['name']),
                 coverage=coverage,
-                approx_distinct_values=distinct_count if distinct_count < 10000 else None,
+                approx_distinct_values=distinct_count if distinct_count < APPROX_DISTINCT_THRESHOLD else None,
                 top_values=top_values if top_values else None
             )
             dimensions.append(dimension)
@@ -119,7 +120,7 @@ class ContextBuilder:
             # For now, include all overrides
             override = DimensionOverride(
                 coverage=coverage,
-                approx_distinct_values=distinct_count if distinct_count < 10000 else None,
+                approx_distinct_values=distinct_count if distinct_count < APPROX_DISTINCT_THRESHOLD else None,
                 top_values=top_values if top_values else None
             )
             dimension_overrides[dim_name] = override
