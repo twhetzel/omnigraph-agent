@@ -1,0 +1,438 @@
+{
+  "graph_id": "nde",
+  "source_id": "radx_data_hub",
+  "inherits_from": "nde_global",
+  "repository_filter": {
+    "schema:includedInDataCatalog": "https://okn.wobd.org/catalog/radx_data_hub"
+  },
+  "dimension_overrides": {
+    "includedindatacatalog": {
+      "coverage": 1.0,
+      "approx_distinct_values": 1,
+      "top_values": [
+        {
+          "value": "https://okn.wobd.org/catalog/radx_data_hub",
+          "count": 178
+        }
+      ]
+    },
+    "name": {
+      "coverage": 1.0,
+      "approx_distinct_values": 178,
+      "top_values": [
+        {
+          "value": "2183 SARS-CoV-2 Rapid Antigen Test",
+          "count": 1
+        },
+        {
+          "value": "A Community Health Worker Intervention to Identify and Decrease Barriers to Pre-Procedural COVID-19 Testing Among Los Angeles County Department of Health Safety-Net Patients",
+          "count": 1
+        },
+        {
+          "value": "A Community-Led Approach to Enhance COVID-19 Testing Among Vulnerable Latinos",
+          "count": 1
+        },
+        {
+          "value": "A Confectionary-Based Screening Tool for Assessing Chemosensory Loss in COVID-19 Patients",
+          "count": 1
+        },
+        {
+          "value": "A Data Science Approach to Identify and Manage Multisystem Inflammatory Syndrome in Children (MIS-C) Associated with SARS-CoV-2 Infection and Kawasaki Disease in Pediatric Patients",
+          "count": 1
+        },
+        {
+          "value": "A Dynamic COVID-19 Community-Engaged Testing Strategy in Alabama (COVID COMET AL)",
+          "count": 1
+        },
+        {
+          "value": "A Handheld Microchip for GC Analysis of Breath to Screen for COVID-19",
+          "count": 1
+        },
+        {
+          "value": "A Multimodal Platform for Oral Screening of COVID-19",
+          "count": 1
+        },
+        {
+          "value": "A Nurse-Community Health Worker-Family Partnership Model: Addressing Uptake of COVID-19 Testing and Control Measures",
+          "count": 1
+        },
+        {
+          "value": "A Rapid Breathalyzer Diagnostics Platform for COVID-19",
+          "count": 1
+        }
+      ]
+    },
+    "url": {
+      "coverage": 1.0,
+      "approx_distinct_values": 178,
+      "top_values": [
+        {
+          "value": "https://radxdatahub.nih.gov/study/100",
+          "count": 1
+        },
+        {
+          "value": "https://radxdatahub.nih.gov/study/101",
+          "count": 1
+        },
+        {
+          "value": "https://radxdatahub.nih.gov/study/108",
+          "count": 1
+        },
+        {
+          "value": "https://radxdatahub.nih.gov/study/109",
+          "count": 1
+        },
+        {
+          "value": "https://radxdatahub.nih.gov/study/110",
+          "count": 1
+        },
+        {
+          "value": "https://radxdatahub.nih.gov/study/111",
+          "count": 1
+        },
+        {
+          "value": "https://radxdatahub.nih.gov/study/112",
+          "count": 1
+        },
+        {
+          "value": "https://radxdatahub.nih.gov/study/113",
+          "count": 1
+        },
+        {
+          "value": "https://radxdatahub.nih.gov/study/114",
+          "count": 1
+        },
+        {
+          "value": "https://radxdatahub.nih.gov/study/115",
+          "count": 1
+        }
+      ]
+    },
+    "date": {
+      "coverage": 1.0,
+      "approx_distinct_values": 28,
+      "top_values": [
+        {
+          "value": "2024-04-17",
+          "count": 91
+        },
+        {
+          "value": "2022-12-09",
+          "count": 12
+        },
+        {
+          "value": "2024-01-18",
+          "count": 12
+        },
+        {
+          "value": "2024-04-10",
+          "count": 9
+        },
+        {
+          "value": "2024-03-04",
+          "count": 7
+        },
+        {
+          "value": "2024-04-15",
+          "count": 7
+        },
+        {
+          "value": "2024-08-30",
+          "count": 4
+        },
+        {
+          "value": "2024-07-31",
+          "count": 3
+        },
+        {
+          "value": "2024-09-13",
+          "count": 3
+        },
+        {
+          "value": "2022-11-07",
+          "count": 2
+        }
+      ]
+    },
+    "sameas": {
+      "coverage": 0.9438202247191011,
+      "approx_distinct_values": 336,
+      "top_values": [
+        {
+          "value": "https://doi.org/10.60773/02m0-qe56",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.60773/073r-9g87",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.60773/0h5r-v081",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.60773/0pp8-qx15",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.60773/0va3-6933",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.60773/1835-3770",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.60773/18dv-6j23",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.60773/1e6t-6b11",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.60773/1qf8-w396",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.60773/1qmd-nt62",
+          "count": 1
+        }
+      ]
+    },
+    "author": {
+      "coverage": 0.3202247191011236,
+      "approx_distinct_values": 166,
+      "top_values": [
+        {
+          "value": "https://okn.wobd.org/person/emory_university",
+          "count": 3
+        },
+        {
+          "value": "https://okn.wobd.org/person/northwestern_university",
+          "count": 3
+        },
+        {
+          "value": "https://okn.wobd.org/person/this_was_a_decentralized_study_run_on_evidation_s_achievement_platform",
+          "count": 3
+        },
+        {
+          "value": "https://okn.wobd.org/person/umass_chan_medical_school",
+          "count": 3
+        },
+        {
+          "value": "https://okn.wobd.org/person/university_of_pennsylvania",
+          "count": 3
+        },
+        {
+          "value": "https://okn.wobd.org/person/association_for_utah_community_health",
+          "count": 2
+        },
+        {
+          "value": "https://okn.wobd.org/person/columbia_university",
+          "count": 2
+        },
+        {
+          "value": "https://okn.wobd.org/person/hugo_w_moser_research_institute_at_kennedy_krieger",
+          "count": 2
+        },
+        {
+          "value": "https://okn.wobd.org/person/inc",
+          "count": 2
+        },
+        {
+          "value": "https://okn.wobd.org/person/johns_hopkins_bloomberg_school_of_public_health",
+          "count": 2
+        }
+      ]
+    },
+    "datemodified": {
+      "coverage": 0.9887640449438202,
+      "approx_distinct_values": 30,
+      "top_values": [
+        {
+          "value": "2024-04-17",
+          "count": 91
+        },
+        {
+          "value": "2024-01-18",
+          "count": 13
+        },
+        {
+          "value": "2022-12-09",
+          "count": 12
+        },
+        {
+          "value": "2024-04-10",
+          "count": 9
+        },
+        {
+          "value": "2024-03-04",
+          "count": 7
+        },
+        {
+          "value": "2024-04-15",
+          "count": 7
+        },
+        {
+          "value": "2021-11-15",
+          "count": 4
+        },
+        {
+          "value": "2022-11-07",
+          "count": 2
+        },
+        {
+          "value": "2023-02-21",
+          "count": 2
+        },
+        {
+          "value": "2023-05-16",
+          "count": 2
+        }
+      ]
+    },
+    "healthcondition": {
+      "coverage": 1.0,
+      "approx_distinct_values": 47,
+      "top_values": [
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0100096",
+          "count": 178
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0005550",
+          "count": 34
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/NCIT_C16880",
+          "count": 11
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/NCIT_C154635",
+          "count": 5
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0004975",
+          "count": 4
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0005109",
+          "count": 4
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0016168",
+          "count": 4
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0100163",
+          "count": 4
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/NCIT_C189188",
+          "count": 4
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0004981",
+          "count": 3
+        }
+      ]
+    },
+    "datepublished": {
+      "coverage": 1.0,
+      "approx_distinct_values": 39,
+      "top_values": [
+        {
+          "value": "2023-08-30",
+          "count": 33
+        },
+        {
+          "value": "2023-08-29",
+          "count": 24
+        },
+        {
+          "value": "2022-11-07",
+          "count": 18
+        },
+        {
+          "value": "2023-08-31",
+          "count": 15
+        },
+        {
+          "value": "2023-12-07",
+          "count": 7
+        },
+        {
+          "value": "2024-03-04",
+          "count": 7
+        },
+        {
+          "value": "2024-04-15",
+          "count": 7
+        },
+        {
+          "value": "2022-07-21",
+          "count": 6
+        },
+        {
+          "value": "2023-12-06",
+          "count": 6
+        },
+        {
+          "value": "2024-04-11",
+          "count": 5
+        }
+      ]
+    },
+    "datecreated": {
+      "coverage": 1.0,
+      "approx_distinct_values": 38,
+      "top_values": [
+        {
+          "value": "2021-11-15",
+          "count": 66
+        },
+        {
+          "value": "2022-01-06",
+          "count": 18
+        },
+        {
+          "value": "2023-07-27",
+          "count": 7
+        },
+        {
+          "value": "2022-01-29",
+          "count": 6
+        },
+        {
+          "value": "2022-04-18",
+          "count": 6
+        },
+        {
+          "value": "2022-08-19",
+          "count": 6
+        },
+        {
+          "value": "2022-11-28",
+          "count": 6
+        },
+        {
+          "value": "2022-01-12",
+          "count": 5
+        },
+        {
+          "value": "2024-01-04",
+          "count": 5
+        },
+        {
+          "value": "2023-03-24",
+          "count": 4
+        }
+      ]
+    }
+  },
+  "stats": {
+    "total_datasets": 178
+  },
+  "text_blurb": "Context for RADx Data Hub repository"
+}

@@ -10,7 +10,11 @@ __pycache__/
 .Python
 build/
 develop-eggs/
-dist/
+dist/*
+# Exception: track dist/context/ for generated JSON context files
+!dist/context/
+dist/context/*
+!dist/context/*.json
 downloads/
 eggs/
 .eggs/

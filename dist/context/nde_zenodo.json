@@ -1,0 +1,300 @@
+{
+  "graph_id": "nde",
+  "source_id": "zenodo",
+  "inherits_from": "nde_global",
+  "repository_filter": {
+    "schema:includedInDataCatalog": "https://okn.wobd.org/catalog/zenodo"
+  },
+  "dimension_overrides": {
+    "includedindatacatalog": {
+      "coverage": 1.0,
+      "approx_distinct_values": 2,
+      "top_values": [
+        {
+          "value": "https://okn.wobd.org/catalog/project_tycho",
+          "count": 597
+        },
+        {
+          "value": "https://okn.wobd.org/catalog/zenodo",
+          "count": 597
+        }
+      ]
+    },
+    "name": {
+      "coverage": 1.0,
+      "approx_distinct_values": 597,
+      "top_values": [
+        {
+          "value": "Counts of Acquired immune deficiency syndrome reported in UNITED STATES OF AMERICA: 1984-2005",
+          "count": 1
+        },
+        {
+          "value": "Counts of Active tuberculosis reported in UNITED STATES OF AMERICA: 1972-1974",
+          "count": 1
+        },
+        {
+          "value": "Counts of Acute hepatitis C reported in UNITED STATES OF AMERICA: 2016-2017",
+          "count": 1
+        },
+        {
+          "value": "Counts of Acute nonparalytic poliomyelitis reported in UNITED STATES OF AMERICA: 1954-1963",
+          "count": 1
+        },
+        {
+          "value": "Counts of Acute paralytic poliomyelitis reported in UNITED STATES OF AMERICA: 1954-1972",
+          "count": 1
+        },
+        {
+          "value": "Counts of Acute poliomyelitis reported in UNITED STATES OF AMERICA: 1912-1971",
+          "count": 1
+        },
+        {
+          "value": "Counts of Acute type A viral hepatitis reported in UNITED STATES OF AMERICA: 2001-2017",
+          "count": 1
+        },
+        {
+          "value": "Counts of Acute type B viral hepatitis reported in UNITED STATES OF AMERICA: 2001-2017",
+          "count": 1
+        },
+        {
+          "value": "Counts of Amebic dysentery reported in UNITED STATES OF AMERICA: 1942-1948",
+          "count": 1
+        },
+        {
+          "value": "Counts of Anthrax reported in UNITED STATES OF AMERICA: 1942-1945",
+          "count": 1
+        }
+      ]
+    },
+    "url": {
+      "coverage": 1.0,
+      "approx_distinct_values": 597,
+      "top_values": [
+        {
+          "value": "https://www.tycho.pitt.edu/dataset/AD.840539006",
+          "count": 1
+        },
+        {
+          "value": "https://www.tycho.pitt.edu/dataset/AE.840539006",
+          "count": 1
+        },
+        {
+          "value": "https://www.tycho.pitt.edu/dataset/AF.840539006",
+          "count": 1
+        },
+        {
+          "value": "https://www.tycho.pitt.edu/dataset/AG.20927009",
+          "count": 1
+        },
+        {
+          "value": "https://www.tycho.pitt.edu/dataset/AG.38362002",
+          "count": 1
+        },
+        {
+          "value": "https://www.tycho.pitt.edu/dataset/AG.722862003",
+          "count": 1
+        },
+        {
+          "value": "https://www.tycho.pitt.edu/dataset/AG.840539006",
+          "count": 1
+        },
+        {
+          "value": "https://www.tycho.pitt.edu/dataset/AI.20927009",
+          "count": 1
+        },
+        {
+          "value": "https://www.tycho.pitt.edu/dataset/AI.38362002",
+          "count": 1
+        },
+        {
+          "value": "https://www.tycho.pitt.edu/dataset/AI.722862003",
+          "count": 1
+        }
+      ]
+    },
+    "date": {
+      "coverage": 1.0,
+      "approx_distinct_values": 2,
+      "top_values": [
+        {
+          "value": "2018-04-01",
+          "count": 360
+        },
+        {
+          "value": "2022-08-12",
+          "count": 237
+        }
+      ]
+    },
+    "sameas": {
+      "coverage": 1.0,
+      "approx_distinct_values": 1194,
+      "top_values": [
+        {
+          "value": "https://doi.org/10.25337/T7/ptycho.v2.0/AD.840539006",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.25337/T7/ptycho.v2.0/AE.840539006",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.25337/T7/ptycho.v2.0/AF.840539006",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.25337/T7/ptycho.v2.0/AG.20927009",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.25337/T7/ptycho.v2.0/AG.38362002",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.25337/T7/ptycho.v2.0/AG.722862003",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.25337/T7/ptycho.v2.0/AG.840539006",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.25337/T7/ptycho.v2.0/AI.20927009",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.25337/T7/ptycho.v2.0/AI.38362002",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.25337/T7/ptycho.v2.0/AI.722862003",
+          "count": 1
+        }
+      ]
+    },
+    "author": {
+      "coverage": 1.0,
+      "approx_distinct_values": 22,
+      "top_values": [
+        {
+          "value": "https://okn.wobd.org/person/derek_at_cummings",
+          "count": 360
+        },
+        {
+          "value": "https://okn.wobd.org/person/donald_s_burke",
+          "count": 360
+        },
+        {
+          "value": "https://okn.wobd.org/person/irene_ruberto",
+          "count": 360
+        },
+        {
+          "value": "https://okn.wobd.org/person/marc_choisy",
+          "count": 360
+        },
+        {
+          "value": "https://okn.wobd.org/person/nian_shong_chok",
+          "count": 360
+        },
+        {
+          "value": "https://okn.wobd.org/person/shawn_brown",
+          "count": 360
+        },
+        {
+          "value": "https://okn.wobd.org/person/xin_xiong",
+          "count": 360
+        },
+        {
+          "value": "https://orcid.org/0000-0002-5704-8094",
+          "count": 360
+        },
+        {
+          "value": "https://orcid.org/0000-0002-7278-9982",
+          "count": 360
+        },
+        {
+          "value": "https://orcid.org/0000-0003-1707-253X",
+          "count": 360
+        }
+      ]
+    },
+    "datemodified": {
+      "coverage": 0.0,
+      "approx_distinct_values": 0
+    },
+    "healthcondition": {
+      "coverage": 1.0,
+      "approx_distinct_values": 73,
+      "top_values": [
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0100096",
+          "count": 237
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0005502",
+          "count": 186
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/NCIT_C34683",
+          "count": 85
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0006011",
+          "count": 5
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0002282",
+          "count": 3
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0020920",
+          "count": 3
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0004651",
+          "count": 2
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0005114",
+          "count": 2
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0005249",
+          "count": 2
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0005344",
+          "count": 2
+        }
+      ]
+    },
+    "datepublished": {
+      "coverage": 1.0,
+      "approx_distinct_values": 2,
+      "top_values": [
+        {
+          "value": "2018-04-01",
+          "count": 360
+        },
+        {
+          "value": "2022-08-12",
+          "count": 237
+        }
+      ]
+    },
+    "datecreated": {
+      "coverage": 1.0,
+      "approx_distinct_values": 1,
+      "top_values": [
+        {
+          "value": "2013-11-28",
+          "count": 597
+        }
+      ]
+    }
+  },
+  "stats": {
+    "total_datasets": 597
+  },
+  "text_blurb": "Context for Zenodo repository"
+}
