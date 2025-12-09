@@ -15,7 +15,7 @@ from .model.context_schema import (
     DimensionOverride,
     RepositoryStats
 )
-from .graphs.nde import NDEGraph
+from .graphs import get_graph_handler
 
 
 class ContextBuilder:
@@ -33,11 +33,9 @@ class ContextBuilder:
         self.output_dir = output_dir
         self.output_dir.mkdir(parents=True, exist_ok=True)
         
-        # Load graph handler
-        if graph_id == 'nde':
-            self.graph = NDEGraph()
-        else:
-            raise ValueError(f"Unknown graph_id: {graph_id}")
+        # Load graph handler via registry/factory
+        handler_cls = get_graph_handler(graph_id)
+        self.graph = handler_cls()
     
     def build(self) -> Dict[str, Path]:
         """

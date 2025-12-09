@@ -16,7 +16,7 @@ This command will:
 import click
 from pathlib import Path
 from .builder import ContextBuilder
-from .graphs.nde import NDEGraph
+from .graphs import get_graph_handler
 
 
 @click.group()
@@ -87,11 +87,8 @@ def introspect(graph_id: str, output: Path, properties_limit: int):
     click.echo(f"Introspecting graph: {graph_id}")
     
     try:
-        if graph_id == 'nde':
-            graph = NDEGraph()
-        else:
-            click.echo(f"✗ Unknown graph_id: {graph_id}", err=True)
-            raise click.Abort()
+        handler_cls = get_graph_handler(graph_id)
+        graph = handler_cls()
         
         # Run introspection
         config = graph.generate_suggested_config(
