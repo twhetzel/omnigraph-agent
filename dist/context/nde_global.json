@@ -8,7 +8,7 @@
   "dimensions": [
     {
       "name": "schema:includedInDataCatalog",
-      "coverage": 1.0,
+      "coverage": 0.999290780141844,
       "approx_distinct_values": 7,
       "top_values": [
         {
@@ -44,7 +44,7 @@
     {
       "name": "schema:name",
       "coverage": 1.0,
-      "approx_distinct_values": 9675,
+      "approx_distinct_values": 9682,
       "top_values": [
         {
           "value": "Dataset from Double-blind randomized study to evaluate the immunogenicity and reactogenicity of two different lots of GlaxoSmithKline Biologicals' inactivated hepatitis A vaccine containing 1440 EL.U of antigen per mL and injected according to a 0, 12 month schedule in healthy adult volunteers {NCT00291876}",
@@ -91,53 +91,53 @@
     {
       "name": "schema:url",
       "coverage": 1.0,
-      "approx_distinct_values": 9863,
+      "approx_distinct_values": 9869,
       "top_values": [
         {
-          "value": "https://doi.org/10.25934/00000001",
-          "count": 1
+          "value": "https://vdjserver.org/community?study_id=1371444213709729305-242ac11c-0001-012",
+          "count": 2
         },
         {
-          "value": "https://doi.org/10.25934/00000002",
-          "count": 1
+          "value": "https://vdjserver.org/community?study_id=2YNBAIAJ",
+          "count": 2
         },
         {
-          "value": "https://doi.org/10.25934/00000003",
-          "count": 1
+          "value": "https://vdjserver.org/community?study_id=3276777473314001386-242ac116-0001-012",
+          "count": 2
         },
         {
-          "value": "https://doi.org/10.25934/00000004",
-          "count": 1
+          "value": "https://vdjserver.org/community?study_id=4505707319090933270-242ac113-0001-012",
+          "count": 2
         },
         {
-          "value": "https://doi.org/10.25934/00000005",
-          "count": 1
+          "value": "https://vdjserver.org/community?study_id=4995411523885404651-242ac118-0001-012",
+          "count": 2
         },
         {
-          "value": "https://doi.org/10.25934/00000006",
-          "count": 1
+          "value": "https://vdjserver.org/community?study_id=6R5ENPH5",
+          "count": 2
         },
         {
-          "value": "https://doi.org/10.25934/00000007",
-          "count": 1
+          "value": "https://vdjserver.org/community?study_id=ADFPAKLS",
+          "count": 2
         },
         {
-          "value": "https://doi.org/10.25934/00000008",
-          "count": 1
+          "value": "https://vdjserver.org/community?study_id=BIJ6B5TC",
+          "count": 2
         },
         {
-          "value": "https://doi.org/10.25934/00000009",
-          "count": 1
+          "value": "https://vdjserver.org/community?study_id=BIOPROJECT:PRJNA639580",
+          "count": 2
         },
         {
-          "value": "https://doi.org/10.25934/00000010",
-          "count": 1
+          "value": "https://vdjserver.org/community?study_id=DOI:10.1073/pnas.2107208118",
+          "count": 2
         }
       ]
     },
     {
       "name": "schema:date",
-      "coverage": 0.9946263814255297,
+      "coverage": 0.993920972644377,
       "approx_distinct_values": 289,
       "top_values": [
         {
@@ -184,7 +184,7 @@
     },
     {
       "name": "schema:sameAs",
-      "coverage": 0.9896583189698874,
+      "coverage": 0.9889564336372847,
       "top_values": [
         {
           "value": "None",
@@ -230,7 +230,7 @@
     },
     {
       "name": "schema:author",
-      "coverage": 0.942715198215553,
+      "coverage": 0.9420466058763931,
       "approx_distinct_values": 826,
       "top_values": [
         {
@@ -277,7 +277,7 @@
     },
     {
       "name": "schema:dateModified",
-      "coverage": 0.9338943526310454,
+      "coverage": 0.9332320162107396,
       "approx_distinct_values": 296,
       "top_values": [
         {
@@ -324,7 +324,7 @@
     },
     {
       "name": "schema:healthCondition",
-      "coverage": 0.9168609956402717,
+      "coverage": 0.9162107396149949,
       "approx_distinct_values": 993,
       "top_values": [
         {
@@ -371,7 +371,7 @@
     },
     {
       "name": "schema:datePublished",
-      "coverage": 0.8607928622123087,
+      "coverage": 0.8601823708206687,
       "approx_distinct_values": 535,
       "top_values": [
         {
@@ -418,7 +418,7 @@
     },
     {
       "name": "schema:dateCreated",
-      "coverage": 0.8568386900537361,
+      "coverage": 0.8562310030395137,
       "approx_distinct_values": 519,
       "top_values": [
         {

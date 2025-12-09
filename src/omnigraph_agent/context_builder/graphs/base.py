@@ -123,13 +123,7 @@ class BaseGraph(ABC):
             prop_expanded = self._expand_property(prop)
             filter_clause = f"?entity {prop_expanded} <{value}> ."
         
-        # Use first entity type (typically the main entity type like Dataset)
-        # For NDE, this is Dataset, not DataCatalog
-        if self.entity_types:
-            main_entity_type = self.entity_types[0]
-            entity_filter = f"?entity a <{main_entity_type}> ."
-        else:
-            entity_filter = "?entity a ?type ."
+        entity_filter = self._get_entity_type_filter("?entity")
         
         query = f"""
         PREFIX schema: <http://schema.org/>
@@ -174,12 +168,7 @@ class BaseGraph(ABC):
         # Add filter expression if provided (applied to ?value)
         value_filter = f"?value {filter_expr} ." if filter_expr else ""
         
-        # Use first entity type for counting
-        if self.entity_types:
-            main_entity_type = self.entity_types[0]
-            entity_filter = f"?entity a <{main_entity_type}> ."
-        else:
-            entity_filter = "?entity a ?type ."
+        entity_filter = self._get_entity_type_filter("?entity")
         
         query = f"""
         PREFIX schema: <http://schema.org/>
@@ -225,12 +214,7 @@ class BaseGraph(ABC):
         # Add filter expression if provided (applied to ?value)
         value_filter = f"?value {filter_expr} ." if filter_expr else ""
         
-        # Use first entity type for counting
-        if self.entity_types:
-            main_entity_type = self.entity_types[0]
-            entity_filter = f"?entity a <{main_entity_type}> ."
-        else:
-            entity_filter = "?entity a ?type ."
+        entity_filter = self._get_entity_type_filter("?entity")
         
         query = f"""
         PREFIX schema: <http://schema.org/>
@@ -275,12 +259,7 @@ class BaseGraph(ABC):
         # Add filter expression if provided (applied to ?value)
         value_filter = f"?value {filter_expr} ." if filter_expr else ""
         
-        # Use first entity type for counting
-        if self.entity_types:
-            main_entity_type = self.entity_types[0]
-            entity_filter = f"?entity a <{main_entity_type}> ."
-        else:
-            entity_filter = "?entity a ?type ."
+        entity_filter = self._get_entity_type_filter("?entity")
         
         query = f"""
         PREFIX schema: <http://schema.org/>
