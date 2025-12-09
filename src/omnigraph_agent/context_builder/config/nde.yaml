@@ -1,0 +1,46 @@
+# NDE Graph Configuration
+# Generated via introspection of https://frink.apps.renci.org/nde/sparql
+
+graph_id: "nde"
+endpoint: "https://frink.apps.renci.org/nde/sparql"
+repo_filter_property: "schema:includedInDataCatalog"
+
+# Main dimensions to analyze (discovered via introspection)
+dimensions:
+  - name: "includedindatacatalog"
+    property: "schema:includedInDataCatalog"
+    filter: ""
+  - name: "name"
+    property: "schema:name"
+    filter: ""
+  - name: "url"
+    property: "schema:url"
+    filter: ""
+  - name: "date"
+    property: "schema:date"
+    filter: ""
+  - name: "sameas"
+    property: "schema:sameAs"
+    filter: ""
+  - name: "author"
+    property: "schema:author"
+    filter: ""
+  - name: "datemodified"
+    property: "schema:dateModified"
+    filter: ""
+  - name: "healthcondition"
+    property: "schema:healthCondition"
+    filter: ""  # Optional: removed DefinedTerm requirement to include all healthCondition values
+  - name: "datepublished"
+    property: "schema:datePublished"
+    filter: ""
+  - name: "datecreated"
+    property: "schema:dateCreated"
+    filter: ""
+
+# Entity types to identify
+entity_types:
+  - "http://schema.org/Dataset"
+  - "http://schema.org/DataCatalog"
+
+text_blurb: "The NDE (National Data Ecosystem) catalog provides a comprehensive view of biomedical datasets with rich metadata including health conditions, authors, dates, and catalog information."

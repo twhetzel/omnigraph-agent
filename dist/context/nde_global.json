@@ -1,0 +1,468 @@
+{
+  "graph_id": "nde",
+  "endpoint": "https://frink.apps.renci.org/nde/sparql",
+  "entity_types": [
+    "http://schema.org/Dataset",
+    "http://schema.org/DataCatalog"
+  ],
+  "dimensions": [
+    {
+      "name": "schema:includedInDataCatalog",
+      "coverage": 1.0,
+      "approx_distinct_values": 7,
+      "top_values": [
+        {
+          "value": "https://okn.wobd.org/catalog/vivli",
+          "count": 7676
+        },
+        {
+          "value": "https://okn.wobd.org/catalog/immport",
+          "count": 1320
+        },
+        {
+          "value": "https://okn.wobd.org/catalog/project_tycho",
+          "count": 597
+        },
+        {
+          "value": "https://okn.wobd.org/catalog/zenodo",
+          "count": 597
+        },
+        {
+          "value": "https://okn.wobd.org/catalog/immunespace",
+          "count": 181
+        },
+        {
+          "value": "https://okn.wobd.org/catalog/radx_data_hub",
+          "count": 178
+        },
+        {
+          "value": "https://okn.wobd.org/catalog/vdjserver",
+          "count": 92
+        }
+      ]
+    },
+    {
+      "name": "schema:name",
+      "coverage": 1.0,
+      "approx_distinct_values": 9675,
+      "top_values": [
+        {
+          "value": "Dataset from Double-blind randomized study to evaluate the immunogenicity and reactogenicity of two different lots of GlaxoSmithKline Biologicals' inactivated hepatitis A vaccine containing 1440 EL.U of antigen per mL and injected according to a 0, 12 month schedule in healthy adult volunteers {NCT00291876}",
+          "count": 9
+        },
+        {
+          "value": "Dataset from Double-blind, randomized study to evaluate the immunogenicity and reactogenicity of three different lots of GlaxoSmithKline Biologicals' inactivated hepatitis A vaccine containing 1440 EL.U of antigen per mL and injected according to a 0, 6 month schedule in healthy adult subjects {NCT00289757}",
+          "count": 9
+        },
+        {
+          "value": "A large-scale database of T-cell receptor beta (TCRb) sequences and binding associations from natural and synthetic exposure to SARS-CoV-2",
+          "count": 7
+        },
+        {
+          "value": "Dataset from An open multicentre, multicountry study to evaluate long-term antibody persistence and immune memory between Years 11 and 15 after the primary study HAB-084 in which healthy adolescents were vaccinated with Twinrix\u2122 Adult following a two-dose schedule or Twinrix\u2122 Junior following a three-dose schedule {NCT00875485}",
+          "count": 5
+        },
+        {
+          "value": "Dataset from A double blind randomised, comparative study of the immunogenicity and reactogenicity of three different lots of GlaxoSmithKline Biologicals\u2019 combined hepatitis A - hepatitis B vaccine when administered in healthy adults {NCT00289770}",
+          "count": 4
+        },
+        {
+          "value": "Dataset from Efficacy and Safety of Duloxetine Compared With Placebo in Subjects With Stress Urinary Incontinence",
+          "count": 4
+        },
+        {
+          "value": "Dataset from Evaluate Persistence of Immune Response of GSK Biologicals\u2019 TWINRIX\u2122 Vaccine Administered According to 0,6 Month Schedule Versus TWINRIX\u2122 JUNIOR Administered According to 0,1,6 Month Schedule, in Subjects Aged 12-15 years at Time of First Vaccine Dose {NCT00197119}",
+          "count": 4
+        },
+        {
+          "value": "Dataset from Long-Term Persistence Follow-up Study to Evaluate the Immune Persistence of GSK Biologicals' Combined Hepatitis A / Hepatitis B Vaccine in Healthy Adult Volunteers {NCT00289718}",
+          "count": 4
+        },
+        {
+          "value": "Dataset from Long-term study of immune response persistence of GSK Biologicals' 2-dose thiomersal-free Engerix\u2122-B and 3-dose preservative-free Engerix\u2122-B vaccines in subjects aged 11-15 yrs {NCT00343915}",
+          "count": 4
+        },
+        {
+          "value": "Dataset from Phase III, open, multicenter Study to Assess the Long-Term Persistence of a Booster Dose of GSK Biologicals' Hib-MenC compared to a Booster Dose of Infanrix\u2122 Hexa When Given to 14 month-old Subjects Primed in study DTPa-HBV-IPV-097 & Boosted in study Hib-MenC-TT-010 BST: DTPa-HBV-IPV-097 {NCT00322335}",
+          "count": 4
+        }
+      ]
+    },
+    {
+      "name": "schema:url",
+      "coverage": 1.0,
+      "approx_distinct_values": 9863,
+      "top_values": [
+        {
+          "value": "https://doi.org/10.25934/00000001",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.25934/00000002",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.25934/00000003",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.25934/00000004",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.25934/00000005",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.25934/00000006",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.25934/00000007",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.25934/00000008",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.25934/00000009",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.25934/00000010",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "schema:date",
+      "coverage": 0.9946263814255297,
+      "approx_distinct_values": 289,
+      "top_values": [
+        {
+          "value": "2024-11-26",
+          "count": 2553
+        },
+        {
+          "value": "2024-11-27",
+          "count": 1187
+        },
+        {
+          "value": "2025-02-22",
+          "count": 525
+        },
+        {
+          "value": "2025-02-10",
+          "count": 481
+        },
+        {
+          "value": "2025-02-06",
+          "count": 385
+        },
+        {
+          "value": "2018-04-01",
+          "count": 360
+        },
+        {
+          "value": "2025-07-07",
+          "count": 263
+        },
+        {
+          "value": "2022-08-12",
+          "count": 237
+        },
+        {
+          "value": "2025-02-07",
+          "count": 233
+        },
+        {
+          "value": "2025-10-04",
+          "count": 219
+        }
+      ]
+    },
+    {
+      "name": "schema:sameAs",
+      "coverage": 0.9896583189698874,
+      "top_values": [
+        {
+          "value": "None",
+          "count": 20
+        },
+        {
+          "value": "https://doi.org/10.21430/M300RMFHZQ",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.21430/M300YTT71X",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.21430/M301EUT53A",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.21430/M301KI6WVE",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.21430/M302L1ULGW",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.21430/M304ZDGVQ2",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.21430/M3060TKH6F",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.21430/M306PUGY2I",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.21430/M307A4FVT9",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "schema:author",
+      "coverage": 0.942715198215553,
+      "approx_distinct_values": 826,
+      "top_values": [
+        {
+          "value": "@type",
+          "count": 7676
+        },
+        {
+          "value": "name",
+          "count": 7676
+        },
+        {
+          "value": "https://okn.wobd.org/person/derek_at_cummings",
+          "count": 360
+        },
+        {
+          "value": "https://okn.wobd.org/person/donald_s_burke",
+          "count": 360
+        },
+        {
+          "value": "https://okn.wobd.org/person/irene_ruberto",
+          "count": 360
+        },
+        {
+          "value": "https://okn.wobd.org/person/marc_choisy",
+          "count": 360
+        },
+        {
+          "value": "https://okn.wobd.org/person/nian_shong_chok",
+          "count": 360
+        },
+        {
+          "value": "https://okn.wobd.org/person/shawn_brown",
+          "count": 360
+        },
+        {
+          "value": "https://okn.wobd.org/person/xin_xiong",
+          "count": 360
+        },
+        {
+          "value": "https://orcid.org/0000-0002-5704-8094",
+          "count": 360
+        }
+      ]
+    },
+    {
+      "name": "schema:dateModified",
+      "coverage": 0.9338943526310454,
+      "approx_distinct_values": 296,
+      "top_values": [
+        {
+          "value": "2024-11-26",
+          "count": 2553
+        },
+        {
+          "value": "2024-11-27",
+          "count": 1187
+        },
+        {
+          "value": "2025-02-22",
+          "count": 525
+        },
+        {
+          "value": "2025-02-10",
+          "count": 481
+        },
+        {
+          "value": "2025-02-06",
+          "count": 385
+        },
+        {
+          "value": "2025-07-07",
+          "count": 263
+        },
+        {
+          "value": "2025-02-07",
+          "count": 233
+        },
+        {
+          "value": "2025-10-04",
+          "count": 219
+        },
+        {
+          "value": "2025-06-25",
+          "count": 155
+        },
+        {
+          "value": "2025-10-01",
+          "count": 125
+        }
+      ]
+    },
+    {
+      "name": "schema:healthCondition",
+      "coverage": 0.9168609956402717,
+      "approx_distinct_values": 993,
+      "top_values": [
+        {
+          "value": "http://purl.obolibrary.org/obo/NCIT_C115935",
+          "count": 1702
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0100096",
+          "count": 1020
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0005148",
+          "count": 399
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0004979",
+          "count": 358
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0005812",
+          "count": 315
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0005002",
+          "count": 297
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0005109",
+          "count": 208
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0005502",
+          "count": 200
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0008383",
+          "count": 175
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0002009",
+          "count": 134
+        }
+      ]
+    },
+    {
+      "name": "schema:datePublished",
+      "coverage": 0.8607928622123087,
+      "approx_distinct_values": 535,
+      "top_values": [
+        {
+          "value": "2018-07-10",
+          "count": 1201
+        },
+        {
+          "value": "2018-07-16",
+          "count": 485
+        },
+        {
+          "value": "2018-07-17",
+          "count": 422
+        },
+        {
+          "value": "2018-04-01",
+          "count": 360
+        },
+        {
+          "value": "2019-04-12",
+          "count": 348
+        },
+        {
+          "value": "2019-09-19",
+          "count": 308
+        },
+        {
+          "value": "2022-08-12",
+          "count": 247
+        },
+        {
+          "value": "2018-07-23",
+          "count": 213
+        },
+        {
+          "value": "2019-09-09",
+          "count": 170
+        },
+        {
+          "value": "2023-12-21",
+          "count": 154
+        }
+      ]
+    },
+    {
+      "name": "schema:dateCreated",
+      "coverage": 0.8568386900537361,
+      "approx_distinct_values": 519,
+      "top_values": [
+        {
+          "value": "0001-01-01",
+          "count": 2815
+        },
+        {
+          "value": "2013-11-28",
+          "count": 597
+        },
+        {
+          "value": "2018-07-16",
+          "count": 487
+        },
+        {
+          "value": "2018-07-17",
+          "count": 249
+        },
+        {
+          "value": "2018-07-23",
+          "count": 218
+        },
+        {
+          "value": "2019-07-18",
+          "count": 149
+        },
+        {
+          "value": "2023-06-16",
+          "count": 130
+        },
+        {
+          "value": "2019-05-07",
+          "count": 112
+        },
+        {
+          "value": "2021-12-17",
+          "count": 95
+        },
+        {
+          "value": "2024-08-27",
+          "count": 94
+        }
+      ]
+    }
+  ],
+  "text_blurb": "The NDE (National Data Ecosystem) catalog provides a comprehensive view of biomedical datasets with rich metadata including health conditions, authors, dates, and catalog information."
+}

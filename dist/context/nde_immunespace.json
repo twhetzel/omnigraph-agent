@@ -1,0 +1,358 @@
+{
+  "graph_id": "nde",
+  "source_id": "immunespace",
+  "inherits_from": "nde_global",
+  "repository_filter": {
+    "schema:includedInDataCatalog": "https://okn.wobd.org/catalog/immunespace"
+  },
+  "dimension_overrides": {
+    "includedindatacatalog": {
+      "coverage": 1.0,
+      "approx_distinct_values": 2,
+      "top_values": [
+        {
+          "value": "https://okn.wobd.org/catalog/immport",
+          "count": 181
+        },
+        {
+          "value": "https://okn.wobd.org/catalog/immunespace",
+          "count": 181
+        }
+      ]
+    },
+    "name": {
+      "coverage": 1.0,
+      "approx_distinct_values": 179,
+      "top_values": [
+        {
+          "value": "Genetic and Environmental Factors in the Response to Influenza Vaccination 2014",
+          "count": 2
+        },
+        {
+          "value": "Innate and Acquired Immunity to Influenza Infection and Immunization (SLVP029)",
+          "count": 2
+        },
+        {
+          "value": "A Systems Vaccinology Approach Reveals Temporal Transcriptomic Changes of Immune Responses to the Yellow Fever 17D Vaccine.",
+          "count": 1
+        },
+        {
+          "value": "Accelerated Weight Gain Among Infants With In Utero COVID-19 exposure",
+          "count": 1
+        },
+        {
+          "value": "Adjuvanted influenza-H1N1 vaccination reveals lymphoid signatures of age-dependent early responses and of clinical adverse events.",
+          "count": 1
+        },
+        {
+          "value": "An Inflammatory Cytokine Signature Predicts Covid-19 Severity And Survival",
+          "count": 1
+        },
+        {
+          "value": "Antigen-Specific Adaptive Immunity to SARS-CoV-2 in Acute COVID-19",
+          "count": 1
+        },
+        {
+          "value": "Apoptosis and other immune biomarkers predict influenza vaccine (TIV 2008) responsiveness SLVP015",
+          "count": 1
+        },
+        {
+          "value": "Association of CD4+ CD8+ T cells with risk of plasma leakage in Dengue disease",
+          "count": 1
+        },
+        {
+          "value": "B and T Cell Determinants of Influenza Vaccine Responses in the Elderly 2008 (see companion study SDY773)",
+          "count": 1
+        }
+      ]
+    },
+    "url": {
+      "coverage": 1.0,
+      "approx_distinct_values": 181,
+      "top_values": [
+        {
+          "value": "https://immport.org/shared/study/SDY1041",
+          "count": 1
+        },
+        {
+          "value": "https://immport.org/shared/study/SDY1086",
+          "count": 1
+        },
+        {
+          "value": "https://immport.org/shared/study/SDY1092",
+          "count": 1
+        },
+        {
+          "value": "https://immport.org/shared/study/SDY1097",
+          "count": 1
+        },
+        {
+          "value": "https://immport.org/shared/study/SDY1100",
+          "count": 1
+        },
+        {
+          "value": "https://immport.org/shared/study/SDY1108",
+          "count": 1
+        },
+        {
+          "value": "https://immport.org/shared/study/SDY1109",
+          "count": 1
+        },
+        {
+          "value": "https://immport.org/shared/study/SDY111",
+          "count": 1
+        },
+        {
+          "value": "https://immport.org/shared/study/SDY1119",
+          "count": 1
+        },
+        {
+          "value": "https://immport.org/shared/study/SDY112",
+          "count": 1
+        }
+      ]
+    },
+    "date": {
+      "coverage": 1.0,
+      "approx_distinct_values": 42,
+      "top_values": [
+        {
+          "value": "2024-07-25",
+          "count": 41
+        },
+        {
+          "value": "2022-06-22",
+          "count": 19
+        },
+        {
+          "value": "2024-02-29",
+          "count": 14
+        },
+        {
+          "value": "2025-02-27",
+          "count": 10
+        },
+        {
+          "value": "2025-03-27",
+          "count": 10
+        },
+        {
+          "value": "2018-07-06",
+          "count": 8
+        },
+        {
+          "value": "2019-01-16",
+          "count": 6
+        },
+        {
+          "value": "2022-09-02",
+          "count": 6
+        },
+        {
+          "value": "2016-03-18",
+          "count": 5
+        },
+        {
+          "value": "2022-12-19",
+          "count": 5
+        }
+      ]
+    },
+    "sameas": {
+      "coverage": 1.0,
+      "approx_distinct_values": 362,
+      "top_values": [
+        {
+          "value": "https://doi.org/10.21430/M300RMFHZQ",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.21430/M3060TKH6F",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.21430/M30IB1ZZDJ",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.21430/M30UY9XYSX",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.21430/M30V1NQBF0",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.21430/M316LYQMUG",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.21430/M31PQIFA91",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.21430/M31UBL340J",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.21430/M320H8XYFG",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.21430/M320NKDIF3",
+          "count": 1
+        }
+      ]
+    },
+    "author": {
+      "coverage": 0.9613259668508287,
+      "approx_distinct_values": 86,
+      "top_values": [
+        {
+          "value": "https://okn.wobd.org/person/mark_davis",
+          "count": 18
+        },
+        {
+          "value": "https://okn.wobd.org/person/donna_farber",
+          "count": 12
+        },
+        {
+          "value": "https://okn.wobd.org/person/david_hafler",
+          "count": 10
+        },
+        {
+          "value": "https://okn.wobd.org/person/bali_pulendran",
+          "count": 9
+        },
+        {
+          "value": "https://okn.wobd.org/person/cornelia_dekker",
+          "count": 8
+        },
+        {
+          "value": "https://okn.wobd.org/person/alessandro_sette",
+          "count": 7
+        },
+        {
+          "value": "https://okn.wobd.org/person/a_karolina_palucka",
+          "count": 6
+        },
+        {
+          "value": "https://okn.wobd.org/person/harry_greenberg",
+          "count": 6
+        },
+        {
+          "value": "https://okn.wobd.org/person/octavio_ramilo",
+          "count": 5
+        },
+        {
+          "value": "https://okn.wobd.org/person/ellis_reinherz",
+          "count": 4
+        }
+      ]
+    },
+    "datemodified": {
+      "coverage": 1.0,
+      "approx_distinct_values": 42,
+      "top_values": [
+        {
+          "value": "2024-07-25T00:00:00",
+          "count": 41
+        },
+        {
+          "value": "2022-06-22T00:00:00",
+          "count": 19
+        },
+        {
+          "value": "2024-02-29T00:00:00",
+          "count": 14
+        },
+        {
+          "value": "2025-02-27T00:00:00",
+          "count": 10
+        },
+        {
+          "value": "2025-03-27T00:00:00",
+          "count": 10
+        },
+        {
+          "value": "2018-07-06T00:00:00",
+          "count": 8
+        },
+        {
+          "value": "2019-01-16T00:00:00",
+          "count": 6
+        },
+        {
+          "value": "2022-09-02T00:00:00",
+          "count": 6
+        },
+        {
+          "value": "2016-03-18T00:00:00",
+          "count": 5
+        },
+        {
+          "value": "2022-12-19T00:00:00",
+          "count": 5
+        }
+      ]
+    },
+    "healthcondition": {
+      "coverage": 0.9668508287292817,
+      "approx_distinct_values": 62,
+      "top_values": [
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0005812",
+          "count": 77
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/NCIT_C16269",
+          "count": 31
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0100096",
+          "count": 16
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0005460",
+          "count": 14
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0005502",
+          "count": 10
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/NCIT_C115935",
+          "count": 10
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/NCIT_C178427",
+          "count": 9
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0005344",
+          "count": 8
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0018076",
+          "count": 8
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0002282",
+          "count": 5
+        }
+      ]
+    },
+    "datepublished": {
+      "coverage": 0.0,
+      "approx_distinct_values": 0
+    },
+    "datecreated": {
+      "coverage": 0.0,
+      "approx_distinct_values": 0
+    }
+  },
+  "stats": {
+    "total_datasets": 181
+  },
+  "text_blurb": "Context for ImmuneSpace repository"
+}

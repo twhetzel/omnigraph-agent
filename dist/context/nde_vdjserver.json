@@ -1,0 +1,290 @@
+{
+  "graph_id": "nde",
+  "source_id": "vdjserver",
+  "inherits_from": "nde_global",
+  "repository_filter": {
+    "schema:includedInDataCatalog": "https://okn.wobd.org/catalog/vdjserver"
+  },
+  "dimension_overrides": {
+    "includedindatacatalog": {
+      "coverage": 1.0,
+      "approx_distinct_values": 1,
+      "top_values": [
+        {
+          "value": "https://okn.wobd.org/catalog/vdjserver",
+          "count": 92
+        }
+      ]
+    },
+    "name": {
+      "coverage": 1.0,
+      "approx_distinct_values": 81,
+      "top_values": [
+        {
+          "value": "A large-scale database of T-cell receptor beta (TCRb) sequences and binding associations from natural and synthetic exposure to SARS-CoV-2",
+          "count": 7
+        },
+        {
+          "value": "omega",
+          "count": 4
+        },
+        {
+          "value": "Schulthei\u00df et al., Next Generation Sequencing of T and B cell receptor repertoires from COVID-19 patients showed signatures associated with severity of disease",
+          "count": 2
+        },
+        {
+          "value": "Shomuradova et al., SARS-CoV-2 epitopes are recognized by a public and diverse repertoire of human T-cell receptors",
+          "count": 2
+        },
+        {
+          "value": "A Model of Somatic Hypermutation Targeting in Mice Based on High-Throughput Ig Sequencing Data",
+          "count": 1
+        },
+        {
+          "value": "A Potently Neutralizing Antibody Protects Mice against SARS-CoV-2 Infection",
+          "count": 1
+        },
+        {
+          "value": "A pathogenic and clonally expanded B cell transcriptome in active multiple sclerosis",
+          "count": 1
+        },
+        {
+          "value": "A public database of memory and naive B-cell receptor sequences",
+          "count": 1
+        },
+        {
+          "value": "Alameh et al., Lipid nanoparticles enhance the efficacy of mRNA and protein subunit vaccines by inducing robust T follicular helper cell and humoral responses",
+          "count": 1
+        },
+        {
+          "value": "Anderson et al., Human islet T cells are highly reactive to preproinsulin in type 1 diabetes",
+          "count": 1
+        }
+      ]
+    },
+    "url": {
+      "coverage": 1.0,
+      "approx_distinct_values": 92,
+      "top_values": [
+        {
+          "value": "https://vdjserver.org/community?study_id=1371444213709729305-242ac11c-0001-012",
+          "count": 1
+        },
+        {
+          "value": "https://vdjserver.org/community?study_id=2YNBAIAJ",
+          "count": 1
+        },
+        {
+          "value": "https://vdjserver.org/community?study_id=3276777473314001386-242ac116-0001-012",
+          "count": 1
+        },
+        {
+          "value": "https://vdjserver.org/community?study_id=4505707319090933270-242ac113-0001-012",
+          "count": 1
+        },
+        {
+          "value": "https://vdjserver.org/community?study_id=4995411523885404651-242ac118-0001-012",
+          "count": 1
+        },
+        {
+          "value": "https://vdjserver.org/community?study_id=6R5ENPH5",
+          "count": 1
+        },
+        {
+          "value": "https://vdjserver.org/community?study_id=ADFPAKLS",
+          "count": 1
+        },
+        {
+          "value": "https://vdjserver.org/community?study_id=BIJ6B5TC",
+          "count": 1
+        },
+        {
+          "value": "https://vdjserver.org/community?study_id=BIOPROJECT:PRJNA639580",
+          "count": 1
+        },
+        {
+          "value": "https://vdjserver.org/community?study_id=DOI:10.1073/pnas.2107208118",
+          "count": 1
+        }
+      ]
+    },
+    "date": {
+      "coverage": 0.42391304347826086,
+      "approx_distinct_values": 2,
+      "top_values": [
+        {
+          "value": "2022-12-16",
+          "count": 30
+        },
+        {
+          "value": "2023-01-20",
+          "count": 9
+        }
+      ]
+    },
+    "sameas": {
+      "coverage": 0.0,
+      "approx_distinct_values": 0
+    },
+    "author": {
+      "coverage": 0.9891304347826086,
+      "approx_distinct_values": 173,
+      "top_values": [
+        {
+          "value": "https://okn.wobd.org/person/scott_christley",
+          "count": 28
+        },
+        {
+          "value": "https://okn.wobd.org/person/adaptive_biotechnologies",
+          "count": 7
+        },
+        {
+          "value": "https://okn.wobd.org/person/christian_busse",
+          "count": 6
+        },
+        {
+          "value": "https://okn.wobd.org/person/mprg_molucular_immunology_mpi_infection_biology",
+          "count": 5
+        },
+        {
+          "value": "https://okn.wobd.org/person/aaron_rosenfeld",
+          "count": 3
+        },
+        {
+          "value": "https://okn.wobd.org/person/brandon_windsor",
+          "count": 3
+        },
+        {
+          "value": "https://okn.wobd.org/person/harlan_robins",
+          "count": 3
+        },
+        {
+          "value": "https://okn.wobd.org/person/steven_h_kleinstein",
+          "count": 3
+        },
+        {
+          "value": "https://okn.wobd.org/person/a_shomuradova",
+          "count": 2
+        },
+        {
+          "value": "https://okn.wobd.org/person/ali_ellebedy_ellebedy_wustl_edu",
+          "count": 2
+        }
+      ]
+    },
+    "datemodified": {
+      "coverage": 0.42391304347826086,
+      "approx_distinct_values": 2,
+      "top_values": [
+        {
+          "value": "2022-12-16",
+          "count": 30
+        },
+        {
+          "value": "2023-01-20",
+          "count": 9
+        }
+      ]
+    },
+    "healthcondition": {
+      "coverage": 0.6847826086956522,
+      "approx_distinct_values": 75,
+      "top_values": [
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0100096",
+          "count": 21
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0004992",
+          "count": 9
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0005550",
+          "count": 9
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0005015",
+          "count": 5
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0005070",
+          "count": 5
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0007179",
+          "count": 5
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0021100",
+          "count": 4
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/HP_0002354",
+          "count": 3
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0005096",
+          "count": 3
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0005109",
+          "count": 3
+        }
+      ]
+    },
+    "datepublished": {
+      "coverage": 0.42391304347826086,
+      "approx_distinct_values": 28,
+      "top_values": [
+        {
+          "value": "2020-08-31",
+          "count": 7
+        },
+        {
+          "value": "2021-10-06",
+          "count": 3
+        },
+        {
+          "value": "2019-11-08",
+          "count": 2
+        },
+        {
+          "value": "2020-08-10",
+          "count": 2
+        },
+        {
+          "value": "2021-08-19",
+          "count": 2
+        },
+        {
+          "value": "2019-06-11",
+          "count": 1
+        },
+        {
+          "value": "2019-09-03",
+          "count": 1
+        },
+        {
+          "value": "2019-09-17",
+          "count": 1
+        },
+        {
+          "value": "2019-09-19",
+          "count": 1
+        },
+        {
+          "value": "2019-12-13",
+          "count": 1
+        }
+      ]
+    },
+    "datecreated": {
+      "coverage": 0.0,
+      "approx_distinct_values": 0
+    }
+  },
+  "stats": {
+    "total_datasets": 92
+  },
+  "text_blurb": "Context for VDJServer repository"
+}

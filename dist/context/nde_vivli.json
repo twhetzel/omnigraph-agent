@@ -1,0 +1,405 @@
+{
+  "graph_id": "nde",
+  "source_id": "vivli",
+  "inherits_from": "nde_global",
+  "repository_filter": {
+    "schema:includedInDataCatalog": "https://okn.wobd.org/catalog/vivli"
+  },
+  "dimension_overrides": {
+    "includedindatacatalog": {
+      "coverage": 1.0,
+      "approx_distinct_values": 1,
+      "top_values": [
+        {
+          "value": "https://okn.wobd.org/catalog/vivli",
+          "count": 7676
+        }
+      ]
+    },
+    "name": {
+      "coverage": 1.0,
+      "approx_distinct_values": 7508,
+      "top_values": [
+        {
+          "value": "Dataset from Double-blind randomized study to evaluate the immunogenicity and reactogenicity of two different lots of GlaxoSmithKline Biologicals' inactivated hepatitis A vaccine containing 1440 EL.U of antigen per mL and injected according to a 0, 12 month schedule in healthy adult volunteers {NCT00291876}",
+          "count": 9
+        },
+        {
+          "value": "Dataset from Double-blind, randomized study to evaluate the immunogenicity and reactogenicity of three different lots of GlaxoSmithKline Biologicals' inactivated hepatitis A vaccine containing 1440 EL.U of antigen per mL and injected according to a 0, 6 month schedule in healthy adult subjects {NCT00289757}",
+          "count": 9
+        },
+        {
+          "value": "Dataset from An open multicentre, multicountry study to evaluate long-term antibody persistence and immune memory between Years 11 and 15 after the primary study HAB-084 in which healthy adolescents were vaccinated with Twinrix\u2122 Adult following a two-dose schedule or Twinrix\u2122 Junior following a three-dose schedule {NCT00875485}",
+          "count": 5
+        },
+        {
+          "value": "Dataset from A double blind randomised, comparative study of the immunogenicity and reactogenicity of three different lots of GlaxoSmithKline Biologicals\u2019 combined hepatitis A - hepatitis B vaccine when administered in healthy adults {NCT00289770}",
+          "count": 4
+        },
+        {
+          "value": "Dataset from Efficacy and Safety of Duloxetine Compared With Placebo in Subjects With Stress Urinary Incontinence",
+          "count": 4
+        },
+        {
+          "value": "Dataset from Evaluate Persistence of Immune Response of GSK Biologicals\u2019 TWINRIX\u2122 Vaccine Administered According to 0,6 Month Schedule Versus TWINRIX\u2122 JUNIOR Administered According to 0,1,6 Month Schedule, in Subjects Aged 12-15 years at Time of First Vaccine Dose {NCT00197119}",
+          "count": 4
+        },
+        {
+          "value": "Dataset from Long-Term Persistence Follow-up Study to Evaluate the Immune Persistence of GSK Biologicals' Combined Hepatitis A / Hepatitis B Vaccine in Healthy Adult Volunteers {NCT00289718}",
+          "count": 4
+        },
+        {
+          "value": "Dataset from Long-term study of immune response persistence of GSK Biologicals' 2-dose thiomersal-free Engerix\u2122-B and 3-dose preservative-free Engerix\u2122-B vaccines in subjects aged 11-15 yrs {NCT00343915}",
+          "count": 4
+        },
+        {
+          "value": "Dataset from Phase III, open, multicenter Study to Assess the Long-Term Persistence of a Booster Dose of GSK Biologicals' Hib-MenC compared to a Booster Dose of Infanrix\u2122 Hexa When Given to 14 month-old Subjects Primed in study DTPa-HBV-IPV-097 & Boosted in study Hib-MenC-TT-010 BST: DTPa-HBV-IPV-097 {NCT00322335}",
+          "count": 4
+        },
+        {
+          "value": "Dataset from See Detailed Description",
+          "count": 4
+        }
+      ]
+    },
+    "url": {
+      "coverage": 1.0,
+      "approx_distinct_values": 7676,
+      "top_values": [
+        {
+          "value": "https://doi.org/10.25934/00000001",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.25934/00000002",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.25934/00000003",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.25934/00000004",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.25934/00000005",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.25934/00000006",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.25934/00000007",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.25934/00000008",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.25934/00000009",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.25934/00000010",
+          "count": 1
+        }
+      ]
+    },
+    "date": {
+      "coverage": 1.0,
+      "approx_distinct_values": 193,
+      "top_values": [
+        {
+          "value": "2024-11-26",
+          "count": 2553
+        },
+        {
+          "value": "2024-11-27",
+          "count": 1187
+        },
+        {
+          "value": "2025-02-22",
+          "count": 525
+        },
+        {
+          "value": "2025-02-10",
+          "count": 481
+        },
+        {
+          "value": "2025-02-06",
+          "count": 385
+        },
+        {
+          "value": "2025-07-07",
+          "count": 263
+        },
+        {
+          "value": "2025-02-07",
+          "count": 233
+        },
+        {
+          "value": "2025-10-04",
+          "count": 219
+        },
+        {
+          "value": "2025-06-25",
+          "count": 155
+        },
+        {
+          "value": "2025-10-01",
+          "count": 125
+        }
+      ]
+    },
+    "sameas": {
+      "coverage": 1.0,
+      "top_values": [
+        {
+          "value": "https://doi.org/10.25934/00000001",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.25934/00000002",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.25934/00000003",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.25934/00000004",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.25934/00000005",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.25934/00000006",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.25934/00000007",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.25934/00000008",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.25934/00000009",
+          "count": 1
+        },
+        {
+          "value": "https://doi.org/10.25934/00000010",
+          "count": 1
+        }
+      ]
+    },
+    "author": {
+      "coverage": 1.0,
+      "approx_distinct_values": 2,
+      "top_values": [
+        {
+          "value": "@type",
+          "count": 7676
+        },
+        {
+          "value": "name",
+          "count": 7676
+        }
+      ]
+    },
+    "datemodified": {
+      "coverage": 1.0,
+      "approx_distinct_values": 193,
+      "top_values": [
+        {
+          "value": "2024-11-26",
+          "count": 2553
+        },
+        {
+          "value": "2024-11-27",
+          "count": 1187
+        },
+        {
+          "value": "2025-02-22",
+          "count": 525
+        },
+        {
+          "value": "2025-02-10",
+          "count": 481
+        },
+        {
+          "value": "2025-02-06",
+          "count": 385
+        },
+        {
+          "value": "2025-07-07",
+          "count": 263
+        },
+        {
+          "value": "2025-02-07",
+          "count": 233
+        },
+        {
+          "value": "2025-10-04",
+          "count": 219
+        },
+        {
+          "value": "2025-06-25",
+          "count": 155
+        },
+        {
+          "value": "2025-10-01",
+          "count": 125
+        }
+      ]
+    },
+    "healthcondition": {
+      "coverage": 0.9013809275664408,
+      "approx_distinct_values": 811,
+      "top_values": [
+        {
+          "value": "http://purl.obolibrary.org/obo/NCIT_C115935",
+          "count": 1682
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0005148",
+          "count": 397
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0004979",
+          "count": 332
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0005002",
+          "count": 297
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0005109",
+          "count": 189
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0008383",
+          "count": 161
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0002009",
+          "count": 134
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0005090",
+          "count": 125
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0005233",
+          "count": 113
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/MONDO_0007743",
+          "count": 84
+        }
+      ]
+    },
+    "datepublished": {
+      "coverage": 1.0,
+      "approx_distinct_values": 488,
+      "top_values": [
+        {
+          "value": "2018-07-10",
+          "count": 1201
+        },
+        {
+          "value": "2018-07-16",
+          "count": 485
+        },
+        {
+          "value": "2018-07-17",
+          "count": 422
+        },
+        {
+          "value": "2019-04-12",
+          "count": 348
+        },
+        {
+          "value": "2019-09-19",
+          "count": 307
+        },
+        {
+          "value": "2018-07-23",
+          "count": 213
+        },
+        {
+          "value": "2019-09-09",
+          "count": 170
+        },
+        {
+          "value": "2023-12-21",
+          "count": 154
+        },
+        {
+          "value": "2019-07-18",
+          "count": 149
+        },
+        {
+          "value": "2018-08-02",
+          "count": 142
+        }
+      ]
+    },
+    "datecreated": {
+      "coverage": 1.0,
+      "approx_distinct_values": 493,
+      "top_values": [
+        {
+          "value": "0001-01-01",
+          "count": 2815
+        },
+        {
+          "value": "2018-07-16",
+          "count": 487
+        },
+        {
+          "value": "2018-07-17",
+          "count": 249
+        },
+        {
+          "value": "2018-07-23",
+          "count": 218
+        },
+        {
+          "value": "2019-07-18",
+          "count": 149
+        },
+        {
+          "value": "2023-06-16",
+          "count": 130
+        },
+        {
+          "value": "2019-05-07",
+          "count": 112
+        },
+        {
+          "value": "2021-12-17",
+          "count": 95
+        },
+        {
+          "value": "2024-08-27",
+          "count": 94
+        },
+        {
+          "value": "2022-09-14",
+          "count": 92
+        }
+      ]
+    }
+  },
+  "stats": {
+    "total_datasets": 7676
+  },
+  "text_blurb": "Context for Vivli repository"
+}
