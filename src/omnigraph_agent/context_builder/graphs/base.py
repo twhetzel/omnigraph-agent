@@ -86,9 +86,9 @@ class BaseGraph(ABC):
             entity_type = self.entity_types[0]
             return f"{entity_var} a <{entity_type}> ."
         else:
-            # Multiple entity types - use UNION
-            union_parts = " UNION ".join([f"{{ {entity_var} a <{et}> . }}" for et in self.entity_types])
-            return union_parts
+            # Multiple entity types - use VALUES for better performance than UNION
+            values = " ".join([f"<{et}>" for et in self.entity_types])
+            return f"{entity_var} a ?type . VALUES ?type {{ {values} }}"
     
     def _extract_repo_id(self, uri: str) -> str:
         """Extract a clean repository ID from a URI."""
