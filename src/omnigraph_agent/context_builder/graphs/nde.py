@@ -28,12 +28,13 @@ class NDEGraph(BaseGraph):
         
         Returns list of dicts with 'id', 'uri', and 'label' keys.
         """
+        repo_prop = self._expand_property(self.repo_filter_property)
         query = f"""
         PREFIX schema: <http://schema.org/>
         
         SELECT DISTINCT ?catalog ?label
         WHERE {{
-            ?dataset {self.repo_filter_property} ?catalog .
+            ?dataset {repo_prop} ?catalog .
             OPTIONAL {{ ?catalog schema:name ?label . }}
         }}
         ORDER BY ?label

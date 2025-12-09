@@ -10,12 +10,18 @@ from typing import Dict, List, Optional, Any
 from pydantic import BaseModel, Field
 
 
+class TopValue(BaseModel):
+    """Top value entry for a dimension."""
+    value: Any = Field(..., description="The value (IRI or literal)")
+    count: int = Field(..., ge=0, description="Number of entities with this value")
+
+
 class Dimension(BaseModel):
     """A dimension (property/predicate) in the knowledge graph."""
     name: str = Field(..., description="Property name/IRI")
     coverage: float = Field(..., ge=0.0, le=1.0, description="Fraction of datasets with this dimension")
     approx_distinct_values: Optional[int] = Field(None, description="Approximate number of distinct values")
-    top_values: Optional[List[Dict[str, Any]]] = Field(None, description="Top values with counts")
+    top_values: Optional[List[TopValue]] = Field(None, description="Top values with counts")
 
 
 class GlobalContext(BaseModel):
@@ -31,7 +37,7 @@ class DimensionOverride(BaseModel):
     """Repository-specific dimension overrides."""
     coverage: Optional[float] = Field(None, ge=0.0, le=1.0)
     approx_distinct_values: Optional[int] = None
-    top_values: Optional[List[Dict[str, Any]]] = None
+    top_values: Optional[List[TopValue]] = None
 
 
 class RepositoryStats(BaseModel):
