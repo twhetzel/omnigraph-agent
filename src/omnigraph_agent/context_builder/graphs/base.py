@@ -106,6 +106,38 @@ class BaseGraph(ABC):
         return {
             self.repo_filter_property: repo_uri
         }
+
+    def get_prefixes(self) -> Dict[str, str]:
+        """
+        Collect prefix mappings used across dimensions, entity types, and repo filter.
+        Simple heuristic: detect prefixed names (prefix:suffix) and add common known IRIs.
+        """
+        prefixes: Dict[str, str] = {}
+
+        # Always include core prefixes used in queries
+        prefixes["schema"] = "http://schema.org/"
+        prefixes["rdf"] = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+
+        def add_prefixed(name: str):
+            if name.startswith("http"):
+                return
+            if ":" in name and not name.startswith("<"):
+                prefix = name.split(":", 1)[0]
+                if prefix == "schema":
+                    prefixes["schema"] = "http://schema.org/"
+                elif prefix == "rdf":
+                    prefixes["rdf"] = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+                elif prefix not in prefixes:
+                    # Unknown prefix; leave unmapped (could be extended later)
+                    prefixes[prefix] = ""
+
+        add_prefixed(self.repo_filter_property)
+        for et in self.entity_types:
+            add_prefixed(et)
+        for dim in self.dimensions:
+            add_prefixed(dim.get("property", ""))
+
+        return prefixes
     
     def get_dimension_property(self, dimension_name: str) -> Optional[str]:
         """Get the property IRI for a dimension."""

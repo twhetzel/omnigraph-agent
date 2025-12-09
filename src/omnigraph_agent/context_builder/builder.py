@@ -84,6 +84,7 @@ class ContextBuilder:
             graph_id=self.graph_id,
             endpoint=self.graph.endpoint,
             entity_types=self.graph.entity_types,
+            prefixes=self.graph.get_prefixes(),
             dimensions=dimensions,
             text_blurb=self.graph.text_blurb
         )
@@ -132,6 +133,7 @@ class ContextBuilder:
             repository_filter=repo_filter,
             dimension_overrides=dimension_overrides,
             stats=stats,
+            prefixes=self.graph.get_prefixes(),
             text_blurb=f"Context for {repo.get('label', repo_id)} repository"
         )
         

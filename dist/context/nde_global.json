@@ -464,5 +464,9 @@
       ]
     }
   ],
+  "prefixes": {
+    "schema": "http://schema.org/",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  },
   "text_blurb": "The NDE (National Data Ecosystem) catalog provides a comprehensive view of biomedical datasets with rich metadata including health conditions, authors, dates, and catalog information."
 }

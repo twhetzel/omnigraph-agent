@@ -30,6 +30,7 @@ class GlobalContext(BaseModel):
     endpoint: str = Field(..., description="SPARQL endpoint URL")
     entity_types: List[str] = Field(default_factory=list, description="Main entity types in the graph")
     dimensions: List[Dimension] = Field(default_factory=list, description="Available dimensions")
+    prefixes: Dict[str, str] = Field(default_factory=dict, description="Prefix to IRI mappings used in this context")
     text_blurb: Optional[str] = Field(None, description="Human-readable description of the graph")
 
 
@@ -57,5 +58,6 @@ class RepositoryContext(BaseModel):
         description="Repository-specific dimension overrides"
     )
     stats: Optional[RepositoryStats] = Field(None, description="Repository statistics")
+    prefixes: Dict[str, str] = Field(default_factory=dict, description="Prefix to IRI mappings used in this context")
     text_blurb: Optional[str] = Field(None, description="Human-readable description of the repository")
 
