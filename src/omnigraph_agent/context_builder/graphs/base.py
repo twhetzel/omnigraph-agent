@@ -112,22 +112,23 @@ class BaseGraph(ABC):
         Collect prefix mappings used across dimensions, entity types, and repo filter.
         Simple heuristic: detect prefixed names (prefix:suffix) and add common known IRIs.
         """
-        prefixes: Dict[str, str] = {}
-
-        # Always include core prefixes used in queries
-        prefixes["schema"] = "http://schema.org/"
-        prefixes["rdf"] = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+        # Initialize with core prefixes always used in queries
+        prefixes: Dict[str, str] = {
+            "schema": "http://schema.org/",
+            "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+            "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+            "dc": "http://purl.org/dc/elements/1.1/",
+            "obo": "http://purl.obolibrary.org/obo/",
+            "oboInOwl": "http://www.geneontology.org/formats/oboInOwl#"
+        }
 
         def add_prefixed(name: str):
-            if name.startswith("http"):
+            if name.startswith("http") or name.startswith("<"):
                 return
-            if ":" in name and not name.startswith("<"):
+            if ":" in name:
                 prefix = name.split(":", 1)[0]
-                if prefix == "schema":
-                    prefixes["schema"] = "http://schema.org/"
-                elif prefix == "rdf":
-                    prefixes["rdf"] = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-                elif prefix not in prefixes:
+                # Only add unknown prefixes (core prefixes already initialized)
+                if prefix not in prefixes:
                     # Unknown prefix; leave unmapped (could be extended later)
                     prefixes[prefix] = ""
 
