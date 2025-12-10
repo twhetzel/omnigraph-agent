@@ -80,13 +80,26 @@ class ContextBuilder:
         # Count total datasets
         total_datasets = self.graph.count_datasets()
         
+        # Get query hints: from config if present, or auto-generate for ontologies
+        query_hints = None
+        if hasattr(self.graph, 'config') and 'query_hints' in self.graph.config:
+            from .model.context_schema import QueryGenerationHints
+            query_hints = QueryGenerationHints(**self.graph.config['query_hints'])
+        elif hasattr(self.graph, 'generate_query_hints'):
+            # Auto-generate query hints for ontology graphs
+            hints_dict = self.graph.generate_query_hints()
+            if hints_dict:
+                from .model.context_schema import QueryGenerationHints
+                query_hints = QueryGenerationHints(**hints_dict)
+        
         global_context = GlobalContext(
             graph_id=self.graph_id,
             endpoint=self.graph.endpoint,
             entity_types=self.graph.entity_types,
             prefixes=self.graph.get_prefixes(),
             dimensions=dimensions,
-            text_blurb=self.graph.text_blurb
+            text_blurb=self.graph.text_blurb,
+            query_hints=query_hints
         )
         
         # Write JSON file

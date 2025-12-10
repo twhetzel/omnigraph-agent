@@ -1,0 +1,67 @@
+{
+  "graph_id": "mondo",
+  "endpoint": "https://ubergraph.apps.renci.org/sparql",
+  "entity_types": [
+    "http://www.w3.org/2002/07/owl#Class"
+  ],
+  "dimensions": [],
+  "prefixes": {
+    "schema": "http://schema.org/",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "obo": "http://purl.obolibrary.org/obo/",
+    "oboInOwl": "http://www.geneontology.org/formats/oboInOwl#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "MONDO": "http://purl.obolibrary.org/obo/MONDO_",
+    "RO": "http://purl.obolibrary.org/obo/RO_",
+    "IAO": "http://purl.obolibrary.org/obo/IAO_"
+  },
+  "text_blurb": "MONDO (Monarch Disease Ontology) is a comprehensive ontology for human diseases.",
+  "query_hints": {
+    "namespace_scope": "FILTER STRSTARTS(STR(?class), \"http://purl.obolibrary.org/obo/MONDO_\")",
+    "reasoning_mode": "no entailment; use explicit patterns and property paths (e.g., rdfs:subClassOf*)",
+    "exclude_obsoletes": true,
+    "label_property": "rdfs:label",
+    "definition_property": "IAO:0000115",
+    "query_patterns": {
+      "axiom_annotated_xref": "?class oboInOwl:hasDbXref ?xref . ?axiom a owl:Axiom ; owl:annotatedSource ?class ; owl:annotatedProperty oboInOwl:hasDbXref ; owl:annotatedTarget ?xref .",
+      "direct_xref": "?class oboInOwl:hasDbXref ?xref .",
+      "in_subset": "?class oboInOwl:inSubset ?subset .",
+      "axiom_annotated_synonym": "?class oboInOwl:hasExactSynonym ?syn . ?axiom a owl:Axiom ; owl:annotatedSource ?class ; owl:annotatedProperty oboInOwl:hasExactSynonym ; owl:annotatedTarget ?syn .",
+      "direct_synonym": "?class oboInOwl:hasExactSynonym ?syn .",
+      "related_to": "?class RO:0004026 ?related .",
+      "gene_association": "?class rdfs:subClassOf [ a owl:Restriction ; owl:onProperty RO:0004003 ; owl:someValuesFrom ?gene ] .",
+      "ro_0002162": "?class rdfs:subClassOf [ a owl:Restriction ; owl:onProperty RO:0002162 ; owl:someValuesFrom ?related ] .",
+      "ro_0004026": "?class rdfs:subClassOf [ a owl:Restriction ; owl:onProperty RO:0004026 ; owl:someValuesFrom ?related ] .",
+      "ro_0004029": "?class rdfs:subClassOf [ a owl:Restriction ; owl:onProperty RO:0004029 ; owl:someValuesFrom ?related ] .",
+      "ro_0000053": "?class rdfs:subClassOf [ a owl:Restriction ; owl:onProperty RO:0000053 ; owl:someValuesFrom ?related ] .",
+      "ro_0004030": "?class rdfs:subClassOf [ a owl:Restriction ; owl:onProperty RO:0004030 ; owl:someValuesFrom ?related ] .",
+      "ro_0014001": "?class rdfs:subClassOf [ a owl:Restriction ; owl:onProperty RO:0014001 ; owl:someValuesFrom ?related ] .",
+      "ro_0004021": "?class rdfs:subClassOf [ a owl:Restriction ; owl:onProperty RO:0004021 ; owl:someValuesFrom ?related ] .",
+      "ro_0004027": "?class rdfs:subClassOf [ a owl:Restriction ; owl:onProperty RO:0004027 ; owl:someValuesFrom ?related ] .",
+      "mondo_0100332": "?class rdfs:subClassOf [ a owl:Restriction ; owl:onProperty MONDO:0100332 ; owl:someValuesFrom ?related ] .",
+      "ro_0004022": "?class rdfs:subClassOf [ a owl:Restriction ; owl:onProperty RO:0004022 ; owl:someValuesFrom ?related ] .",
+      "ro_0004024": "?class rdfs:subClassOf [ a owl:Restriction ; owl:onProperty RO:0004024 ; owl:someValuesFrom ?related ] .",
+      "ro_0004020": "?class rdfs:subClassOf [ a owl:Restriction ; owl:onProperty RO:0004020 ; owl:someValuesFrom ?related ] .",
+      "ro_0002451": "?class rdfs:subClassOf [ a owl:Restriction ; owl:onProperty RO:0002451 ; owl:someValuesFrom ?related ] .",
+      "ro_0004028": "?class rdfs:subClassOf [ a owl:Restriction ; owl:onProperty RO:0004028 ; owl:someValuesFrom ?related ] .",
+      "ro_0009501": "?class rdfs:subClassOf [ a owl:Restriction ; owl:onProperty RO:0009501 ; owl:someValuesFrom ?related ] .",
+      "bfo_0000054": "?class rdfs:subClassOf [ a owl:Restriction ; owl:onProperty BFO:0000054 ; owl:someValuesFrom ?related ] .",
+      "ro_0002573": "?class rdfs:subClassOf [ a owl:Restriction ; owl:onProperty RO:0002573 ; owl:someValuesFrom ?related ] .",
+      "ro_0004001": "?class rdfs:subClassOf [ a owl:Restriction ; owl:onProperty RO:0004001 ; owl:someValuesFrom ?related ] .",
+      "ro_0004004": "?class rdfs:subClassOf [ a owl:Restriction ; owl:onProperty RO:0004004 ; owl:someValuesFrom ?related ] ."
+    },
+    "default_behaviors": {
+      "consider_descendants": true,
+      "sort_results": true,
+      "use_distinct": true
+    },
+    "output_rules": {
+      "extension_mode_token": "EXTENSION_MODE",
+      "extension_mode_format": "plain_text_no_backticks",
+      "normal_mode_format": "fenced_code_block_sparql"
+    }
+  }
+}

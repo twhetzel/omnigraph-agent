@@ -4,6 +4,7 @@ Minimal v1 JSON schema for graph context files.
 Defines the structure for:
 - Global context files (nde_global.json)
 - Repository-specific context files (nde_<repo>.json)
+- Ontology context files (with query generation hints)
 """
 
 from typing import Dict, List, Optional, Any
@@ -14,6 +15,42 @@ class TopValue(BaseModel):
     """Top value entry for a dimension."""
     value: Any = Field(..., description="The value (IRI or literal)")
     count: int = Field(..., ge=0, description="Number of entities with this value")
+
+
+class QueryGenerationHints(BaseModel):
+    """Hints and rules for LLM query generation."""
+    namespace_scope: Optional[str] = Field(
+        None, 
+        description="SPARQL FILTER pattern to restrict results to namespace (e.g., 'FILTER STRSTARTS(STR(?class), \"http://purl.obolibrary.org/obo/MONDO_\")')"
+    )
+    reasoning_mode: Optional[str] = Field(
+        None,
+        description="Reasoning assumptions (e.g., 'no entailment', 'use explicit patterns and property paths')"
+    )
+    exclude_obsoletes: Optional[bool] = Field(
+        None,
+        description="Whether to exclude obsoleted/deprecated entities (e.g., owl:deprecated true)"
+    )
+    label_property: Optional[str] = Field(
+        None,
+        description="Property to use for labels (e.g., 'rdfs:label')"
+    )
+    definition_property: Optional[str] = Field(
+        None,
+        description="Property to use for definitions (e.g., 'IAO:0000115')"
+    )
+    query_patterns: Optional[Dict[str, str]] = Field(
+        None,
+        description="Common query patterns as templates (e.g., axiom patterns, gene associations)"
+    )
+    default_behaviors: Optional[Dict[str, Any]] = Field(
+        None,
+        description="Default query behaviors (e.g., {'consider_descendants': True, 'sort_results': True})"
+    )
+    output_rules: Optional[Dict[str, Any]] = Field(
+        None,
+        description="Output formatting rules (e.g., extension mode handling, code block formatting)"
+    )
 
 
 class Dimension(BaseModel):
@@ -32,6 +69,10 @@ class GlobalContext(BaseModel):
     dimensions: List[Dimension] = Field(default_factory=list, description="Available dimensions")
     prefixes: Dict[str, str] = Field(default_factory=dict, description="Prefix to IRI mappings used in this context")
     text_blurb: Optional[str] = Field(None, description="Human-readable description of the graph")
+    query_hints: Optional[QueryGenerationHints] = Field(
+        None,
+        description="Optional hints and rules for LLM query generation (useful for ontologies)"
+    )
 
 
 class DimensionOverride(BaseModel):
@@ -60,4 +101,8 @@ class RepositoryContext(BaseModel):
     stats: Optional[RepositoryStats] = Field(None, description="Repository statistics")
     prefixes: Dict[str, str] = Field(default_factory=dict, description="Prefix to IRI mappings used in this context")
     text_blurb: Optional[str] = Field(None, description="Human-readable description of the repository")
+    query_hints: Optional[QueryGenerationHints] = Field(
+        None,
+        description="Optional repository-specific query hints (overrides global hints if present)"
+    )
 

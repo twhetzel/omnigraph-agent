@@ -40,6 +40,10 @@ class BaseGraph(ABC):
         self.entity_types = self.config.get('entity_types', [])
         self.text_blurb = self.config.get('text_blurb', '')
         
+        # Named graph and namespace scope for ontology filtering
+        self.named_graph = self.config.get('named_graph')
+        self.namespace_scope = self.config.get('namespace_scope')
+        
         self.sparql = SPARQLWrapper(self.endpoint)
         self.sparql.setReturnFormat(JSON)
     
@@ -101,6 +105,97 @@ class BaseGraph(ABC):
         domain = parsed.netloc.replace('www.', '').split('.')[0]
         return domain.lower()
     
+    def _guess_named_graph(self) -> Optional[str]:
+        """
+        Guess the named graph URI based on endpoint and graph_id.
+        
+        For Ubergraph, named graphs are typically:
+        - http://ubergraph.apps.renci.org/graphs/{graph_id}
+        
+        Returns:
+            Guessed named graph URI or None if not applicable
+        """
+        if 'ubergraph' in self.endpoint.lower():
+            # Ubergraph uses /graphs/{ontology_id} pattern
+            return f"http://ubergraph.apps.renci.org/graphs/{self.graph_id.lower()}"
+        return None
+    
+    def _discover_named_graphs(self) -> List[str]:
+        """
+        Discover available named graphs from the endpoint.
+        
+        Returns:
+            List of named graph URIs
+        """
+        try:
+            query = """
+            SELECT DISTINCT ?g WHERE {
+                GRAPH ?g {
+                    ?s ?p ?o .
+                }
+            }
+            LIMIT 100
+            """
+            self.sparql.setQuery(query)
+            results = self.sparql.query().convert()
+            
+            graphs = []
+            for binding in results['results']['bindings']:
+                graph_uri = binding['g']['value']
+                graphs.append(graph_uri)
+            
+            return graphs
+        except Exception:
+            # If discovery fails, return empty list
+            return []
+    
+    def _get_graph_clause(self) -> str:
+        """
+        Get the SPARQL clause to limit queries to a specific named graph.
+        
+        Returns:
+            "FROM <graph_uri>" clause if named graph is available, empty string otherwise
+        """
+        # Use explicitly configured named graph
+        if self.named_graph:
+            return f"FROM <{self.named_graph}>\n        "
+        
+        # Try to guess named graph (e.g., for Ubergraph)
+        guessed_graph = self._guess_named_graph()
+        if guessed_graph:
+            # Verify the graph exists by trying a simple query
+            try:
+                test_query = f"""
+                FROM <{guessed_graph}>
+                SELECT (COUNT(*) as ?count) WHERE {{
+                    ?s ?p ?o .
+                }}
+                LIMIT 1
+                """
+                self.sparql.setQuery(test_query)
+                self.sparql.query().convert()
+                # If query succeeds, use the guessed graph
+                return f"FROM <{guessed_graph}>\n        "
+            except Exception:
+                # Graph doesn't exist or endpoint doesn't support FROM
+                pass
+        
+        return ""
+    
+    def _get_namespace_filter(self, entity_var: str = "?entity") -> str:
+        """
+        Get the SPARQL FILTER clause to limit queries by namespace scope.
+        
+        Args:
+            entity_var: Variable name to filter (default: "?entity")
+        
+        Returns:
+            FILTER clause string or empty string if no namespace scope
+        """
+        if self.namespace_scope:
+            return f'FILTER STRSTARTS(STR({entity_var}), "{self.namespace_scope}")'
+        return ""
+    
     def get_repository_filter(self, repo_id: str, repo_uri: str) -> Dict[str, str]:
         """Generate repository filter dictionary for a specific repository."""
         return {
@@ -111,6 +206,7 @@ class BaseGraph(ABC):
         """
         Collect prefix mappings used across dimensions, entity types, and repo filter.
         Simple heuristic: detect prefixed names (prefix:suffix) and add common known IRIs.
+        For ontologies, also adds ontology-specific prefixes based on namespace_scope.
         """
         # Initialize with core prefixes always used in queries
         prefixes: Dict[str, str] = {
@@ -121,6 +217,25 @@ class BaseGraph(ABC):
             "obo": "http://purl.obolibrary.org/obo/",
             "oboInOwl": "http://www.geneontology.org/formats/oboInOwl#"
         }
+        
+        # Add ontology-specific prefixes if this is an ontology (has namespace_scope)
+        if hasattr(self, 'namespace_scope') and self.namespace_scope:
+            # Add owl and xsd for ontologies
+            prefixes["owl"] = "http://www.w3.org/2002/07/owl#"
+            prefixes["xsd"] = "http://www.w3.org/2001/XMLSchema#"
+            
+            # Extract ontology prefix from namespace_scope (e.g., "http://purl.obolibrary.org/obo/VBO_" -> "VBO")
+            if "purl.obolibrary.org/obo/" in self.namespace_scope:
+                # Extract ontology ID (e.g., VBO, MONDO, RO, IAO)
+                parts = self.namespace_scope.split("/obo/")
+                if len(parts) > 1:
+                    ontology_id = parts[1].rstrip("_").upper()
+                    if ontology_id:
+                        prefixes[ontology_id] = self.namespace_scope
+                
+                # Add common OBO ontology prefixes
+                prefixes["RO"] = "http://purl.obolibrary.org/obo/RO_"
+                prefixes["IAO"] = "http://purl.obolibrary.org/obo/IAO_"
 
         def add_prefixed(name: str):
             if name.startswith("http") or name.startswith("<"):
@@ -328,14 +443,19 @@ class BaseGraph(ABC):
         """
         Introspect the graph to discover all properties used on entities.
         
+        Uses named graph (FROM clause) if available for efficiency on multi-ontology endpoints.
+        
         Returns list of dicts with 'property', 'count', and 'sample_value' keys.
         """
         entity_filter = self._get_entity_type_filter()
+        graph_clause = self._get_graph_clause()
+        namespace_filter = self._get_namespace_filter(entity_var="?entity")
         
         query = f"""
-        SELECT ?property (COUNT(DISTINCT ?entity) as ?count) (SAMPLE(?value) as ?sample_value)
+        {graph_clause}SELECT ?property (COUNT(DISTINCT ?entity) as ?count) (SAMPLE(?value) as ?sample_value)
         WHERE {{
             {entity_filter}
+            {namespace_filter}
             ?entity ?property ?value .
         }}
         GROUP BY ?property
@@ -364,11 +484,17 @@ class BaseGraph(ABC):
         """
         Introspect the graph to discover all entity types.
         
+        Uses named graph (FROM clause) if available for efficiency on multi-ontology endpoints.
+        
         Returns list of type URIs.
         """
+        graph_clause = self._get_graph_clause()
+        namespace_filter = self._get_namespace_filter(entity_var="?s")
+        
         query = f"""
-        SELECT DISTINCT ?type (COUNT(?s) as ?count)
+        {graph_clause}SELECT DISTINCT ?type (COUNT(?s) as ?count)
         WHERE {{
+            {namespace_filter}
             ?s a ?type .
         }}
         GROUP BY ?type
