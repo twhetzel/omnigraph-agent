@@ -8,10 +8,10 @@ Handles:
 
 from pathlib import Path
 from typing import List, Dict, Any, Optional
-from .base import BaseGraph
+from .knowledge_graph import KnowledgeGraph
 
 
-class NDEGraph(BaseGraph):
+class NDEGraph(KnowledgeGraph):
     """NDE graph handler for context building."""
     
     def __init__(self, config_path: Optional[Path] = None):

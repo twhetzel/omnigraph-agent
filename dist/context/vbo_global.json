@@ -1,0 +1,47 @@
+{
+  "graph_id": "vbo",
+  "endpoint": "https://ubergraph.apps.renci.org/sparql",
+  "entity_types": [
+    "http://www.w3.org/2002/07/owl#Class"
+  ],
+  "dimensions": [],
+  "prefixes": {
+    "schema": "http://schema.org/",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "VBO": "http://purl.obolibrary.org/obo/VBO_",
+    "RO": "http://purl.obolibrary.org/obo/RO_",
+    "IAO": "http://purl.obolibrary.org/obo/IAO_",
+    "obo": "http://purl.obolibrary.org/obo/",
+    "oboInOwl": "http://www.geneontology.org/formats/oboInOwl#"
+  },
+  "text_blurb": "Vertebrate Breed Ontology (VBO) is an ontology created to serve as a single computable resource for vertebrate breed names.",
+  "query_hints": {
+    "namespace_scope": "FILTER STRSTARTS(STR(?class), \"http://purl.obolibrary.org/obo/VBO_\")",
+    "reasoning_mode": "no entailment; use explicit patterns and property paths (e.g., rdfs:subClassOf*)",
+    "exclude_obsoletes": true,
+    "label_property": "rdfs:label",
+    "definition_property": "IAO:0000115",
+    "query_patterns": {
+      "axiom_annotated_synonym": "?class oboInOwl:hasExactSynonym ?syn . ?axiom a owl:Axiom ; owl:annotatedSource ?class ; owl:annotatedProperty oboInOwl:hasExactSynonym ; owl:annotatedTarget ?syn .",
+      "axiom_annotated_xref": "?class oboInOwl:hasDbXref ?xref . ?axiom a owl:Axiom ; owl:annotatedSource ?class ; owl:annotatedProperty oboInOwl:hasDbXref ; owl:annotatedTarget ?xref .",
+      "direct_synonym": "?class oboInOwl:hasExactSynonym ?syn .",
+      "direct_xref": "?class oboInOwl:hasDbXref ?xref .",
+      "in_subset": "?class oboInOwl:inSubset ?subset .",
+      "related_to": "?class RO:0020105 ?related ."
+    },
+    "default_behaviors": {
+      "consider_descendants": true,
+      "sort_results": true,
+      "use_distinct": true
+    },
+    "output_rules": {
+      "extension_mode_token": "EXTENSION_MODE",
+      "extension_mode_format": "plain_text_no_backticks",
+      "normal_mode_format": "fenced_code_block_sparql"
+    }
+  }
+}

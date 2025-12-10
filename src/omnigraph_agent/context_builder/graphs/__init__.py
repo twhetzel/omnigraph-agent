@@ -3,10 +3,12 @@
 from typing import Dict, Type
 
 from .nde import NDEGraph
+from .vbo import VBOGraph
 
 # Map graph_id to handler class for easy extensibility
 GRAPH_HANDLERS: Dict[str, Type] = {
     "nde": NDEGraph,
+    "vbo": VBOGraph,
 }
 
 

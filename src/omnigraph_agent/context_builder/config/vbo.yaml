@@ -1,0 +1,15 @@
+# VBO Graph Configuration
+# Vertebrate Breed Ontology - queryable via Ubergraph
+
+graph_id: "vbo"
+endpoint: "https://ubergraph.apps.renci.org/sparql"
+repo_filter_property: "rdf:type"  # Placeholder - ontologies don't use repo filters
+
+# Entity types - will be discovered via introspection
+entity_types:
+  - "http://www.w3.org/2002/07/owl#Class"
+
+# Dimensions - will be discovered via introspection
+dimensions: []
+
+text_blurb: "Vertebrate Breed Ontology (VBO) is an ontology created to serve as a single computable resource for vertebrate breed names."

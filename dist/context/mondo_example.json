@@ -1,0 +1,41 @@
+{
+  "graph_id": "mondo",
+  "endpoint": "https://sparql.monarchinitiative.org/sparql",
+  "entity_types": [
+    "http://www.w3.org/2002/07/owl#Class"
+  ],
+  "dimensions": [],
+  "prefixes": {
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "MONDO": "http://purl.obolibrary.org/obo/MONDO_",
+    "RO": "http://purl.obolibrary.org/obo/RO_",
+    "IAO": "http://purl.obolibrary.org/obo/IAO_",
+    "oboInOwl": "http://www.geneontology.org/formats/oboInOwl#"
+  },
+  "text_blurb": "MONDO (Monarch Disease Ontology) is a comprehensive ontology for human diseases.",
+  "query_hints": {
+    "namespace_scope": "FILTER STRSTARTS(STR(?class), \"http://purl.obolibrary.org/obo/MONDO_\")",
+    "reasoning_mode": "no entailment; use explicit patterns and property paths (e.g., rdfs:subClassOf*)",
+    "exclude_obsoletes": true,
+    "label_property": "rdfs:label",
+    "definition_property": "IAO:0000115",
+    "query_patterns": {
+      "axiom_annotated_synonym": "?class oboInOwl:hasExactSynonym ?syn . ?axiom a owl:Axiom ; owl:annotatedSource ?class ; owl:annotatedProperty oboInOwl:hasExactSynonym ; owl:annotatedTarget ?syn .",
+      "gene_association": "?class rdfs:subClassOf [ a owl:Restriction ; owl:onProperty RO:0004003 ; owl:someValuesFrom ?gene ] ."
+    },
+    "default_behaviors": {
+      "consider_descendants": true,
+      "sort_results": true,
+      "use_distinct": true
+    },
+    "output_rules": {
+      "extension_mode_token": "EXTENSION_MODE",
+      "extension_mode_format": "plain_text_no_backticks",
+      "normal_mode_format": "fenced_code_block_sparql"
+    }
+  }
+}
+
