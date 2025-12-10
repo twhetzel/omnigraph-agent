@@ -1,16 +1,16 @@
-# VBO Graph Configuration
-# Vertebrate Breed Ontology - queryable via Ubergraph
+# MONDO Graph Configuration
+# Monarch Disease Ontology - queryable via Ubergraph
 
-graph_id: "vbo"
+graph_id: "mondo"
 endpoint: "https://ubergraph.apps.renci.org/sparql"
 repo_filter_property: "rdf:type"  # Placeholder - ontologies don't use repo filters
 
 # Named graph (auto-detected for Ubergraph, but can be explicitly set)
-# named_graph: "http://ubergraph.apps.renci.org/graphs/vbo"
+# named_graph: "http://ubergraph.apps.renci.org/graphs/mondo"
 
 # Namespace scope for filtering when named graph is not available
-# This limits queries to VBO classes only (e.g., http://purl.obolibrary.org/obo/VBO_*)
-namespace_scope: "http://purl.obolibrary.org/obo/VBO_"
+# This limits queries to MONDO classes only (e.g., http://purl.obolibrary.org/obo/MONDO_*)
+namespace_scope: "http://purl.obolibrary.org/obo/MONDO_"
 
 # Entity types - will be discovered via introspection
 entity_types:
@@ -19,4 +19,5 @@ entity_types:
 # Dimensions - will be discovered via introspection
 dimensions: []
 
-text_blurb: "Vertebrate Breed Ontology (VBO) is an ontology created to serve as a single computable resource for vertebrate breed names."
+text_blurb: "MONDO (Monarch Disease Ontology) is a comprehensive ontology for human diseases."
+

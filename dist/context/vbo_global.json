@@ -9,14 +9,14 @@
     "schema": "http://schema.org/",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "obo": "http://purl.obolibrary.org/obo/",
+    "oboInOwl": "http://www.geneontology.org/formats/oboInOwl#",
     "owl": "http://www.w3.org/2002/07/owl#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
-    "dc": "http://purl.org/dc/elements/1.1/",
     "VBO": "http://purl.obolibrary.org/obo/VBO_",
     "RO": "http://purl.obolibrary.org/obo/RO_",
-    "IAO": "http://purl.obolibrary.org/obo/IAO_",
-    "obo": "http://purl.obolibrary.org/obo/",
-    "oboInOwl": "http://www.geneontology.org/formats/oboInOwl#"
+    "IAO": "http://purl.obolibrary.org/obo/IAO_"
   },
   "text_blurb": "Vertebrate Breed Ontology (VBO) is an ontology created to serve as a single computable resource for vertebrate breed names.",
   "query_hints": {
@@ -27,11 +27,13 @@
     "definition_property": "IAO:0000115",
     "query_patterns": {
       "axiom_annotated_synonym": "?class oboInOwl:hasExactSynonym ?syn . ?axiom a owl:Axiom ; owl:annotatedSource ?class ; owl:annotatedProperty oboInOwl:hasExactSynonym ; owl:annotatedTarget ?syn .",
-      "axiom_annotated_xref": "?class oboInOwl:hasDbXref ?xref . ?axiom a owl:Axiom ; owl:annotatedSource ?class ; owl:annotatedProperty oboInOwl:hasDbXref ; owl:annotatedTarget ?xref .",
       "direct_synonym": "?class oboInOwl:hasExactSynonym ?syn .",
+      "axiom_annotated_xref": "?class oboInOwl:hasDbXref ?xref . ?axiom a owl:Axiom ; owl:annotatedSource ?class ; owl:annotatedProperty oboInOwl:hasDbXref ; owl:annotatedTarget ?xref .",
       "direct_xref": "?class oboInOwl:hasDbXref ?xref .",
       "in_subset": "?class oboInOwl:inSubset ?subset .",
-      "related_to": "?class RO:0020105 ?related ."
+      "related_to": "?class RO:0020105 ?related .",
+      "vbo_value_0300020": "?class rdfs:subClassOf [ a owl:Restriction ; owl:onProperty VBO:0300020 ; owl:hasValue ?value ] .",
+      "vbo_0300019": "?class rdfs:subClassOf [ a owl:Restriction ; owl:onProperty VBO:0300019 ; owl:someValuesFrom ?related ] ."
     },
     "default_behaviors": {
       "consider_descendants": true,

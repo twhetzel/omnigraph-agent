@@ -1,4 +1,4 @@
-# omnigraph-agent
+# OmniGraph Agent
 
 ## Installation
 
