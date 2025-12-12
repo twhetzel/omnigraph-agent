@@ -349,6 +349,34 @@
     "datecreated": {
       "coverage": 0.0,
       "approx_distinct_values": 0
+    },
+    "species": {
+      "coverage": 1.0,
+      "approx_distinct_values": 2,
+      "top_values": [
+        {
+          "value": "https://www.uniprot.org/taxonomy/9606",
+          "count": 178
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/10090",
+          "count": 6
+        }
+      ]
+    },
+    "infectiousagent": {
+      "coverage": 0.016574585635359115,
+      "approx_distinct_values": 2,
+      "top_values": [
+        {
+          "value": "https://www.uniprot.org/taxonomy/2901879",
+          "count": 2
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/11709",
+          "count": 1
+        }
+      ]
     }
   },
   "stats": {

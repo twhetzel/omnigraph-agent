@@ -8,9 +8,10 @@ that can be used across different knowledge graphs.
 APPROX_DISTINCT_THRESHOLD = 10000
 
 import yaml
+import re
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Optional, Tuple
 from SPARQLWrapper import SPARQLWrapper, JSON
 from urllib.parse import urlparse
 
@@ -548,6 +549,181 @@ class BaseGraph(ABC):
             })
         
         return repo_properties
+    
+    def introspect_identifier_predicates(self, limit: int = 20) -> List[Dict[str, Any]]:
+        """
+        Introspect to discover predicates commonly used for identifiers.
+        
+        Checks for property names containing "id", "identifier", "xref", or known
+        identifier namespaces (schema:identifier, dct:identifier, oboInOwl:hasDbXref, biolink:id).
+        
+        Returns list of dicts with 'property', 'count', and 'sample_value' keys.
+        """
+        entity_filter = self._get_entity_type_filter()
+        graph_clause = self._get_graph_clause()
+        
+        # Known identifier namespaces
+        known_id_namespaces = [
+            "http://schema.org/identifier",
+            "http://purl.org/dc/terms/identifier",
+            "http://www.geneontology.org/formats/oboInOwl#hasDbXref",
+            "https://w3id.org/biolink/vocab/id",
+            "http://www.w3.org/2004/02/skos/core#exactMatch",
+            "http://www.w3.org/2002/07/owl#sameAs"
+        ]
+        
+        # Build filter for known namespaces
+        namespace_filter = " || ".join([f"STR(?property) = \"{ns}\"" for ns in known_id_namespaces])
+        
+        query = f"""
+        PREFIX schema: <http://schema.org/>
+        PREFIX dct: <http://purl.org/dc/terms/>
+        PREFIX oboInOwl: <http://www.geneontology.org/formats/oboInOwl#>
+        PREFIX biolink: <https://w3id.org/biolink/vocab/>
+        PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+        PREFIX owl: <http://www.w3.org/2002/07/owl#>
+        {graph_clause}
+        SELECT ?property (COUNT(DISTINCT ?entity) as ?count) (SAMPLE(?value) as ?sample_value)
+        WHERE {{
+            {entity_filter}
+            ?entity ?property ?value .
+            FILTER (
+                REGEX(LCASE(STR(?property)), "(id|identifier|xref|match|sameas)") ||
+                ({namespace_filter})
+            )
+            FILTER (isLiteral(?value) || isIRI(?value))
+        }}
+        GROUP BY ?property
+        ORDER BY DESC(?count)
+        LIMIT {limit}
+        """
+        
+        self.sparql.setQuery(query)
+        results = self.sparql.query().convert()
+        
+        identifier_predicates = []
+        for binding in results['results']['bindings']:
+            prop_uri = binding['property']['value']
+            count = int(binding['count']['value'])
+            sample_value = binding.get('sample_value', {}).get('value', '')
+            
+            identifier_predicates.append({
+                'property': prop_uri,
+                'count': count,
+                'sample_value': sample_value
+            })
+        
+        return identifier_predicates
+    
+    def extract_identifier_patterns(self, predicate: str, limit: int = 1000) -> List[Dict[str, Any]]:
+        """
+        Extract identifier patterns from values of a given predicate.
+        
+        Queries for values of the predicate and extracts prefixes/patterns using regex:
+        - GSE12345 → prefix: "GSE", pattern: ^GSE\\d+$
+        - NCT00012345 → prefix: "NCT", pattern: ^NCT\\d+$
+        - MONDO:0000001 → prefix: "MONDO", pattern: ^MONDO:\\d+$
+        - HGNC:1234 → prefix: "HGNC", pattern: ^HGNC:\\d+$
+        
+        Args:
+            predicate: Full IRI of the identifier predicate
+            limit: Maximum number of values to sample
+            
+        Returns:
+            List of dicts with 'prefix', 'pattern', 'example', 'count' keys
+        """
+        entity_filter = self._get_entity_type_filter()
+        graph_clause = self._get_graph_clause()
+        predicate_expanded = self._expand_property(predicate)
+        
+        query = f"""
+        {graph_clause}
+        SELECT ?value (COUNT(DISTINCT ?entity) as ?count)
+        WHERE {{
+            {entity_filter}
+            ?entity {predicate_expanded} ?value .
+            FILTER (isLiteral(?value) || isIRI(?value))
+        }}
+        GROUP BY ?value
+        ORDER BY DESC(?count)
+        LIMIT {limit}
+        """
+        
+        self.sparql.setQuery(query)
+        results = self.sparql.query().convert()
+        
+        # Pattern extraction regexes
+        patterns = [
+            (r'^(GSE)(\d+)$', 'GSE', r'^GSE\d+$'),
+            (r'^(NCT)(\d+)$', 'NCT', r'^NCT\d+$'),
+            (r'^(MONDO):(\d+)$', 'MONDO', r'^MONDO:\d+$'),
+            (r'^(HGNC):(\d+)$', 'HGNC', r'^HGNC:\d+$'),
+            (r'^(GO):(\d+)$', 'GO', r'^GO:\d+$'),
+            (r'^(DOID):(\d+)$', 'DOID', r'^DOID:\d+$'),
+            (r'^(HP):(\d+)$', 'HP', r'^HP:\d+$'),
+            (r'^(CHEBI):(\d+)$', 'CHEBI', r'^CHEBI:\d+$'),
+            (r'^(UniProtKB):([A-Z0-9]+)$', 'UniProtKB', r'^UniProtKB:[A-Z0-9]+$'),
+            (r'^(PMID):(\d+)$', 'PMID', r'^PMID:\d+$'),
+            (r'^(PMC):(\d+)$', 'PMC', r'^PMC\d+$'),
+            # Generic patterns
+            (r'^([A-Z]{2,}):(\d+)$', None, None),  # Two+ letter prefix with colon
+            (r'^([A-Z]{2,})(\d+)$', None, None),   # Two+ letter prefix without colon
+        ]
+        
+        pattern_counts: Dict[str, Dict[str, Any]] = {}
+        
+        for binding in results['results']['bindings']:
+            value_str = binding['value']['value']
+            count = int(binding['count']['value'])
+            
+            # Try to match against known patterns
+            matched = False
+            for pattern_regex, known_prefix, known_pattern in patterns:
+                match = re.match(pattern_regex, value_str)
+                if match:
+                    if known_prefix:
+                        prefix = known_prefix
+                        pattern = known_pattern
+                    else:
+                        # Extract prefix from match
+                        prefix = match.group(1)
+                        # Generate pattern
+                        if ':' in value_str:
+                            pattern = f"^{prefix}:\\d+$"
+                        else:
+                            pattern = f"^{prefix}\\d+$"
+                    
+                    if prefix not in pattern_counts:
+                        pattern_counts[prefix] = {
+                            'prefix': prefix,
+                            'pattern': pattern,
+                            'example': value_str,
+                            'count': 0
+                        }
+                    pattern_counts[prefix]['count'] += count
+                    matched = True
+                    break
+            
+            # If no pattern matched, try to extract a simple prefix
+            if not matched:
+                # Try to find a prefix-like pattern
+                simple_match = re.match(r'^([A-Z]{2,})[:\-_]?(\d+|[A-Z0-9]+)', value_str)
+                if simple_match:
+                    prefix = simple_match.group(1)
+                    if prefix not in pattern_counts:
+                        pattern_counts[prefix] = {
+                            'prefix': prefix,
+                            'pattern': None,  # Unknown pattern
+                            'example': value_str,
+                            'count': 0
+                        }
+                    pattern_counts[prefix]['count'] += count
+        
+        # Convert to list and sort by count
+        patterns_list = list(pattern_counts.values())
+        patterns_list.sort(key=lambda x: x['count'], reverse=True)
+        
+        return patterns_list
     
     def generate_suggested_config(
         self,

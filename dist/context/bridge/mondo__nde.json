@@ -1,0 +1,15 @@
+{
+  "source_graph": "https://ubergraph.apps.renci.org/sparql",
+  "target_graph": "https://frink.apps.renci.org/nde/sparql",
+  "source_graph_id": "mondo",
+  "target_graph_id": "nde",
+  "linksets": [
+    {
+      "join_key_type": "MONDO_ID",
+      "num_links": 6001,
+      "min_confidence": 1.0,
+      "max_confidence": 1.0,
+      "linkset_iri": "https://wobd.org/bridge/linkset/mondo__nde-mondo"
+    }
+  ]
+}

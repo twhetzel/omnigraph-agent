@@ -17,6 +17,42 @@ class TopValue(BaseModel):
     count: int = Field(..., ge=0, description="Number of entities with this value")
 
 
+class IdentifierPattern(BaseModel):
+    """A single identifier pattern discovered in the graph."""
+    prefix: str = Field(..., description="Identifier prefix (e.g., 'GSE', 'NCT', 'MONDO')")
+    pattern: Optional[str] = Field(None, description="Regex pattern if known (e.g., '^GSE\\d+$')")
+    example: Optional[str] = Field(None, description="Example identifier value")
+    count: Optional[int] = Field(None, ge=0, description="Number of entities with this pattern")
+    predicates: List[str] = Field(
+        default_factory=list,
+        description="List of predicates that contain this identifier pattern (e.g., ['schema:identifier', 'dct:identifier'])"
+    )
+    semantic_category: Optional[str] = Field(
+        None,
+        description="Semantic category of this identifier (e.g., 'taxonomy', 'gene', 'disease')"
+    )
+    semantically_related_prefixes: List[str] = Field(
+        default_factory=list,
+        description="List of identifier prefixes that are semantically related (e.g., ['NCBITaxon'] for 'UniProtKB' taxon)"
+    )
+
+
+class IdentifierInfo(BaseModel):
+    """Information about identifier predicates and patterns in the graph."""
+    predicates: List[str] = Field(
+        default_factory=list,
+        description="List of predicates commonly used for identifiers (e.g., 'schema:identifier', 'dct:identifier', 'oboInOwl:hasDbXref')"
+    )
+    patterns: List[IdentifierPattern] = Field(
+        default_factory=list,
+        description="Discovered identifier patterns with their prefixes and counts"
+    )
+    top_classes: List[str] = Field(
+        default_factory=list,
+        description="Entity types that commonly have these identifiers"
+    )
+
+
 class QueryGenerationHints(BaseModel):
     """Hints and rules for LLM query generation."""
     namespace_scope: Optional[str] = Field(
@@ -73,6 +109,10 @@ class GlobalContext(BaseModel):
         None,
         description="Optional hints and rules for LLM query generation (useful for ontologies)"
     )
+    identifier_info: Optional[IdentifierInfo] = Field(
+        None,
+        description="Information about identifier predicates and patterns for bridge graph generation"
+    )
 
 
 class DimensionOverride(BaseModel):
@@ -104,5 +144,9 @@ class RepositoryContext(BaseModel):
     query_hints: Optional[QueryGenerationHints] = Field(
         None,
         description="Optional repository-specific query hints (overrides global hints if present)"
+    )
+    identifier_info: Optional[IdentifierInfo] = Field(
+        None,
+        description="Optional repository-specific identifier information (inherits from global if not provided)"
     )
 

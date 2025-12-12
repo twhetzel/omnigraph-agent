@@ -37,6 +37,12 @@ dimensions:
   - name: "datecreated"
     property: "schema:dateCreated"
     filter: ""
+  - name: "species"
+    property: "schema:species"
+    filter: ""
+  - name: "infectiousagent"
+    property: "schema:infectiousAgent"
+    filter: ""
 
 # Entity types to identify
 entity_types:

@@ -114,10 +114,31 @@ text_blurb: "Description of your ontology"
 ```
 
 **Configuration fields:**
-- `repo_filter_property`: Set to `"rdf:type"` as a placeholder. Ontologies don't have repositories, so this isn't used.
+- `repo_filter_property`: Set to `""` (empty string) for ontologies. Ontologies don't have repositories, so this isn't used.
 - `entity_types`: For OBO ontologies, typically `http://www.w3.org/2002/07/owl#Class`. This represents the ontology classes you want to query.
 
-#### Step 2: Create Graph Handler
+#### Step 2: Build Context Files (Generic Handler)
+
+**The system now includes generic handlers that work automatically!** For most graphs, you can skip creating custom handler classes. The system will:
+
+- **Auto-detect** your config file
+- **Use `GenericGraph`** for knowledge graphs (when `repo_filter_property` is set)
+- **Use `GenericOntologyGraph`** for ontologies (when `repo_filter_property` is empty)
+
+Simply run:
+
+```bash
+python -m omnigraph_agent.context_builder.cli build my_graph
+```
+
+The generic handlers will:
+- Automatically detect repositories using the `repo_filter_property` from your config
+- Work with any SPARQL endpoint
+- Handle both knowledge graphs and ontologies
+
+**Custom Handlers (Optional)**
+
+If you need custom logic (e.g., special repository detection), you can still create a custom handler:
 
 **For Knowledge Graphs:**
 Create `src/omnigraph_agent/context_builder/graphs/my_graph.py`:
@@ -133,40 +154,22 @@ class MyGraphGraph(KnowledgeGraph):
         super().__init__(config_path=config_path)
     
     def get_repositories(self) -> List[Dict[str, str]]:
-        # Implement repository detection logic
+        # Custom repository detection logic
         ...
 ```
 
-**For Ontologies:**
-Create `src/omnigraph_agent/context_builder/graphs/my_ontology.py`:
-```python
-from pathlib import Path
-from typing import Optional
-from .ontology import OntologyGraph
-
-class MyOntologyGraph(OntologyGraph):
-    def __init__(self, config_path: Optional[Path] = None):
-        if config_path is None:
-            config_path = Path(__file__).parent.parent / "config" / "my_ontology.yaml"
-        super().__init__(config_path=config_path)
-```
-
-#### Step 3: Register Graph Handler
-
-Add to `src/omnigraph_agent/context_builder/graphs/__init__.py`:
+Then register it in `src/omnigraph_agent/context_builder/graphs/__init__.py`:
 ```python
 from .my_graph import MyGraphGraph
-from .my_ontology import MyOntologyGraph
 
 GRAPH_HANDLERS = {
     "nde": NDEGraph,
     "vbo": VBOGraph,
-    "my_graph": MyGraphGraph,
-    "my_ontology": MyOntologyGraph,
+    "my_graph": MyGraphGraph,  # Custom handler takes precedence
 }
 ```
 
-#### Step 4: Run Introspection (Optional)
+#### Step 3: Run Introspection (Optional)
 
 ```bash
 python -m omnigraph_agent.context_builder.cli introspect my_graph --output suggested_my_graph.yaml
@@ -174,11 +177,13 @@ python -m omnigraph_agent.context_builder.cli introspect my_graph --output sugge
 
 Review and update the suggested config, then move it to the config directory.
 
-#### Step 5: Build Context Files
+#### Step 4: Build Context Files
 
 ```bash
 python -m omnigraph_agent.context_builder.cli build my_graph
 ```
+
+**That's it!** With the generic handler system, you only need to create a config file. The system will automatically discover and use the appropriate handler.
 
 ### Context File Structure
 
@@ -193,3 +198,211 @@ Context files include:
 All context files are written to `dist/context/` and can be consumed by:
 - OmniGraph Agent for NL→SPARQL generation
 - SPARQL Chrome extension for query generation
+
+## Bridge Graph System
+
+The bridge graph system generates cross-graph links between entities in different FRINK registry graphs using shared identifiers (e.g., GSE, NCT, MONDO, HGNC).
+
+### Overview
+
+Bridge graphs enable querying across multiple knowledge graphs by:
+1. **Discovering shared identifiers**: Automatically finds identifier patterns (GSE, NCT, MONDO, etc.) that appear in multiple graphs
+2. **Generating linksets**: Creates RDF linksets that connect entities across graphs based on matching identifier values
+3. **Providing bridge context**: Generates JSON summaries of available cross-graph joins
+
+### Prerequisites
+
+Before generating bridge graphs, ensure you have context files for the graphs you want to link:
+
+```bash
+# Generate context files for all graphs you want to link
+python -m omnigraph_agent.context_builder.cli build nde
+python -m omnigraph_agent.context_builder.cli build mondo
+# ... build contexts for other graphs
+```
+
+### Generating Linksets
+
+#### Single Graph Pair
+
+Generate linksets between two specific graphs:
+
+```bash
+# Generate linksets between NDE and another graph
+python -m omnigraph_agent.context_builder.cli bridge generate nde bioproject
+```
+
+This will:
+- Find shared identifier patterns (e.g., GSE, MONDO, NCT)
+- Query both graphs for entities with matching identifiers
+- Generate RDF linkset files in `dist/bridge/linksets/`
+
+**Outputs:**
+- `dist/bridge/linksets/nde__bioproject-gse.ttl` - Linkset for GSE IDs
+- `dist/bridge/linksets/nde__bioproject-mondo.ttl` - Linkset for MONDO IDs
+- etc.
+
+#### All Graph Pairs
+
+Generate linksets for all graph pairs with shared join keys:
+
+```bash
+# Generate linksets for all pairs
+python -m omnigraph_agent.context_builder.cli bridge generate-all
+```
+
+This automatically:
+- Discovers all graph pairs that share identifier patterns
+- Generates linksets only for pairs with actual shared keys
+- Skips pairs without overlap
+
+### Discovering Shared Join Keys
+
+Discover which graph pairs can be linked (without generating):
+
+```bash
+# Discover pairs with shared join keys
+python -m omnigraph_agent.context_builder.cli bridge discover
+```
+
+**Output:**
+```
+Found 15 graph pair(s) with shared join keys:
+
+  nde → bioproject
+    Shared keys: GSE, MONDO, NCT
+
+  nde → spoke-okn
+    Shared keys: MONDO, HGNC
+
+  ...
+```
+
+### Bridge Context Files
+
+Generate JSON summaries of linksets for easy querying:
+
+```bash
+# Generate bridge context JSON files
+python -m omnigraph_agent.context_builder.cli bridge generate-contexts
+```
+
+**Outputs:**
+- `dist/context/bridge/nde__bioproject.json` - Bridge context for NDE → bioproject
+- `dist/context/bridge/index.json` - Global index of all bridges
+
+**Bridge context structure:**
+```json
+{
+  "source_graph": "https://frink.apps.renci.org/nde/sparql",
+  "target_graph": "https://frink.example.org/bioproject",
+  "source_graph_id": "nde",
+  "target_graph_id": "bioproject",
+  "linksets": [
+    {
+      "join_key_type": "GSE_ID",
+      "num_links": 10234,
+      "min_confidence": 1.0,
+      "max_confidence": 1.0,
+      "linkset_iri": "https://wobd.org/bridge/linkset/nde__bioproject-gse"
+    }
+  ]
+}
+```
+
+### Listing Available Bridges
+
+List all available bridge contexts:
+
+```bash
+# List available bridges
+python -m omnigraph_agent.context_builder.cli bridge list
+```
+
+### Viewing Bridge Summary
+
+View detailed summary of links between two graphs:
+
+```bash
+# View summary of NDE → bioproject bridge
+python -m omnigraph_agent.context_builder.cli bridge summary nde bioproject
+```
+
+### Using Bridge Graphs in SPARQL Queries
+
+Bridge graphs enable federated queries across multiple graphs. Example:
+
+```sparql
+PREFIX wobd-bridge: <https://wobd.org/bridge#>
+PREFIX void: <http://rdfs.org/ns/void#>
+
+# Find all NDE datasets linked to bioproject entities via GSE IDs
+SELECT ?nde_dataset ?bioproject_entity ?gse_id
+WHERE {
+    # Query NDE graph
+    SERVICE <https://frink.apps.renci.org/nde/sparql> {
+        ?nde_dataset a schema:Dataset .
+        ?nde_dataset schema:identifier ?gse_id .
+        FILTER (STRSTARTS(STR(?gse_id), "GSE"))
+    }
+    
+    # Use bridge graph to find matching bioproject entity
+    ?link wobd-bridge:sourceNode ?nde_dataset ;
+          wobd-bridge:targetNode ?bioproject_entity ;
+          wobd-bridge:joinKeyValue ?gse_id ;
+          wobd-bridge:joinKeyType wobd-bridge:GSE_ID .
+    
+    # Query bioproject graph
+    SERVICE <https://frink.example.org/bioproject> {
+        ?bioproject_entity a biolink:Bioproject .
+    }
+}
+```
+
+### Supported Join Key Types
+
+The system automatically recognizes these identifier patterns:
+- **GSE_ID**: GEO Series identifiers (GSE12345)
+- **NCT_ID**: ClinicalTrials.gov identifiers (NCT00012345)
+- **MONDO_ID**: MONDO disease ontology (MONDO:0000001)
+- **HGNC_ID**: HGNC gene identifiers (HGNC:1234)
+- **GO_ID**: Gene Ontology (GO:0008150)
+- **DOID_ID**: Disease Ontology (DOID:4)
+- **HP_ID**: Human Phenotype Ontology (HP:0000001)
+- **CHEBI_ID**: ChEBI (CHEBI:15365)
+- **UniProtKB_ID**: UniProt Knowledgebase (UniProtKB:P12345)
+- **PMID_ID**: PubMed (PMID:12345678)
+- **PMC_ID**: PubMed Central (PMC123456)
+
+Additional patterns are automatically discovered from context files.
+
+### Semantic Matching
+
+The bridge system includes a **semantic mapping layer** that understands when different identifier prefixes refer to the same semantic concept:
+
+**Taxonomies**: NCBITaxon, UniProtKB (taxon), ITIS, GBIF
+- Example: A graph using `NCBITaxon:9606` (human) can link to another using `UniProtKB` taxon IDs
+
+**Genes**: HGNC, Ensembl, MGI, ZFIN, FlyBase, WormBase, RGD
+- Example: A graph using `HGNC:1100` can link to another using `Ensembl:ENSG00000139618`
+
+**Diseases**: MONDO, DOID, OMIM, Orphanet
+- Example: A graph using `MONDO:0000001` can link to another using `DOID:4`
+
+**Publications**: PMID, PMC, DOI
+- Example: A graph using `PMID:12345678` can link to another using `PMC:123456`
+
+When generating linksets, the system will:
+1. **Exact matches**: Link entities with identical identifier prefixes (e.g., both use GSE)
+2. **Semantic matches**: Link entities with semantically related identifiers (e.g., NCBITaxon ↔ UniProtKB taxon)
+
+This enables the NL→SPARQL system to understand that queries about "taxonomies" or "species" can work across graphs even when they use different identifier systems.
+
+### FRINK Registry Graphs
+
+The bridge system supports all graphs in the FRINK registry, including:
+- NDE (NIAID Data Ecosystem)
+- protookn graphs (biobricks-*, biohealth, spoke-okn, etc.)
+- Ontologies (mondo, vbo, ubergraph, etc.)
+
+See [FRINK Registry](https://frink.renci.org/registry/) for the complete list.

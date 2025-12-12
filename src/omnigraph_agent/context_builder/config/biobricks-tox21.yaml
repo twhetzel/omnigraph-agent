@@ -1,0 +1,16 @@
+# BioBricks Tox21 Graph Configuration
+# Toxicology knowledge graph from Tox21 program
+
+graph_id: "biobricks-tox21"
+endpoint: "https://frink.apps.renci.org/biobricks-tox21/sparql"
+repo_filter_property: ""  # Single integrated knowledge graph
+
+# Entity types - will be discovered via introspection
+entity_types: []
+
+# Dimensions - will be discovered via introspection
+dimensions: []
+
+text_blurb: "BioBricks Tox21 knowledge graph contains toxicology data from the Tox21 program. Links chemicals (ChEBI, PubChem), assays, and toxicological outcomes. May share chemical identifiers with NDE."
+
+

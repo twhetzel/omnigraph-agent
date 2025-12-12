@@ -349,6 +349,98 @@
     "datecreated": {
       "coverage": 0.0,
       "approx_distinct_values": 0
+    },
+    "species": {
+      "coverage": 0.7151515151515152,
+      "approx_distinct_values": 40,
+      "top_values": [
+        {
+          "value": "https://www.uniprot.org/taxonomy/9606",
+          "count": 681
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/10090",
+          "count": 186
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/10095",
+          "count": 53
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/9605",
+          "count": 36
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/9544",
+          "count": 28
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/10036",
+          "count": 18
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/9443",
+          "count": 17
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/9669",
+          "count": 17
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/9539",
+          "count": 12
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/10026",
+          "count": 11
+        }
+      ]
+    },
+    "infectiousagent": {
+      "coverage": 0.3212121212121212,
+      "approx_distinct_values": 81,
+      "top_values": [
+        {
+          "value": "https://www.uniprot.org/taxonomy/2901879",
+          "count": 363
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/1986198",
+          "count": 105
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/347537",
+          "count": 30
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/10239",
+          "count": 23
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/186672",
+          "count": 13
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/11709",
+          "count": 11
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/2971083",
+          "count": 10
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/10535",
+          "count": 8
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/1335626",
+          "count": 7
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/2509511",
+          "count": 7
+        }
+      ]
     }
   },
   "stats": {
