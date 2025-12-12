@@ -1,0 +1,16 @@
+# BioBricks ToxCast Graph Configuration
+# Toxicology knowledge graph from ToxCast program
+
+graph_id: "biobricks-toxcast"
+endpoint: "https://frink.apps.renci.org/biobricks-toxcast/sparql"
+repo_filter_property: ""  # Single integrated knowledge graph
+
+# Entity types - will be discovered via introspection
+entity_types: []
+
+# Dimensions - will be discovered via introspection
+dimensions: []
+
+text_blurb: "BioBricks ToxCast knowledge graph contains high-throughput screening data from the ToxCast program. Links chemicals (ChEBI, PubChem), assays, and biological pathways. May share chemical identifiers with NDE."
+
+

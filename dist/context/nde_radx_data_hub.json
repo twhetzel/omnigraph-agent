@@ -429,6 +429,62 @@
           "count": 4
         }
       ]
+    },
+    "species": {
+      "coverage": 1.0,
+      "approx_distinct_values": 1,
+      "top_values": [
+        {
+          "value": "https://www.uniprot.org/taxonomy/9606",
+          "count": 178
+        }
+      ]
+    },
+    "infectiousagent": {
+      "coverage": 1.0,
+      "approx_distinct_values": 13,
+      "top_values": [
+        {
+          "value": "https://www.uniprot.org/taxonomy/2697049",
+          "count": 178
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/2901879",
+          "count": 42
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/694009",
+          "count": 13
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/1986198",
+          "count": 10
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/347537",
+          "count": 5
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/10239",
+          "count": 3
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/11709",
+          "count": 3
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/12814",
+          "count": 3
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/114727",
+          "count": 2
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/12637",
+          "count": 1
+        }
+      ]
     }
   },
   "stats": {

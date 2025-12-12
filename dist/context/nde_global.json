@@ -462,6 +462,100 @@
           "count": 94
         }
       ]
+    },
+    {
+      "name": "schema:species",
+      "coverage": 0.21013171225937183,
+      "approx_distinct_values": 145,
+      "top_values": [
+        {
+          "value": "https://www.uniprot.org/taxonomy/9606",
+          "count": 1647
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/12637",
+          "count": 271
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/2697049",
+          "count": 237
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/10090",
+          "count": 192
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/9605",
+          "count": 80
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/10095",
+          "count": 56
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/9544",
+          "count": 28
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/10036",
+          "count": 18
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/444854",
+          "count": 17
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/9443",
+          "count": 17
+        }
+      ]
+    },
+    {
+      "name": "schema:infectiousAgent",
+      "coverage": 0.18703140830800405,
+      "approx_distinct_values": 195,
+      "top_values": [
+        {
+          "value": "https://www.uniprot.org/taxonomy/2901879",
+          "count": 434
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/2697049",
+          "count": 423
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/12637",
+          "count": 272
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/11709",
+          "count": 219
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/1986198",
+          "count": 132
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/10566",
+          "count": 58
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/3052230",
+          "count": 48
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/489460",
+          "count": 42
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/10239",
+          "count": 41
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/347537",
+          "count": 40
+        }
+      ]
     }
   ],
   "prefixes": {
@@ -472,5 +566,121 @@
     "obo": "http://purl.obolibrary.org/obo/",
     "oboInOwl": "http://www.geneontology.org/formats/oboInOwl#"
   },
-  "text_blurb": "The NDE (National Data Ecosystem) catalog provides a comprehensive view of biomedical datasets with rich metadata including health conditions, authors, dates, and catalog information."
+  "text_blurb": "The NDE (National Data Ecosystem) catalog provides a comprehensive view of biomedical datasets with rich metadata including health conditions, authors, dates, and catalog information.",
+  "identifier_info": {
+    "predicates": [
+      "http://schema.org/sameAs",
+      "http://www.w3.org/2002/07/owl#sameAs",
+      "http://schema.org/identifier"
+    ],
+    "patterns": [
+      {
+        "prefix": "UL",
+        "example": "UL1RR024139",
+        "count": 27,
+        "predicates": [
+          "http://schema.org/identifier"
+        ],
+        "semantically_related_prefixes": []
+      },
+      {
+        "prefix": "HL",
+        "pattern": "^HL\\d+$",
+        "example": "HL072028",
+        "count": 26,
+        "predicates": [
+          "http://schema.org/identifier"
+        ],
+        "semantically_related_prefixes": []
+      },
+      {
+        "prefix": "UC",
+        "example": "UC4DK097835",
+        "count": 12,
+        "predicates": [
+          "http://schema.org/identifier"
+        ],
+        "semantically_related_prefixes": []
+      },
+      {
+        "prefix": "HHSN",
+        "example": "HHSN275201000003I",
+        "count": 8,
+        "predicates": [
+          "http://schema.org/identifier"
+        ],
+        "semantically_related_prefixes": []
+      },
+      {
+        "prefix": "COFA",
+        "example": "COFAR",
+        "count": 2,
+        "predicates": [
+          "http://schema.org/identifier"
+        ],
+        "semantically_related_prefixes": []
+      },
+      {
+        "prefix": "PCI",
+        "example": "PCI-32765",
+        "count": 2,
+        "predicates": [
+          "http://schema.org/identifier"
+        ],
+        "semantically_related_prefixes": []
+      },
+      {
+        "prefix": "SR",
+        "example": "SR57746A",
+        "count": 2,
+        "predicates": [
+          "http://schema.org/identifier"
+        ],
+        "semantically_related_prefixes": []
+      },
+      {
+        "prefix": "UM",
+        "example": "UM1AI114271",
+        "count": 2,
+        "predicates": [
+          "http://schema.org/identifier"
+        ],
+        "semantically_related_prefixes": []
+      },
+      {
+        "prefix": "MONDO",
+        "example": "http://purl.obolibrary.org/obo/MONDO_0100096",
+        "count": 5804,
+        "predicates": [
+          "schema:healthCondition"
+        ],
+        "semantic_category": "disease",
+        "semantically_related_prefixes": [
+          "DOID",
+          "OMIM",
+          "Orphanet"
+        ]
+      },
+      {
+        "prefix": "UniProtKB",
+        "example": "https://www.uniprot.org/taxonomy/9606",
+        "count": 5118,
+        "predicates": [
+          "schema:species",
+          "schema:infectiousAgent"
+        ],
+        "semantic_category": "protein",
+        "semantically_related_prefixes": [
+          "InterPro",
+          "NCBITaxon",
+          "Pfam",
+          "UniProt"
+        ]
+      }
+    ],
+    "top_classes": [
+      "http://schema.org/Dataset",
+      "http://schema.org/DataCatalog"
+    ]
+  }
 }

@@ -1,0 +1,11 @@
+{
+  "bridges": [
+    {
+      "source": "mondo",
+      "target": "nde",
+      "file": "mondo__nde.json"
+    }
+  ],
+  "total_bridges": 1,
+  "total_linksets": 1
+}

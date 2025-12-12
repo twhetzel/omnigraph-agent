@@ -1,0 +1,82 @@
+@prefix wobd-bridge: <https://wobd.org/bridge#> .
+@prefix void: <http://rdfs.org/ns/void#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix nde: <https://nde.example.org/resource/> .
+@prefix frink: <https://frink.example.org/resource/> .
+
+# ============================================================================
+# Dataset Declarations
+# ============================================================================
+
+<https://frink.apps.renci.org/nde/sparql> a void:Dataset ;
+    dct:title "NDE WOBD immunology endpoint" .
+
+<https://frink.example.org/bioproject> a void:Dataset ;
+    dct:title "FRINK Bioproject endpoint" .
+
+# ============================================================================
+# Linkset: NDE → FRINK Bioproject via GSE IDs
+# ============================================================================
+
+<https://wobd.org/bridge/linkset/nde-wobd__frink-bioproject-gse> a void:Linkset ;
+    dct:title "Linkset: NDE WOBD → FRINK Bioproject via GSE IDs" ;
+    void:subjectsTarget <https://frink.apps.renci.org/nde/sparql> ;
+    void:objectsTarget <https://frink.example.org/bioproject> ;
+    void:linkPredicate owl:sameAs .
+
+# Example link assertion: GSE ID match
+<https://wobd.org/bridge/link/nde-study123__frink-bp456-gse> a wobd-bridge:LinkAssertion ;
+    wobd-bridge:sourceNode nde:study_123 ;
+    wobd-bridge:targetNode frink:bioproject_456 ;
+    wobd-bridge:sourceGraph <https://frink.apps.renci.org/nde/sparql> ;
+    wobd-bridge:targetGraph <https://frink.example.org/bioproject> ;
+    wobd-bridge:joinKeyType wobd-bridge:GSE_ID ;
+    wobd-bridge:joinKeyValue "GSE12345" ;
+    wobd-bridge:confidence 1.0 ;
+    wobd-bridge:inLinkset <https://wobd.org/bridge/linkset/nde-wobd__frink-bioproject-gse> .
+
+# ============================================================================
+# Linkset: NDE → FRINK Bioproject via MONDO IDs
+# ============================================================================
+
+<https://wobd.org/bridge/linkset/nde-wobd__frink-bioproject-mondo> a void:Linkset ;
+    dct:title "Linkset: NDE WOBD → FRINK Bioproject via MONDO IDs" ;
+    void:subjectsTarget <https://frink.apps.renci.org/nde/sparql> ;
+    void:objectsTarget <https://frink.example.org/bioproject> ;
+    void:linkPredicate owl:sameAs .
+
+# Example link assertion: MONDO ID match
+<https://wobd.org/bridge/link/nde-study789__frink-bp101-mondo> a wobd-bridge:LinkAssertion ;
+    wobd-bridge:sourceNode nde:study_789 ;
+    wobd-bridge:targetNode frink:bioproject_101 ;
+    wobd-bridge:sourceGraph <https://frink.apps.renci.org/nde/sparql> ;
+    wobd-bridge:targetGraph <https://frink.example.org/bioproject> ;
+    wobd-bridge:joinKeyType wobd-bridge:MONDO_ID ;
+    wobd-bridge:joinKeyValue "MONDO:0000001" ;
+    wobd-bridge:confidence 1.0 ;
+    wobd-bridge:inLinkset <https://wobd.org/bridge/linkset/nde-wobd__frink-bioproject-mondo> .
+
+# ============================================================================
+# Linkset: NDE → FRINK Bioproject via NCT IDs
+# ============================================================================
+
+<https://wobd.org/bridge/linkset/nde-wobd__frink-bioproject-nct> a void:Linkset ;
+    dct:title "Linkset: NDE WOBD → FRINK Bioproject via NCT IDs" ;
+    void:subjectsTarget <https://frink.apps.renci.org/nde/sparql> ;
+    void:objectsTarget <https://frink.example.org/bioproject> ;
+    void:linkPredicate owl:sameAs .
+
+# Example link assertion: NCT ID match with lower confidence (fuzzy match)
+<https://wobd.org/bridge/link/nde-study456__frink-bp789-nct> a wobd-bridge:LinkAssertion ;
+    wobd-bridge:sourceNode nde:study_456 ;
+    wobd-bridge:targetNode frink:bioproject_789 ;
+    wobd-bridge:sourceGraph <https://frink.apps.renci.org/nde/sparql> ;
+    wobd-bridge:targetGraph <https://frink.example.org/bioproject> ;
+    wobd-bridge:joinKeyType wobd-bridge:NCT_ID ;
+    wobd-bridge:joinKeyValue "NCT00012345" ;
+    wobd-bridge:confidence 0.9 ;
+    wobd-bridge:inLinkset <https://wobd.org/bridge/linkset/nde-wobd__frink-bioproject-nct> .
+
+

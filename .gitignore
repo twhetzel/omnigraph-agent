@@ -15,6 +15,9 @@ dist/*
 !dist/context/
 dist/context/*
 !dist/context/*.json
+# Exception: track dist/context/bridge/ for bridge context JSON files
+!dist/context/bridge/
+!dist/context/bridge/*.json
 downloads/
 eggs/
 .eggs/

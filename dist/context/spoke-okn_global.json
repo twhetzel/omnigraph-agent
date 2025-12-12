@@ -1,0 +1,64 @@
+{
+  "graph_id": "spoke-okn",
+  "endpoint": "https://frink.apps.renci.org/spoke-okn/sparql",
+  "entity_types": [
+    "https://w3id.org/biolink/vocab/Gene",
+    "https://w3id.org/biolink/vocab/Disease",
+    "https://w3id.org/biolink/vocab/Drug",
+    "https://w3id.org/biolink/vocab/Pathway",
+    "https://w3id.org/biolink/vocab/Phenotype",
+    "https://w3id.org/biolink/vocab/OrganismTaxon"
+  ],
+  "dimensions": [],
+  "prefixes": {
+    "schema": "http://schema.org/",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "obo": "http://purl.obolibrary.org/obo/",
+    "oboInOwl": "http://www.geneontology.org/formats/oboInOwl#"
+  },
+  "text_blurb": "SPOKE (Scalable Precision medicine Oriented Knowledge Engine) is an integrated knowledge graph connecting genes, diseases, drugs, pathways, and phenotypes for precision medicine applications.",
+  "query_hints": {
+    "reasoning_mode": "no entailment; use explicit patterns and property paths (e.g., rdfs:subClassOf*)",
+    "exclude_obsoletes": true,
+    "label_property": "rdfs:label",
+    "definition_property": "IAO:0000115",
+    "default_behaviors": {
+      "consider_descendants": true,
+      "sort_results": true,
+      "use_distinct": true
+    },
+    "output_rules": {
+      "extension_mode_token": "EXTENSION_MODE",
+      "extension_mode_format": "plain_text_no_backticks",
+      "normal_mode_format": "fenced_code_block_sparql"
+    }
+  },
+  "identifier_info": {
+    "predicates": [],
+    "patterns": [
+      {
+        "prefix": "DOID",
+        "example": "http://purl.obolibrary.org/obo/DOID_0050567",
+        "count": 180,
+        "predicates": [
+          "ENTITY_IRI"
+        ],
+        "semantic_category": "disease",
+        "semantically_related_prefixes": [
+          "MONDO",
+          "Orphanet",
+          "OMIM"
+        ]
+      }
+    ],
+    "top_classes": [
+      "https://w3id.org/biolink/vocab/Gene",
+      "https://w3id.org/biolink/vocab/Disease",
+      "https://w3id.org/biolink/vocab/Drug",
+      "https://w3id.org/biolink/vocab/Pathway",
+      "https://w3id.org/biolink/vocab/Phenotype"
+    ]
+  }
+}
