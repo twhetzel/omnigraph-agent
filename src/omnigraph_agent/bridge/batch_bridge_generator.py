@@ -3,8 +3,12 @@
 import json
 from pathlib import Path
 from typing import List, Dict, Tuple
+from rdflib import Namespace
+from rdflib.namespace import RDF
 from .graph_registry import GraphRegistry
 from .linkset_builder import LinksetBuilder
+
+WOBDBRIDGE = Namespace("https://wobd.org/bridge#")
 
 
 class BatchBridgeGenerator:
@@ -87,8 +91,8 @@ class BatchBridgeGenerator:
                         
                         linkset_graph.serialize(destination=str(linkset_path), format='turtle')
                         
-                        # Count links
-                        link_count = len(list(linkset_graph.triples((None, None, None)))) // 9  # Approximate
+                        # Count links by querying for LinkAssertion instances
+                        link_count = len(list(linkset_graph.triples((None, RDF.type, WOBDBRIDGE.LinkAssertion))))
                         
                         if verbose:
                             print(f"    Generated {linkset_filename} ({link_count} links)")

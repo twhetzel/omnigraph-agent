@@ -15,7 +15,7 @@ uv venv
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 
 # Install the package in editable mode
-uv pip install -e .
+uv pip install -e ".[dev]"
 ```
 
 ### Using pip (Alternative)
@@ -406,3 +406,47 @@ The bridge system supports all graphs in the FRINK registry, including:
 - Ontologies (mondo, vbo, ubergraph, etc.)
 
 See [FRINK Registry](https://frink.renci.org/registry/) for the complete list.
+
+## Testing
+
+The project includes a test suite to verify the bridge graph system functionality and fixes. Tests are located in the `tests/` directory and use `pytest`.
+
+### Running Tests
+
+First, install the development dependencies:
+
+```bash
+# Install dev dependencies (includes pytest)
+pip install -e ".[dev]"
+# or with uv
+uv pip install -e ".[dev]"
+```
+
+Then run the tests:
+
+```bash
+# Run all tests
+pytest
+
+# Run with verbose output
+pytest -v
+
+# Run a specific test file
+pytest tests/test_bridge_fixes.py
+
+# Run a specific test class
+pytest tests/test_bridge_fixes.py::TestPMCPattern
+
+# Run a specific test
+pytest tests/test_bridge_fixes.py::TestPMCPattern::test_pmc_pattern_matches_without_colon
+```
+
+### Test Coverage
+
+The test suite includes:
+- **PMC Pattern Tests**: Verifies PMC ID regex patterns work correctly
+- **Semantic Category Tests**: Verifies identifier semantic categorization (e.g., UniProtKB as TAXONOMY)
+- **Regex Pattern Tests**: Verifies entity IRI regex handles special characters
+- **Namespace Tests**: Verifies proper RDF namespace usage in bridge context generator
+- **Link Count Tests**: Verifies accurate link counting using RDF queries
+- **Identifier Pattern Extraction Tests**: Verifies pattern extraction from identifier values

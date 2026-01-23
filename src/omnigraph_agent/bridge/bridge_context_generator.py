@@ -3,13 +3,13 @@
 import json
 from pathlib import Path
 from typing import Dict, List, Optional
-from rdflib import Graph
-from rdflib.namespace import RDF
+from rdflib import Graph, Namespace
+from rdflib.namespace import RDF, VOID
 
 from .bridge_context_schema import BridgeContext, LinksetSummary
 from .graph_registry import GraphRegistry
 
-WOBDBRIDGE = "https://wobd.org/bridge#"
+WOBDBRIDGE = Namespace("https://wobd.org/bridge#")
 
 
 class BridgeContextGenerator:
@@ -69,7 +69,7 @@ class BridgeContextGenerator:
                 
                 # Find linkset IRI (subject of type void:Linkset)
                 for s, p, o in g.triples((None, RDF.type, None)):
-                    if str(o).endswith("#Linkset") or "void:Linkset" in str(o):
+                    if o == VOID.Linkset:
                         linkset_iri = str(s)
                         break
                 
@@ -81,19 +81,17 @@ class BridgeContextGenerator:
                 # Find all LinkAssertion instances (subjects with type wobd-bridge:LinkAssertion)
                 
                 link_assertions = set()
-                for s, p, o in g.triples((None, RDF.type, None)):
-                    if str(o) == f"{WOBDBRIDGE}LinkAssertion" or str(o).endswith("#LinkAssertion"):
-                        link_assertions.add(s)
-                        link_count += 1
+                for s, p, o in g.triples((None, RDF.type, WOBDBRIDGE.LinkAssertion)):
+                    link_assertions.add(s)
+                    link_count += 1
                 
                 # Collect confidences from link assertions
                 for link_assertion in link_assertions:
-                    for s, p, o in g.triples((link_assertion, None, None)):
-                        if str(p).endswith("#confidence") or "confidence" in str(p):
-                            try:
-                                confidences.append(float(str(o)))
-                            except (ValueError, TypeError):
-                                pass
+                    for s, p, o in g.triples((link_assertion, WOBDBRIDGE.confidence, None)):
+                        try:
+                            confidences.append(float(str(o)))
+                        except (ValueError, TypeError):
+                            pass
                 
                 # Extract join key type from filename
                 filename = linkset_file.stem

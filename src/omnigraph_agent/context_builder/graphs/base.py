@@ -664,7 +664,7 @@ class BaseGraph(ABC):
             (r'^(CHEBI):(\d+)$', 'CHEBI', r'^CHEBI:\d+$'),
             (r'^(UniProtKB):([A-Z0-9]+)$', 'UniProtKB', r'^UniProtKB:[A-Z0-9]+$'),
             (r'^(PMID):(\d+)$', 'PMID', r'^PMID:\d+$'),
-            (r'^(PMC):(\d+)$', 'PMC', r'^PMC\d+$'),
+            (r'^(PMC)(\d+)$', 'PMC', r'^PMC\d+$'),
             # Generic patterns
             (r'^([A-Z]{2,}):(\d+)$', None, None),  # Two+ letter prefix with colon
             (r'^([A-Z]{2,})(\d+)$', None, None),   # Two+ letter prefix without colon

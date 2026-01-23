@@ -248,7 +248,8 @@ class LinksetBuilder:
             # Extract identifier from the IRI itself
             import re
             # Pattern to extract identifier from IRI (e.g., MONDO_0000001 from http://purl.obolibrary.org/obo/MONDO_0000001)
-            pattern_filter = f'FILTER (REGEX(STR(?entity), "{query_prefix}[:_]\\\\d+") || REGEX(STR(?entity), "{query_prefix}[:_][A-Z0-9]+"))'
+            # Use .+ to match any characters in the identifier part (e.g., ICDO:9740/1)
+            pattern_filter = f'FILTER (REGEX(STR(?entity), "{query_prefix}[:_].+"))'
             
             query = f"""
             SELECT DISTINCT ?entity
@@ -373,7 +374,8 @@ class LinksetBuilder:
             # Extract identifier from the IRI itself
             import re
             # Pattern to extract identifier from IRI (e.g., MONDO_0000001 from http://purl.obolibrary.org/obo/MONDO_0000001)
-            pattern_filter = f'FILTER (REGEX(STR(?entity), "{query_prefix}[:_]\\\\d+") || REGEX(STR(?entity), "{query_prefix}[:_][A-Z0-9]+"))'
+            # Use .+ to match any characters in the identifier part (e.g., ICDO:9740/1)
+            pattern_filter = f'FILTER (REGEX(STR(?entity), "{query_prefix}[:_].+"))'
             
             query = f"""
             SELECT DISTINCT ?entity
