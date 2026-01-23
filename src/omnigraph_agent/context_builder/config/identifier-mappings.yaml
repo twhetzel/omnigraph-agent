@@ -1,0 +1,17 @@
+# Identifier Mappings Graph Configuration
+# Cross-reference mappings between different identifier systems
+
+graph_id: "identifier-mappings"
+endpoint: "https://frink.apps.renci.org/identifier-mappings/sparql"
+repo_filter_property: ""  # Single integrated knowledge graph
+
+# Entity types - will be discovered via introspection
+# This graph likely contains mappings between different ID systems
+entity_types: []
+
+# Dimensions - will be discovered via introspection
+dimensions: []
+
+text_blurb: "Identifier Mappings graph provides cross-references between different identifier systems (e.g., HGNC to Ensembl, MONDO to DOID, UniProt to NCBI). Essential for linking entities across graphs."
+
+

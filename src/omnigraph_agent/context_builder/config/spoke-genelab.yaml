@@ -1,0 +1,25 @@
+# SPOKE GeneLab Graph Configuration
+# SPOKE knowledge graph for GeneLab (NASA's omics data repository)
+
+graph_id: "spoke-genelab"
+endpoint: "https://frink.apps.renci.org/spoke-genelab/sparql"
+repo_filter_property: ""  # Single integrated knowledge graph
+
+# Entity types - SPOKE uses biolink model
+entity_types:
+  - "https://w3id.org/biolink/vocab/Gene"
+  - "https://w3id.org/biolink/vocab/Disease"
+  - "https://w3id.org/biolink/vocab/Drug"
+  - "https://w3id.org/biolink/vocab/Pathway"
+  - "https://w3id.org/biolink/vocab/Phenotype"
+  - "https://w3id.org/biolink/vocab/OrganismTaxon"
+
+# Dimensions - SPOKE-GeneLab uses custom property names
+# taxonomy contains NCBITaxon identifiers
+dimensions:
+  - name: "taxonomy"
+    property: "https://purl.org/okn/frink/kg/spoke-genelab/schema/taxonomy"
+    filter: ""
+
+text_blurb: "SPOKE GeneLab integrates GeneLab omics data with the SPOKE knowledge graph. Connects space biology experiments with genes, pathways, and phenotypes. May share GSE, GEO identifiers with NDE."
+

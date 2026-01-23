@@ -45,5 +45,35 @@
       "extension_mode_format": "plain_text_no_backticks",
       "normal_mode_format": "fenced_code_block_sparql"
     }
+  },
+  "identifier_info": {
+    "predicates": [
+      "http://www.geneontology.org/formats/oboInOwl#hasDbXref"
+    ],
+    "patterns": [
+      {
+        "prefix": "LBO",
+        "pattern": "^LBO:\\d+$",
+        "example": "LBO:0001042",
+        "count": 239,
+        "predicates": [
+          "http://www.geneontology.org/formats/oboInOwl#hasDbXref"
+        ],
+        "semantically_related_prefixes": []
+      },
+      {
+        "prefix": "FCI",
+        "pattern": "^FCI:\\d+$",
+        "example": "FCI:97",
+        "count": 183,
+        "predicates": [
+          "http://www.geneontology.org/formats/oboInOwl#hasDbXref"
+        ],
+        "semantically_related_prefixes": []
+      }
+    ],
+    "top_classes": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ]
   }
 }

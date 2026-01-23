@@ -1,0 +1,147 @@
+@prefix wobd-bridge: <https://wobd.org/bridge#> .
+@prefix void: <http://rdfs.org/ns/void#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# ============================================================================
+# Classes
+# ============================================================================
+
+wobd-bridge:LinkAssertion a owl:Class ;
+    rdfs:label "Cross-graph link assertion" ;
+    rdfs:comment "A single assertion that relates a source node in one dataset/graph to a target node in another dataset/graph." .
+
+wobd-bridge:JoinKeyType a owl:Class ;
+    rdfs:label "Join key type" ;
+    rdfs:comment "A category of identifier or ontology used to join entities across graphs, e.g., GSE ID, NCT ID, MONDO disease ID, HGNC gene ID." .
+
+wobd-bridge:BridgeGraph a owl:Class ;
+    rdfs:subClassOf void:Dataset ;
+    rdfs:label "Bridge/linkset graph" ;
+    rdfs:comment "A dataset that stores WOBD/FRINK linksets and link assertions." .
+
+# ============================================================================
+# Properties
+# ============================================================================
+
+wobd-bridge:sourceNode a owl:ObjectProperty ;
+    rdfs:label "source node" ;
+    rdfs:comment "The node in the source graph/dataset participating in the link." ;
+    rdfs:domain wobd-bridge:LinkAssertion ;
+    rdfs:range rdfs:Resource .
+
+wobd-bridge:targetNode a owl:ObjectProperty ;
+    rdfs:label "target node" ;
+    rdfs:comment "The node in the target graph/dataset participating in the link." ;
+    rdfs:domain wobd-bridge:LinkAssertion ;
+    rdfs:range rdfs:Resource .
+
+wobd-bridge:sourceGraph a owl:ObjectProperty ;
+    rdfs:label "source graph" ;
+    rdfs:comment "The logical source graph or dataset (often corresponding to a SPARQL endpoint) for the source node." ;
+    rdfs:domain wobd-bridge:LinkAssertion ;
+    rdfs:range void:Dataset .
+
+wobd-bridge:targetGraph a owl:ObjectProperty ;
+    rdfs:label "target graph" ;
+    rdfs:comment "The logical target graph or dataset (often corresponding to a SPARQL endpoint) for the target node." ;
+    rdfs:domain wobd-bridge:LinkAssertion ;
+    rdfs:range void:Dataset .
+
+wobd-bridge:joinKeyType a owl:ObjectProperty ;
+    rdfs:label "join key type" ;
+    rdfs:comment "The type of identifier or ontology used as the basis for this link (e.g., GSE ID, NCT ID, MONDO ID)." ;
+    rdfs:domain wobd-bridge:LinkAssertion ;
+    rdfs:range wobd-bridge:JoinKeyType .
+
+wobd-bridge:joinKeyValue a owl:DatatypeProperty ;
+    rdfs:label "join key value" ;
+    rdfs:comment "The normalized value of the identifier used as join key (e.g., 'GSE12345', 'NCT00012345')." ;
+    rdfs:domain wobd-bridge:LinkAssertion ;
+    rdfs:range xsd:string .
+
+wobd-bridge:confidence a owl:DatatypeProperty ;
+    rdfs:label "confidence score" ;
+    rdfs:comment "Numeric confidence score for the link, e.g. 1.0 for exact ID match, or lower for fuzzy/mapped matches." ;
+    rdfs:domain wobd-bridge:LinkAssertion ;
+    rdfs:range xsd:double .
+
+wobd-bridge:linkProvenance a owl:ObjectProperty ;
+    rdfs:label "link provenance activity" ;
+    rdfs:comment "A PROV activity that describes how this link was generated (e.g., a specific pipeline run)." ;
+    rdfs:domain wobd-bridge:LinkAssertion ;
+    rdfs:range prov:Activity .
+
+wobd-bridge:inLinkset a owl:ObjectProperty ;
+    rdfs:label "in linkset" ;
+    rdfs:comment "Associates a link assertion with the linkset it belongs to." ;
+    rdfs:domain wobd-bridge:LinkAssertion ;
+    rdfs:range void:Linkset .
+
+# ============================================================================
+# SKOS Concept Scheme for Join Key Types
+# ============================================================================
+
+wobd-bridge:JoinKeyScheme a skos:ConceptScheme ;
+    skos:prefLabel "WOBD join key scheme" .
+
+wobd-bridge:GSE_ID a wobd-bridge:JoinKeyType, skos:Concept ;
+    skos:inScheme wobd-bridge:JoinKeyScheme ;
+    skos:prefLabel "GEO Series (GSE) ID" ;
+    rdfs:comment "NCBI GEO Series identifier (e.g., GSE12345)" .
+
+wobd-bridge:NCT_ID a wobd-bridge:JoinKeyType, skos:Concept ;
+    skos:inScheme wobd-bridge:JoinKeyScheme ;
+    skos:prefLabel "ClinicalTrials.gov NCT ID" ;
+    rdfs:comment "ClinicalTrials.gov identifier (e.g., NCT00012345)" .
+
+wobd-bridge:MONDO_ID a wobd-bridge:JoinKeyType, skos:Concept ;
+    skos:inScheme wobd-bridge:JoinKeyScheme ;
+    skos:prefLabel "MONDO disease ID" ;
+    rdfs:comment "Monarch Disease Ontology identifier (e.g., MONDO:0000001)" .
+
+wobd-bridge:HGNC_ID a wobd-bridge:JoinKeyType, skos:Concept ;
+    skos:inScheme wobd-bridge:JoinKeyScheme ;
+    skos:prefLabel "HGNC gene ID" ;
+    rdfs:comment "HUGO Gene Nomenclature Committee identifier (e.g., HGNC:1234)" .
+
+wobd-bridge:GO_ID a wobd-bridge:JoinKeyType, skos:Concept ;
+    skos:inScheme wobd-bridge:JoinKeyScheme ;
+    skos:prefLabel "Gene Ontology ID" ;
+    rdfs:comment "Gene Ontology identifier (e.g., GO:0008150)" .
+
+wobd-bridge:DOID_ID a wobd-bridge:JoinKeyType, skos:Concept ;
+    skos:inScheme wobd-bridge:JoinKeyScheme ;
+    skos:prefLabel "Disease Ontology ID" ;
+    rdfs:comment "Disease Ontology identifier (e.g., DOID:4)" .
+
+wobd-bridge:HP_ID a wobd-bridge:JoinKeyType, skos:Concept ;
+    skos:inScheme wobd-bridge:JoinKeyScheme ;
+    skos:prefLabel "Human Phenotype Ontology ID" ;
+    rdfs:comment "Human Phenotype Ontology identifier (e.g., HP:0000001)" .
+
+wobd-bridge:CHEBI_ID a wobd-bridge:JoinKeyType, skos:Concept ;
+    skos:inScheme wobd-bridge:JoinKeyScheme ;
+    skos:prefLabel "ChEBI ID" ;
+    rdfs:comment "Chemical Entities of Biological Interest identifier (e.g., CHEBI:15365)" .
+
+wobd-bridge:UniProtKB_ID a wobd-bridge:JoinKeyType, skos:Concept ;
+    skos:inScheme wobd-bridge:JoinKeyScheme ;
+    skos:prefLabel "UniProtKB ID" ;
+    rdfs:comment "UniProt Knowledgebase identifier (e.g., UniProtKB:P12345)" .
+
+wobd-bridge:PMID_ID a wobd-bridge:JoinKeyType, skos:Concept ;
+    skos:inScheme wobd-bridge:JoinKeyScheme ;
+    skos:prefLabel "PubMed ID" ;
+    rdfs:comment "PubMed identifier (e.g., PMID:12345678)" .
+
+wobd-bridge:PMC_ID a wobd-bridge:JoinKeyType, skos:Concept ;
+    skos:inScheme wobd-bridge:JoinKeyScheme ;
+    skos:prefLabel "PubMed Central ID" ;
+    rdfs:comment "PubMed Central identifier (e.g., PMC123456)" .
+
+

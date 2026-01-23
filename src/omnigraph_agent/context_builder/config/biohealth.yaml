@@ -1,0 +1,16 @@
+# BioHealth Graph Configuration
+# Biomedical health knowledge graph
+
+graph_id: "biohealth"
+endpoint: "https://frink.apps.renci.org/biohealth/sparql"
+repo_filter_property: ""  # Single integrated knowledge graph
+
+# Entity types - will be discovered via introspection
+entity_types: []
+
+# Dimensions - will be discovered via introspection
+dimensions: []
+
+text_blurb: "BioHealth knowledge graph integrates biomedical data including genes, diseases, drugs, and health outcomes. Likely shares identifiers with NDE (MONDO, HGNC, GSE, etc.)."
+
+

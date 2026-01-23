@@ -63,5 +63,87 @@
       "extension_mode_format": "plain_text_no_backticks",
       "normal_mode_format": "fenced_code_block_sparql"
     }
+  },
+  "identifier_info": {
+    "predicates": [
+      "http://www.geneontology.org/formats/oboInOwl#hasDbXref",
+      "http://www.w3.org/2004/02/skos/core#exactMatch",
+      "http://www.w3.org/2004/02/skos/core#closeMatch"
+    ],
+    "patterns": [
+      {
+        "prefix": "ICD",
+        "example": "ICD9:759.89",
+        "count": 2177,
+        "predicates": [
+          "http://www.geneontology.org/formats/oboInOwl#hasDbXref"
+        ],
+        "semantically_related_prefixes": []
+      },
+      {
+        "prefix": "NANDO",
+        "pattern": "^NANDO:\\d+$",
+        "example": "NANDO:2100004",
+        "count": 30,
+        "predicates": [
+          "http://www.geneontology.org/formats/oboInOwl#hasDbXref"
+        ],
+        "semantically_related_prefixes": []
+      },
+      {
+        "prefix": "ICDO",
+        "example": "ICDO:9740/1",
+        "count": 17,
+        "predicates": [
+          "http://www.geneontology.org/formats/oboInOwl#hasDbXref"
+        ],
+        "semantically_related_prefixes": []
+      },
+      {
+        "prefix": "SCTID",
+        "pattern": "^SCTID:\\d+$",
+        "example": "SCTID:373168002",
+        "count": 15,
+        "predicates": [
+          "http://www.geneontology.org/formats/oboInOwl#hasDbXref"
+        ],
+        "semantically_related_prefixes": []
+      },
+      {
+        "prefix": "MESH",
+        "example": "MESH:D014715",
+        "count": 12,
+        "predicates": [
+          "http://www.geneontology.org/formats/oboInOwl#hasDbXref"
+        ],
+        "semantically_related_prefixes": []
+      },
+      {
+        "prefix": "NCIT",
+        "example": "NCIT:C97096",
+        "count": 3,
+        "predicates": [
+          "http://www.geneontology.org/formats/oboInOwl#hasDbXref"
+        ],
+        "semantically_related_prefixes": []
+      },
+      {
+        "prefix": "MONDO",
+        "example": "http://purl.obolibrary.org/obo/MONDO_0000001",
+        "count": 1000,
+        "predicates": [
+          "ENTITY_IRI"
+        ],
+        "semantic_category": "disease",
+        "semantically_related_prefixes": [
+          "OMIM",
+          "DOID",
+          "Orphanet"
+        ]
+      }
+    ],
+    "top_classes": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ]
   }
 }

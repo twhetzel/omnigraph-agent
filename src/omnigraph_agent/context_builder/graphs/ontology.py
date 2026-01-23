@@ -19,6 +19,300 @@ class OntologyGraph(BaseGraph):
         """
         return []
     
+    def introspect_identifier_predicates(self, limit: int = 20) -> List[Dict[str, Any]]:
+        """
+        Introspect to discover predicates commonly used for identifiers in ontologies.
+        
+        Optimized for ontologies by:
+        1. Only querying known identifier properties (no regex scan)
+        2. Using smaller sample sizes
+        3. Leveraging named graph/namespace filtering
+        
+        Returns list of dicts with 'property', 'count', and 'sample_value' keys.
+        """
+        entity_filter = self._get_entity_type_filter()
+        graph_clause = self._get_graph_clause()
+        namespace_filter = self._get_namespace_filter()
+        
+        # For ontologies, focus on known identifier properties only
+        # This avoids the expensive regex scan that causes timeouts
+        known_id_properties = [
+            ("http://www.geneontology.org/formats/oboInOwl#hasDbXref", "oboInOwl:hasDbXref"),
+            ("http://www.w3.org/2002/07/owl#sameAs", "owl:sameAs"),
+            ("http://www.w3.org/2004/02/skos/core#exactMatch", "skos:exactMatch"),
+            ("http://www.w3.org/2004/02/skos/core#closeMatch", "skos:closeMatch"),
+            ("http://schema.org/identifier", "schema:identifier"),
+            ("http://purl.org/dc/terms/identifier", "dct:identifier"),
+        ]
+        
+        # Build UNION of known properties
+        union_parts = []
+        for full_iri, prefix_name in known_id_properties:
+            union_parts.append(f"{{ ?entity <{full_iri}> ?value . BIND(<{full_iri}> as ?property) }}")
+        
+        property_union = " UNION ".join(union_parts)
+        
+        query = f"""
+        PREFIX oboInOwl: <http://www.geneontology.org/formats/oboInOwl#>
+        PREFIX owl: <http://www.w3.org/2002/07/owl#>
+        PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+        PREFIX schema: <http://schema.org/>
+        PREFIX dct: <http://purl.org/dc/terms/>
+        {graph_clause}
+        SELECT ?property (COUNT(DISTINCT ?entity) as ?count) (SAMPLE(?value) as ?sample_value)
+        WHERE {{
+            {entity_filter}
+            {namespace_filter}
+            {{
+                {property_union}
+            }}
+            FILTER (isLiteral(?value) || isIRI(?value))
+        }}
+        GROUP BY ?property
+        ORDER BY DESC(?count)
+        LIMIT {limit}
+        """
+        
+        try:
+            self.sparql.setQuery(query)
+            results = self.sparql.query().convert()
+            
+            identifier_predicates = []
+            for binding in results['results']['bindings']:
+                prop_uri = binding['property']['value']
+                count = int(binding['count']['value'])
+                sample_value = binding.get('sample_value', {}).get('value', '')
+                
+                identifier_predicates.append({
+                    'property': prop_uri,
+                    'count': count,
+                    'sample_value': sample_value
+                })
+            
+            # For ontologies, also extract identifier patterns from entity IRIs themselves
+            # (e.g., MONDO:0000001 in http://purl.obolibrary.org/obo/MONDO_0000001)
+            # This is important because ontology classes are often identified by their IRI
+            entity_iri_patterns = self._extract_identifier_patterns_from_entity_iris()
+            if entity_iri_patterns:
+                # Add entity IRI patterns to the list
+                for pattern in entity_iri_patterns:
+                    # Check if we already have this predicate in the list
+                    existing = next((p for p in identifier_predicates if p['property'] == pattern.get('property')), None)
+                    if not existing:
+                        identifier_predicates.append(pattern)
+            
+            return identifier_predicates
+        except Exception as e:
+            # If query fails, return empty list rather than raising
+            # This allows context building to continue without identifier info
+            print(f"    Warning: Identifier introspection failed: {e}")
+            return []
+    
+    def _extract_identifier_patterns_from_entity_iris(self) -> List[Dict[str, Any]]:
+        """
+        Extract identifier patterns from entity IRIs themselves.
+        
+        For ontologies, the primary identifier is often in the entity IRI
+        (e.g., MONDO:0000001 in http://purl.obolibrary.org/obo/MONDO_0000001).
+        
+        Returns:
+            List of dicts with 'property', 'count', 'sample_value' keys
+            where 'property' is a special marker like "ENTITY_IRI"
+        """
+        entity_filter = self._get_entity_type_filter()
+        graph_clause = self._get_graph_clause()
+        namespace_filter = self._get_namespace_filter()
+        
+        # Sample entity IRIs to extract identifier patterns
+        query = f"""
+        {graph_clause}
+        SELECT ?entity (COUNT(*) as ?count)
+        WHERE {{
+            {entity_filter}
+            {namespace_filter}
+        }}
+        GROUP BY ?entity
+        ORDER BY DESC(?count)
+        LIMIT 1000
+        """
+        
+        try:
+            self.sparql.setQuery(query)
+            results = self.sparql.query().convert()
+            
+            # Extract identifier patterns from entity IRIs
+            import re
+            pattern_counts: Dict[str, Dict[str, Any]] = {}
+            
+            for binding in results['results']['bindings']:
+                entity_iri = binding['entity']['value']
+                count = int(binding['count']['value'])
+                
+                # Extract identifier patterns from IRI
+                # Patterns to check (same as extract_identifier_patterns)
+                patterns = [
+                    (r'MONDO[:_](\d+)', 'MONDO'),
+                    (r'GO[:_](\d+)', 'GO'),
+                    (r'DOID[:_](\d+)', 'DOID'),
+                    (r'HP[:_](\d+)', 'HP'),
+                    (r'CHEBI[:_](\d+)', 'CHEBI'),
+                    (r'VBO[:_](\d+)', 'VBO'),
+                    (r'NCBITaxon[:_](\d+)', 'NCBITaxon'),
+                    (r'UniProtKB[:_](\w+)', 'UniProtKB'),
+                    (r'HGNC[:_](\d+)', 'HGNC'),
+                ]
+                
+                for pattern_regex, prefix in patterns:
+                    match = re.search(pattern_regex, entity_iri)
+                    if match:
+                        if prefix not in pattern_counts:
+                            pattern_counts[prefix] = {
+                                'property': 'ENTITY_IRI',  # Special marker
+                                'count': 0,
+                                'sample_value': entity_iri
+                            }
+                        pattern_counts[prefix]['count'] += count
+                        break
+            
+            # Convert to list format
+            entity_patterns = []
+            for prefix, info in pattern_counts.items():
+                entity_patterns.append({
+                    'property': f'ENTITY_IRI:{prefix}',  # Special property name
+                    'count': info['count'],
+                    'sample_value': info['sample_value']
+                })
+            
+            return entity_patterns
+            
+        except Exception as e:
+            # Silently fail - this is optional
+            return []
+    
+    def extract_identifier_patterns(self, predicate: str, limit: int = 500) -> List[Dict[str, Any]]:
+        """
+        Extract identifier patterns from values of a given predicate.
+        
+        Optimized for ontologies by:
+        1. Using smaller limits (default 500 instead of 1000)
+        2. Leveraging named graph/namespace filtering
+        3. Using more efficient queries
+        
+        Args:
+            predicate: Full IRI of the identifier predicate
+            limit: Maximum number of values to sample (default 500 for ontologies)
+            
+        Returns:
+            List of dicts with 'prefix', 'pattern', 'example', 'count' keys
+        """
+        entity_filter = self._get_entity_type_filter()
+        graph_clause = self._get_graph_clause()
+        namespace_filter = self._get_namespace_filter()
+        predicate_expanded = self._expand_property(predicate)
+        
+        # Use smaller limit for ontologies to avoid timeouts
+        # Also add namespace filter to limit scope
+        query = f"""
+        {graph_clause}
+        SELECT ?value (COUNT(DISTINCT ?entity) as ?count)
+        WHERE {{
+            {entity_filter}
+            {namespace_filter}
+            ?entity {predicate_expanded} ?value .
+            FILTER (isLiteral(?value) || isIRI(?value))
+        }}
+        GROUP BY ?value
+        ORDER BY DESC(?count)
+        LIMIT {min(limit, 500)}  # Cap at 500 for ontologies
+        """
+        
+        try:
+            self.sparql.setQuery(query)
+            results = self.sparql.query().convert()
+            
+            # Pattern extraction regexes (same as base class)
+            import re
+            patterns = [
+                (r'^(GSE)(\d+)$', 'GSE', r'^GSE\d+$'),
+                (r'^(NCT)(\d+)$', 'NCT', r'^NCT\d+$'),
+                (r'^(MONDO):(\d+)$', 'MONDO', r'^MONDO:\d+$'),
+                (r'^.*MONDO[:_](\d+)$', 'MONDO', r'^MONDO:\d+$'),  # MONDO in IRI
+                (r'^(HGNC):(\d+)$', 'HGNC', r'^HGNC:\d+$'),
+                (r'^(GO):(\d+)$', 'GO', r'^GO:\d+$'),
+                (r'^(DOID):(\d+)$', 'DOID', r'^DOID:\d+$'),
+                (r'^(HP):(\d+)$', 'HP', r'^HP:\d+$'),
+                (r'^(CHEBI):(\d+)$', 'CHEBI', r'^CHEBI:\d+$'),
+                (r'^(UniProtKB):([A-Z0-9]+)$', 'UniProtKB', r'^UniProtKB:[A-Z0-9]+$'),
+                (r'^(PMID):(\d+)$', 'PMID', r'^PMID:\d+$'),
+                (r'^(PMC)(\d+)$', 'PMC', r'^PMC\d+$'),
+                (r'^(NCBITaxon):(\d+)$', 'NCBITaxon', r'^NCBITaxon:\d+$'),
+                (r'^(ITIS):(\d+)$', 'ITIS', r'^ITIS:\d+$'),
+                (r'^(GBIF):(\d+)$', 'GBIF', r'^GBIF:\d+$'),
+                # Generic patterns
+                (r'^([A-Z]{2,}):(\d+)$', None, None),  # Two+ letter prefix with colon
+                (r'^([A-Z]{2,})(\d+)$', None, None),   # Two+ letter prefix without colon
+            ]
+            
+            pattern_counts: Dict[str, Dict[str, Any]] = {}
+            
+            for binding in results['results']['bindings']:
+                value_str = binding['value']['value']
+                count = int(binding['count']['value'])
+                
+                # Try to match against known patterns
+                matched = False
+                for pattern_regex, known_prefix, known_pattern in patterns:
+                    match = re.search(pattern_regex, value_str)
+                    if match:
+                        if known_prefix:
+                            prefix = known_prefix
+                            pattern = known_pattern
+                        else:
+                            # Extract prefix from match
+                            prefix = match.group(1)
+                            # Generate pattern
+                            if ':' in value_str:
+                                pattern = f"^{prefix}:\\d+$"
+                            else:
+                                pattern = f"^{prefix}\\d+$"
+                        
+                        if prefix not in pattern_counts:
+                            pattern_counts[prefix] = {
+                                'prefix': prefix,
+                                'pattern': pattern,
+                                'example': value_str,
+                                'count': 0
+                            }
+                        pattern_counts[prefix]['count'] += count
+                        matched = True
+                        break
+                
+                # If no pattern matched, try to extract a simple prefix
+                if not matched:
+                    # Try to find a prefix-like pattern
+                    simple_match = re.match(r'^([A-Z]{2,})[:\-_]?(\d+|[A-Z0-9]+)', value_str)
+                    if simple_match:
+                        prefix = simple_match.group(1)
+                        if prefix not in pattern_counts:
+                            pattern_counts[prefix] = {
+                                'prefix': prefix,
+                                'pattern': None,  # Unknown pattern
+                                'example': value_str,
+                                'count': 0
+                            }
+                        pattern_counts[prefix]['count'] += count
+            
+            # Convert to list and sort by count
+            patterns_list = list(pattern_counts.values())
+            patterns_list.sort(key=lambda x: x['count'], reverse=True)
+            
+            return patterns_list
+            
+        except Exception as e:
+            # If query fails, return empty list rather than raising
+            print(f"    Warning: Pattern extraction failed for {predicate}: {e}")
+            return []
+    
     def _introspect_namespace_properties(
         self,
         namespace_iri: str,

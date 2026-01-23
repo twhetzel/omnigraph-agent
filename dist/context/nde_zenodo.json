@@ -291,6 +291,98 @@
           "count": 597
         }
       ]
+    },
+    "species": {
+      "coverage": 1.0,
+      "approx_distinct_values": 59,
+      "top_values": [
+        {
+          "value": "https://www.uniprot.org/taxonomy/9606",
+          "count": 597
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/12637",
+          "count": 271
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/2697049",
+          "count": 237
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/1",
+          "count": 11
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/NA",
+          "count": 5
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/138950",
+          "count": 4
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/11082",
+          "count": 3
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/36470",
+          "count": 3
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/487",
+          "count": 3
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/10239",
+          "count": 2
+        }
+      ]
+    },
+    "infectiousagent": {
+      "coverage": 1.0,
+      "approx_distinct_values": 59,
+      "top_values": [
+        {
+          "value": "https://www.uniprot.org/taxonomy/12637",
+          "count": 271
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/2697049",
+          "count": 237
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/1",
+          "count": 11
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/NA",
+          "count": 5
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/138950",
+          "count": 4
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/11082",
+          "count": 3
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/36470",
+          "count": 3
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/487",
+          "count": 3
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/10239",
+          "count": 2
+        },
+        {
+          "value": "https://www.uniprot.org/taxonomy/10255",
+          "count": 2
+        }
+      ]
     }
   },
   "stats": {

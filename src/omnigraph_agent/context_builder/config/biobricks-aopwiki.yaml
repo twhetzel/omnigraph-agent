@@ -1,0 +1,17 @@
+# BioBricks AOP Wiki Graph Configuration
+# Adverse Outcome Pathway (AOP) knowledge graph
+
+graph_id: "biobricks-aopwiki"
+endpoint: "https://frink.apps.renci.org/biobricks-aopwiki/sparql"
+repo_filter_property: ""  # Single integrated knowledge graph
+
+# Entity types - will be discovered via introspection
+# Common types: AOP, Key Event, Chemical, Disease
+entity_types: []
+
+# Dimensions - will be discovered via introspection
+dimensions: []
+
+text_blurb: "BioBricks AOP Wiki is a knowledge graph of Adverse Outcome Pathways (AOPs) connecting chemicals, molecular events, and adverse outcomes. Links chemicals (ChEBI), diseases (MONDO, DOID), and pathways."
+
+
