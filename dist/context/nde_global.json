@@ -669,12 +669,11 @@
           "schema:species",
           "schema:infectiousAgent"
         ],
-        "semantic_category": "protein",
+        "semantic_category": "taxonomy",
         "semantically_related_prefixes": [
-          "InterPro",
           "NCBITaxon",
-          "Pfam",
-          "UniProt"
+          "ITIS",
+          "GBIF"
         ]
       }
     ],
