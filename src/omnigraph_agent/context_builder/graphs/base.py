@@ -167,8 +167,9 @@ class BaseGraph(ABC):
             # Verify the graph exists by trying a simple query
             try:
                 test_query = f"""
+                SELECT (COUNT(*) as ?count)
                 FROM <{guessed_graph}>
-                SELECT (COUNT(*) as ?count) WHERE {{
+                WHERE {{
                     ?s ?p ?o .
                 }}
                 LIMIT 1
@@ -453,8 +454,8 @@ class BaseGraph(ABC):
         namespace_filter = self._get_namespace_filter(entity_var="?entity")
         
         query = f"""
-        {graph_clause}SELECT ?property (COUNT(DISTINCT ?entity) as ?count) (SAMPLE(?value) as ?sample_value)
-        WHERE {{
+        SELECT ?property (COUNT(DISTINCT ?entity) as ?count) (SAMPLE(?value) as ?sample_value)
+        {graph_clause}WHERE {{
             {entity_filter}
             {namespace_filter}
             ?entity ?property ?value .
@@ -493,8 +494,8 @@ class BaseGraph(ABC):
         namespace_filter = self._get_namespace_filter(entity_var="?s")
         
         query = f"""
-        {graph_clause}SELECT DISTINCT ?type (COUNT(?s) as ?count)
-        WHERE {{
+        SELECT DISTINCT ?type (COUNT(?s) as ?count)
+        {graph_clause}WHERE {{
             {namespace_filter}
             ?s a ?type .
         }}
@@ -582,9 +583,8 @@ class BaseGraph(ABC):
         PREFIX biolink: <https://w3id.org/biolink/vocab/>
         PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
         PREFIX owl: <http://www.w3.org/2002/07/owl#>
-        {graph_clause}
         SELECT ?property (COUNT(DISTINCT ?entity) as ?count) (SAMPLE(?value) as ?sample_value)
-        WHERE {{
+        {graph_clause}WHERE {{
             {entity_filter}
             ?entity ?property ?value .
             FILTER (
@@ -637,9 +637,8 @@ class BaseGraph(ABC):
         predicate_expanded = self._expand_property(predicate)
         
         query = f"""
-        {graph_clause}
         SELECT ?value (COUNT(DISTINCT ?entity) as ?count)
-        WHERE {{
+        {graph_clause}WHERE {{
             {entity_filter}
             ?entity {predicate_expanded} ?value .
             FILTER (isLiteral(?value) || isIRI(?value))

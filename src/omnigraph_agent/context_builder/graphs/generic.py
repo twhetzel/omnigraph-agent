@@ -6,7 +6,7 @@ FRINK registry graphs without needing to create a custom handler class.
 """
 
 from pathlib import Path
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Any
 from .knowledge_graph import KnowledgeGraph
 from .ontology import OntologyGraph
 
@@ -89,23 +89,32 @@ class GenericGraph(KnowledgeGraph):
 
 class GenericOntologyGraph(OntologyGraph):
     """
-    Generic ontology graph handler that works with any config file.
+    Generic ontology graph handler that works with any config file or in-memory config.
     
     Use this for ontologies that don't need custom logic.
     Ontologies are single-source and don't have repositories.
     """
     
-    def __init__(self, config_path: Optional[Path] = None, graph_id: Optional[str] = None):
+    def __init__(
+        self,
+        config_path: Optional[Path] = None,
+        graph_id: Optional[str] = None,
+        config: Optional[Dict[str, Any]] = None,
+    ):
         """
         Initialize generic ontology handler with configuration.
         
         Args:
             config_path: Path to YAML config file (auto-discovered if graph_id provided)
             graph_id: Graph identifier (used to auto-discover config_path if not provided)
+            config: In-memory config dict (takes precedence; for Ubergraph discovery, etc.)
         """
+        if config is not None:
+            super().__init__(config=config)
+            return
         if config_path is None:
             if graph_id is None:
-                raise ValueError("Either config_path or graph_id must be provided")
+                raise ValueError("Either config_path, graph_id, or config must be provided")
             # Auto-discover config path
             config_dir = Path(__file__).parent.parent / "config"
             config_path = config_dir / f"{graph_id}.yaml"

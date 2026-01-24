@@ -34,6 +34,13 @@ The `context_builder` module generates JSON context files describing the structu
 
 ### Building Context Files
 
+**Quick reference:**
+- `python -m omnigraph_agent.context_builder.cli build <graph_id>` — build one graph (e.g. `nde`, `mondo`, `vbo`)
+- `python -m omnigraph_agent.context_builder.cli build <graph_id> --format yaml` — YAML output
+- `omnigraph-context-builder build-ubergraph-ontologies` — build all Ubergraph ontologies from [ontologies.txt](https://github.com/INCATools/ubergraph/blob/master/ontologies.txt) (writes to `dist/context/`)
+
+A **GitHub Action** runs `build-ubergraph-ontologies` plus `build nde`, `build mondo`, `build vbo` weekly (Thursdays 2:00 AM PT) and opens a PR to update `dist/context/` (see [.github/workflows/update-context-weekly.yml](.github/workflows/update-context-weekly.yml)).
+
 #### For Knowledge Graphs (e.g., NDE)
 
 Knowledge graphs contain instance data, entities, and relationships. Some knowledge graphs (like NDE) organize data into multiple repositories/catalogs.
@@ -45,26 +52,94 @@ Knowledge graphs contain instance data, entities, and relationships. Some knowle
 - **Project Tycho** — epidemiological data repository
 
 ```bash
-# Build all context files for a knowledge graph
+# Build all context files for a knowledge graph (JSON format, default)
 python -m omnigraph_agent.context_builder.cli build nde
+
+# Build context files in YAML format
+python -m omnigraph_agent.context_builder.cli build nde --format yaml
 ```
 
 **Outputs:**
-- `dist/context/nde_global.json` - Global graph context
-- `dist/context/nde_<repository>.json` - Repository-specific context files (if the graph has repositories, e.g., `nde_immport.json`)
+- `dist/context/nde_global.json` (or `.yaml`) - Global graph context
+- `dist/context/nde_<repository>.json` (or `.yaml`) - Repository-specific context files (if the graph has repositories, e.g., `nde_immport.json`)
 - For knowledge graphs without repositories, only the global context file is generated
+
+**Output Formats:**
+- **JSON** (default): Machine-readable format, backward compatible
+- **YAML**: Human-readable format, better for integration with context packs and manual editing
 
 #### For Ontologies (e.g., VBO, MONDO)
 
 Ontologies define class hierarchies, relationships, and axioms. They are single-source knowledge structures:
 
 ```bash
-# Build context file for an ontology
+# Build context file for an ontology (JSON format)
 python -m omnigraph_agent.context_builder.cli build vbo
+
+# Build context file in YAML format (recommended for ontologies)
+python -m omnigraph_agent.context_builder.cli build vbo --format yaml
+
+# Build with OBO Foundry metadata (automatically fetched for OBO ontologies)
+python -m omnigraph_agent.context_builder.cli build mondo --format yaml
 ```
 
 **Outputs:**
-- `dist/context/vbo_global.json` - Global ontology context (no repository-specific files)
+- `dist/context/vbo_global.json` (or `.yaml`) - Global ontology context (no repository-specific files)
+- For OBO ontologies (GO, MONDO, HP, etc.), automatically includes:
+  - OBO Foundry metadata (description, homepage, license, domain)
+  - LLM-optimized fields (`good_for`, `query_patterns`, `connects_to`)
+
+#### Build all Ubergraph named graphs
+
+To generate context files for **every** named graph in [Ubergraph](https://ubergraph.apps.renci.org/), use `build-ubergraph`. It discovers graphs via `SELECT DISTINCT ?g WHERE { GRAPH ?g { ?s ?p ?o . } }`, keeps URIs under `.../graphs/`, and builds a minimal ontology config per `graph_id` (e.g. `mondo`, `go`, `hp`). Each graph produces only a global context file.
+
+```bash
+# Discover and build context for all Ubergraph /graphs/ (default limit 2000)
+omnigraph-context-builder build-ubergraph
+
+# Limit how many graphs to process (e.g. for a quick run)
+omnigraph-context-builder build-ubergraph --limit 10
+
+# Output YAML and persist generated configs under config/ for hand-editing
+omnigraph-context-builder build-ubergraph --format yaml --write-configs
+
+# By default, graph_ids that already have a config file (e.g. mondo, vbo) are skipped.
+# Use --no-skip-existing-config to rebuild them using the generated minimal config.
+omnigraph-context-builder build-ubergraph --no-skip-existing-config
+```
+
+**Options:**
+- `--endpoint` – SPARQL endpoint (default: `https://ubergraph.apps.renci.org/sparql`)
+- `--output-dir`, `-o` – Output directory (default: `dist/context`)
+- `--format` – `json` or `yaml`
+- `--limit` – Max named graphs to discover and process (default: 2000)
+- `--skip-existing-config` / `--no-skip-existing-config` – Skip `graph_id`s that already have a `config/{graph_id}.yaml` (default: on)
+- `--write-configs` – Write generated configs to `config/` for later editing
+
+**Note:** Ubergraph may not expose `.../graphs/` URIs via `GRAPH ?g`. If discovery finds no graphs, use `build-ubergraph-ontologies` instead.
+
+#### Build Ubergraph ontologies from ontologies.txt
+
+[Ubergraph’s ontologies.txt](https://github.com/INCATools/ubergraph/blob/master/ontologies.txt) lists the OWL URLs it includes. Use `build-ubergraph-ontologies` to derive `graph_id`s from those URLs and build context files using `FROM <http://ubergraph.apps.renci.org/graphs/{graph_id}>`.
+
+```bash
+# Fetch ontologies.txt from GitHub and build context for each (default limit 2000)
+omnigraph-context-builder build-ubergraph-ontologies
+
+# Process first 5 and output YAML
+omnigraph-context-builder build-ubergraph-ontologies --limit 5 --format yaml
+
+# Use a local ontologies.txt
+omnigraph-context-builder build-ubergraph-ontologies --ontologies-file ./ontologies.txt
+
+# Custom URL and write configs to config/
+omnigraph-context-builder build-ubergraph-ontologies --ontologies-url https://... --write-configs
+```
+
+**Options:**
+- `--ontologies-url` – URL of ontologies.txt (default: Ubergraph’s raw GitHub URL)
+- `--ontologies-file` – Local file (overrides `--ontologies-url` when set)
+- `--endpoint`, `-o`, `--format`, `--limit`, `--skip-existing-config`, `--write-configs` – Same as `build-ubergraph`
 
 ### Introspection
 
@@ -192,6 +267,12 @@ Context files include:
 - **Dimensions**: Properties with coverage, distinct values, top values
 - **Prefixes**: Prefix to IRI mappings
 - **Query hints** (for ontologies): Namespace scope, reasoning mode, query patterns
+- **OBO Foundry metadata** (for OBO ontologies): Title, description, homepage, license, domain
+- **LLM-optimized fields** (for ontologies):
+  - `good_for`: List of use cases this ontology is good for
+  - `query_patterns`: Common SPARQL query patterns with examples
+  - `connects_to`: Cross-ontology connections for multi-hop queries
+  - `domains`: Domain classifications
 
 ### Output Location
 
@@ -407,6 +488,52 @@ The bridge system supports all graphs in the FRINK registry, including:
 
 See [FRINK Registry](https://frink.renci.org/registry/) for the complete list.
 
+## YAML Output Format and LLM-Optimized Metadata
+
+### YAML Output
+
+The context builder supports both JSON and YAML output formats. YAML is recommended for ontologies as it's more human-readable and easier to integrate with context packs.
+
+```bash
+# Generate YAML context
+python -m omnigraph_agent.context_builder.cli build go --format yaml
+```
+
+### OBO Foundry Integration
+
+For OBO ontologies (GO, MONDO, HP, NCBITaxon, etc.), the system automatically:
+- Fetches metadata from the OBO Foundry registry
+- Caches registry data locally (refreshed weekly)
+- Merges OBO metadata with introspection results
+
+**OBO Foundry metadata includes:**
+- Full ontology name and description
+- Homepage and license information
+- Domain classification
+- Imported ontologies
+- Available file formats
+
+### LLM-Optimized Fields
+
+The context builder automatically enriches ontology contexts with fields optimized for LLM-powered multi-hop query planning:
+
+**`good_for`**: List of use cases the ontology is useful for
+- Example: `["Disease name resolution", "Disease classification", "Cross-referencing to clinical databases"]`
+
+**`query_patterns`**: Common SPARQL query patterns with examples
+- Includes patterns for hierarchy traversal, label lookup, cross-references
+- Each pattern includes a SPARQL hint and usage notes
+
+**`connects_to`**: Cross-ontology connections for multi-hop queries
+- Documents how ontologies link together (e.g., GO → MONDO via genes)
+- Includes example queries and typical hop counts
+- Helps LLMs route queries across multiple graphs
+
+**`domains`**: Domain classifications
+- Example: `["biological_process", "molecular_function", "cellular_component"]`
+
+These fields enable intelligent query routing in systems like OKN-WOBD that use GPT-4o for multi-hop query planning.
+
 ## Testing
 
 The project includes a test suite to verify the bridge graph system functionality and fixes. Tests are located in the `tests/` directory and use `pytest`.
@@ -439,6 +566,12 @@ pytest tests/test_bridge_fixes.py::TestPMCPattern
 
 # Run a specific test
 pytest tests/test_bridge_fixes.py::TestPMCPattern::test_pmc_pattern_matches_without_colon
+
+# Skip integration tests (require network: Ubergraph, OBO Foundry)
+pytest -m "not integration"
+
+# Run only integration tests (build mondo --format yaml, check good_for/connects_to)
+pytest -m integration
 ```
 
 ### Test Coverage
@@ -450,3 +583,7 @@ The test suite includes:
 - **Namespace Tests**: Verifies proper RDF namespace usage in bridge context generator
 - **Link Count Tests**: Verifies accurate link counting using RDF queries
 - **Identifier Pattern Extraction Tests**: Verifies pattern extraction from identifier values
+- **YAMLContextWriter Tests**: Round-trip and Pydantic model writing
+- **LLMContextEnricher Tests**: `infer_good_for`, `extract_query_patterns`, `discover_connections`, `enrich_context`
+- **OBOfoundryClient Tests**: Metadata lookup, caching, `_normalize_ontology_id` (mocked registry)
+- **Integration** (marker `integration`): Full `build mondo --format yaml` with `good_for` and `connects_to` checks; requires network

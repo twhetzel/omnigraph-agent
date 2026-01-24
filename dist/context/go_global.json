@@ -1,0 +1,119 @@
+{
+  "graph_id": "go",
+  "endpoint": "https://ubergraph.apps.renci.org/sparql",
+  "entity_types": [
+    "http://www.w3.org/2002/07/owl#Class"
+  ],
+  "dimensions": [],
+  "prefixes": {
+    "schema": "http://schema.org/",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "obo": "http://purl.obolibrary.org/obo/",
+    "oboInOwl": "http://www.geneontology.org/formats/oboInOwl#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "GO": "http://purl.obolibrary.org/obo/GO_",
+    "RO": "http://purl.obolibrary.org/obo/RO_",
+    "IAO": "http://purl.obolibrary.org/obo/IAO_"
+  },
+  "text_blurb": "Ontology go from Ubergraph.",
+  "query_hints": {
+    "namespace_scope": "FILTER STRSTARTS(STR(?class), \"http://purl.obolibrary.org/obo/GO_\")",
+    "reasoning_mode": "no entailment; use explicit patterns and property paths (e.g., rdfs:subClassOf*)",
+    "exclude_obsoletes": true,
+    "label_property": "rdfs:label",
+    "definition_property": "IAO:0000115",
+    "default_behaviors": {
+      "consider_descendants": true,
+      "sort_results": true,
+      "use_distinct": true
+    },
+    "output_rules": {
+      "extension_mode_token": "EXTENSION_MODE",
+      "extension_mode_format": "plain_text_no_backticks",
+      "normal_mode_format": "fenced_code_block_sparql"
+    }
+  },
+  "obo_foundry_metadata": {
+    "id": "go",
+    "title": "Gene Ontology",
+    "description": "An ontology for describing the function of genes and gene products",
+    "homepage": "http://geneontology.org/",
+    "license": "CC BY 4.0",
+    "contact": "Suzi Aleksander",
+    "domain": "biological systems",
+    "products": [
+      "go.owl",
+      "go.obo",
+      "go.json",
+      "go/extensions/go-plus.owl",
+      "go/go-base.owl",
+      "go/extensions/go-plus.json",
+      "go/go-basic.obo",
+      "go/go-basic.json",
+      "go/extensions/go-taxon-groupings.owl",
+      "go/snapshot/go.owl",
+      "go/snapshot/go.obo"
+    ],
+    "imports": []
+  },
+  "good_for": [
+    "Gene function annotation and lookup",
+    "Biological process hierarchies and relationships",
+    "Molecular function classification",
+    "Cellular component localization",
+    "Pathway analysis and systems biology",
+    "Cross-species functional comparison"
+  ],
+  "query_patterns": [
+    {
+      "pattern": "Find all terms in namespace",
+      "description": "Filter by namespace scope",
+      "sparql_hint": "FILTER STRSTARTS(STR(?term), \"http://purl.obolibrary.org/obo/GO_\")",
+      "note": "Use namespace filter early to reduce result set"
+    },
+    {
+      "pattern": "Find all child terms",
+      "description": "Traverse hierarchy to find more specific terms",
+      "sparql_hint": "?child rdfs:subClassOf+ ?parent .",
+      "note": "Use property paths (rdfs:subClassOf+) for transitive hierarchies"
+    },
+    {
+      "pattern": "Find labels for a term",
+      "description": "Retrieve human-readable labels",
+      "sparql_hint": "?term rdfs:label ?label ."
+    },
+    {
+      "pattern": "Find cross-references to external databases",
+      "description": "Link to external databases (UniProt, Ensembl, etc.)",
+      "sparql_hint": "?term oboInOwl:hasDbXref ?xref ."
+    }
+  ],
+  "connects_to": [
+    {
+      "ontology": "MONDO",
+      "relationship_type": "indirect via genes",
+      "description": "Disease-gene associations through shared gene annotations",
+      "example_query": "Find diseases associated with genes annotated with GO:0006915 (apoptosis)",
+      "mechanism": "External databases (e.g., DisGeNET) link genes to diseases; genes are annotated with GO terms",
+      "typical_hop_count": 2,
+      "common_use_cases": [
+        "Find diseases linked to a specific biological process",
+        "Identify drugs targeting a pathway implicated in disease"
+      ]
+    },
+    {
+      "ontology": "HP",
+      "relationship_type": "indirect via genes",
+      "description": "Phenotype-gene-function triangulation",
+      "example_query": "Find phenotypes associated with disruption of GO:0008150 (biological process)",
+      "mechanism": "Phenotypes (HP) are linked to genes via clinical/model organism data; genes are annotated with GO terms",
+      "typical_hop_count": 2
+    }
+  ],
+  "domains": [
+    "biological systems"
+  ]
+}
