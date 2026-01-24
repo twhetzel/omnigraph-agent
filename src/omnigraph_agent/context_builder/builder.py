@@ -1,11 +1,11 @@
 """
-Orchestrates introspection → JSON generation for graph contexts.
+Orchestrates introspection → context file generation for graph contexts.
 
 Coordinates between graph handlers and schema models to generate
 context files for global and repository-specific views.
+Supports both JSON and YAML output formats.
 """
 
-import json
 from pathlib import Path
 from typing import Dict, Any, Optional
 from .model.context_schema import (
@@ -15,36 +15,67 @@ from .model.context_schema import (
     DimensionOverride,
     RepositoryStats,
     IdentifierInfo,
-    IdentifierPattern
+    IdentifierPattern,
+    OBOfoundryMetadata
 )
 from ..bridge.semantic_mappings import get_category, get_semantically_related_prefixes
 from .graphs import get_graph_handler
 from .graphs.base import APPROX_DISTINCT_THRESHOLD
+from .graphs.generic import GenericOntologyGraph
+from .writers import JSONContextWriter, YAMLContextWriter
+from .sources import OBOfoundryClient
+from .enrichers import LLMContextEnricher
 
 
 class ContextBuilder:
     """Orchestrates context file generation."""
     
-    def __init__(self, graph_id: str, output_dir: Path):
+    def __init__(
+        self,
+        graph_id: str,
+        output_dir: Path,
+        output_format: str = 'json',
+        config: Optional[Dict[str, Any]] = None,
+    ):
         """
         Initialize context builder.
         
         Args:
             graph_id: Graph identifier (e.g., 'nde')
-            output_dir: Directory to write JSON files
+            output_dir: Directory to write context files
+            output_format: Output format ('json' or 'yaml', default: 'json')
+            config: Optional in-memory config (for Ubergraph-discovered graphs).
+                    When set, graph_id is taken from config['graph_id'] and
+                    GenericOntologyGraph(config=config) is used instead of the registry.
         """
+        if config is not None:
+            graph_id = config.get('graph_id') or graph_id
         self.graph_id = graph_id
         self.output_dir = output_dir
         self.output_dir.mkdir(parents=True, exist_ok=True)
+        self.output_format = output_format.lower()
         
-        # Load graph handler via registry/factory
-        handler_cls = get_graph_handler(graph_id)
-        # Pass graph_id to generic handlers for auto-discovery
-        try:
-            self.graph = handler_cls(graph_id=graph_id)
-        except TypeError:
-            # Handler doesn't accept graph_id parameter, use default initialization
-            self.graph = handler_cls()
+        # Select appropriate writer
+        if self.output_format == 'yaml':
+            self.writer = YAMLContextWriter()
+            self.file_extension = '.yaml'
+        else:
+            self.writer = JSONContextWriter()
+            self.file_extension = '.json'
+        
+        # Initialize OBO Foundry client and LLM enricher
+        self.obo_client = OBOfoundryClient()
+        self.llm_enricher = LLMContextEnricher()
+        
+        if config is not None:
+            self.graph = GenericOntologyGraph(config=config)
+        else:
+            # Load graph handler via registry/factory
+            handler_cls = get_graph_handler(graph_id)
+            try:
+                self.graph = handler_cls(graph_id=graph_id)
+            except TypeError:
+                self.graph = handler_cls()
     
     def build(self) -> Dict[str, Path]:
         """
@@ -296,6 +327,16 @@ class ContextBuilder:
         except Exception as e:
             print(f"    Warning: Failed to introspect identifier information: {e}")
         
+        # Fetch OBO Foundry metadata if available
+        obo_metadata_dict = None
+        obo_metadata_obj = None
+        try:
+            obo_metadata_dict = self.obo_client.get_ontology_metadata(self.graph_id)
+            if obo_metadata_dict:
+                obo_metadata_obj = OBOfoundryMetadata(**obo_metadata_dict)
+        except Exception as e:
+            print(f"    Warning: Failed to fetch OBO Foundry metadata: {e}")
+        
         global_context = GlobalContext(
             graph_id=self.graph_id,
             endpoint=self.graph.endpoint,
@@ -304,13 +345,19 @@ class ContextBuilder:
             dimensions=dimensions,
             text_blurb=self.graph.text_blurb,
             query_hints=query_hints,
-            identifier_info=identifier_info
+            identifier_info=identifier_info,
+            obo_foundry_metadata=obo_metadata_obj
         )
         
-        # Write JSON file
-        output_path = self.output_dir / f"{self.graph_id}_global.json"
-        with open(output_path, 'w') as f:
-            json.dump(global_context.model_dump(exclude_none=True), f, indent=2)
+        # Enrich with LLM-optimized metadata
+        try:
+            global_context = self.llm_enricher.enrich_context(global_context, obo_metadata_dict)
+        except Exception as e:
+            print(f"    Warning: Failed to enrich context with LLM metadata: {e}")
+        
+        # Write context file using selected format
+        output_path = self.output_dir / f"{self.graph_id}_global{self.file_extension}"
+        self.writer.write(global_context, output_path)
         
         return output_path
     
@@ -355,10 +402,9 @@ class ContextBuilder:
             text_blurb=f"Context for {repo.get('label', repo_id)} repository"
         )
         
-        # Write JSON file
-        output_path = self.output_dir / f"{self.graph_id}_{repo_id}.json"
-        with open(output_path, 'w') as f:
-            json.dump(repository_context.model_dump(exclude_none=True), f, indent=2)
+        # Write context file using selected format
+        output_path = self.output_dir / f"{self.graph_id}_{repo_id}{self.file_extension}"
+        self.writer.write(repository_context, output_path)
         
         return output_path
 

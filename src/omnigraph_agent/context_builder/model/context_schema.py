@@ -53,6 +53,38 @@ class IdentifierInfo(BaseModel):
     )
 
 
+class QueryPattern(BaseModel):
+    """A common SPARQL query pattern with description."""
+    pattern: str = Field(..., description="Name/description of the query pattern")
+    description: Optional[str] = Field(None, description="Detailed description of when to use this pattern")
+    sparql_hint: Optional[str] = Field(None, description="SPARQL query template or hint")
+    note: Optional[str] = Field(None, description="Additional notes about the pattern")
+
+
+class CrossOntologyConnection(BaseModel):
+    """Information about how this ontology connects to another for multi-hop queries."""
+    ontology: str = Field(..., description="Target ontology identifier (e.g., 'MONDO', 'GO')")
+    relationship_type: Optional[str] = Field(None, description="Type of relationship (e.g., 'direct import', 'indirect via genes')")
+    description: Optional[str] = Field(None, description="Description of the connection")
+    example_query: Optional[str] = Field(None, description="Example query showing the connection")
+    mechanism: Optional[str] = Field(None, description="How the connection works (step-by-step)")
+    typical_hop_count: Optional[int] = Field(None, description="Typical number of hops needed")
+    common_use_cases: Optional[List[str]] = Field(None, description="Common use cases for this connection")
+
+
+class OBOfoundryMetadata(BaseModel):
+    """OBO Foundry registry metadata for ontologies."""
+    id: Optional[str] = Field(None, description="OBO Foundry ontology ID")
+    title: Optional[str] = Field(None, description="Full ontology name")
+    description: Optional[str] = Field(None, description="What the ontology covers")
+    homepage: Optional[str] = Field(None, description="Official website")
+    license: Optional[str] = Field(None, description="Usage terms")
+    contact: Optional[str] = Field(None, description="Maintainer information")
+    domain: Optional[str] = Field(None, description="Broad classification (anatomy, phenotype, etc.)")
+    products: Optional[List[str]] = Field(None, description="Available file formats")
+    imports: Optional[List[str]] = Field(None, description="Ontologies imported/used")
+
+
 class QueryGenerationHints(BaseModel):
     """Hints and rules for LLM query generation."""
     namespace_scope: Optional[str] = Field(
@@ -112,6 +144,28 @@ class GlobalContext(BaseModel):
     identifier_info: Optional[IdentifierInfo] = Field(
         None,
         description="Information about identifier predicates and patterns for bridge graph generation"
+    )
+    # OBO Foundry metadata (for ontologies)
+    obo_foundry_metadata: Optional[OBOfoundryMetadata] = Field(
+        None,
+        description="OBO Foundry registry metadata (for OBO ontologies)"
+    )
+    # LLM-optimized fields for multi-hop query planning
+    good_for: Optional[List[str]] = Field(
+        None,
+        description="List of use cases this ontology/graph is good for (e.g., 'Disease name resolution', 'Gene function annotation')"
+    )
+    query_patterns: Optional[List[QueryPattern]] = Field(
+        None,
+        description="Common SPARQL query patterns with examples and hints"
+    )
+    connects_to: Optional[List[CrossOntologyConnection]] = Field(
+        None,
+        description="Cross-ontology connections for multi-hop query planning"
+    )
+    domains: Optional[List[str]] = Field(
+        None,
+        description="Domain classifications (e.g., 'biological_process', 'disease', 'phenotype')"
     )
 
 

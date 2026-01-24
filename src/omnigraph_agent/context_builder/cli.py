@@ -14,9 +14,20 @@ This command will:
 """
 
 import click
+import yaml
 from pathlib import Path
+from typing import Optional
 from .builder import ContextBuilder
 from .graphs import get_graph_handler
+from .sources import (
+    discover_named_graphs,
+    graph_uri_to_graph_id,
+    build_ubergraph_ontology_config,
+    load_ontology_list,
+    DEFAULT_UBERGRAPH_ENDPOINT,
+    UBERGRAPH_GRAPHS_PREFIX,
+    ONTOLOGIES_TXT_URL,
+)
 from ..bridge.linkset_builder import LinksetBuilder
 from ..bridge.batch_bridge_generator import BatchBridgeGenerator
 from ..bridge.bridge_context_generator import BridgeContextGenerator
@@ -36,9 +47,16 @@ def cli():
     '-o',
     type=click.Path(path_type=Path),
     default=Path('dist/context'),
-    help='Output directory for JSON context files (default: dist/context)'
+    help='Output directory for context files (default: dist/context)'
 )
-def build(graph_id: str, output_dir: Path):
+@click.option(
+    '--format',
+    'output_format',
+    type=click.Choice(['json', 'yaml'], case_sensitive=False),
+    default='json',
+    help='Output format: json or yaml (default: json)'
+)
+def build(graph_id: str, output_dir: Path, output_format: str):
     """
     Build context files for a knowledge graph.
     
@@ -46,13 +64,15 @@ def build(graph_id: str, output_dir: Path):
     
     Examples:
         omnigraph-context-builder build nde
-        python -m omnigraph_agent.context_builder.cli build nde
+        omnigraph-context-builder build nde --format yaml
+        python -m omnigraph_agent.context_builder.cli build nde --format yaml
     """
     click.echo(f"Building context files for graph: {graph_id}")
     click.echo(f"Output directory: {output_dir}")
+    click.echo(f"Output format: {output_format}")
     
     try:
-        builder = ContextBuilder(graph_id, output_dir)
+        builder = ContextBuilder(graph_id, output_dir, output_format=output_format)
         output_files = builder.build()
         
         click.echo(f"\n✓ Successfully generated {len(output_files)} context file(s):")
@@ -61,6 +81,237 @@ def build(graph_id: str, output_dir: Path):
         
     except Exception as e:
         click.echo(f"✗ Error building context files: {e}", err=True)
+        raise click.Abort()
+
+
+@cli.command('build-ubergraph')
+@click.option(
+    '--endpoint',
+    default=DEFAULT_UBERGRAPH_ENDPOINT,
+    help=f'Ubergraph SPARQL endpoint (default: {DEFAULT_UBERGRAPH_ENDPOINT})'
+)
+@click.option(
+    '--output-dir',
+    '-o',
+    type=click.Path(path_type=Path),
+    default=Path('dist/context'),
+    help='Output directory for context files (default: dist/context)'
+)
+@click.option(
+    '--format',
+    'output_format',
+    type=click.Choice(['json', 'yaml'], case_sensitive=False),
+    default='json',
+    help='Output format: json or yaml (default: json)'
+)
+@click.option(
+    '--limit',
+    type=int,
+    default=2000,
+    help='Maximum number of named graphs to discover and process (default: 2000)'
+)
+@click.option(
+    '--skip-existing-config/--no-skip-existing-config',
+    default=True,
+    help='Skip graph_ids that already have a config file (default: on)'
+)
+@click.option(
+    '--write-configs',
+    is_flag=True,
+    help='Write generated configs to config/ for hand-editing'
+)
+def build_ubergraph(
+    endpoint: str,
+    output_dir: Path,
+    output_format: str,
+    limit: int,
+    skip_existing_config: bool,
+    write_configs: bool,
+):
+    """
+    Discover Ubergraph named graphs and generate context files for each.
+
+    Queries the endpoint for GRAPH ?g { ?s ?p ?o }, keeps URIs under
+    .../graphs/, and builds a minimal ontology config per graph_id.
+    Ontologies produce only a global context file (no repositories).
+
+    Examples:
+        omnigraph-context-builder build-ubergraph
+        omnigraph-context-builder build-ubergraph --limit 10 --format yaml
+        omnigraph-context-builder build-ubergraph --write-configs
+    """
+    # Fetch at least 100 from the endpoint so we have a chance to see /graphs/ URIs
+    # when limit is small (order is undefined; FILTER in SPARQL causes timeouts).
+    discovery_limit = max(limit, 100)
+    click.echo(f"Discovering named graphs at {endpoint} (fetch up to {discovery_limit}, process up to {limit})...")
+    try:
+        uris = discover_named_graphs(endpoint, limit=discovery_limit, uri_prefix=UBERGRAPH_GRAPHS_PREFIX)
+    except Exception as e:
+        click.echo(f"✗ Discovery failed: {e}", err=True)
+        raise click.Abort()
+
+    # Map URI -> graph_id, deduplicate, and cap at --limit
+    seen: set = set()
+    items: list = []
+    for g_uri in uris:
+        gid = graph_uri_to_graph_id(g_uri, UBERGRAPH_GRAPHS_PREFIX)
+        if not gid or gid in seen:
+            continue
+        seen.add(gid)
+        items.append((g_uri, gid))
+        if len(items) >= limit:
+            break
+
+    if not items:
+        click.echo("No Ubergraph /graphs/ named graphs found.")
+        click.echo("Ubergraph may not expose those URIs via GRAPH ?g. Try: omnigraph-context-builder build-ubergraph-ontologies")
+        return
+
+    click.echo(f"Found {len(items)} graph(s). Building context files...")
+    config_dir = Path(__file__).parent / "config"
+    output_dir.mkdir(parents=True, exist_ok=True)
+    ok, errs = 0, []
+
+    for g_uri, gid in items:
+        if skip_existing_config and (config_dir / f"{gid}.yaml").exists():
+            click.echo(f"  [skip] {gid} (existing config)")
+            continue
+        cfg = build_ubergraph_ontology_config(gid, g_uri, endpoint)
+        if write_configs:
+            p = config_dir / f"{gid}.yaml"
+            p.parent.mkdir(parents=True, exist_ok=True)
+            with open(p, "w") as f:
+                yaml.dump(cfg, f, default_flow_style=False, sort_keys=False)
+            click.echo(f"  [wrote config] {p}")
+        try:
+            builder = ContextBuilder(gid, output_dir, output_format=output_format, config=cfg)
+            files = builder.build()
+            for _k, path in files.items():
+                click.echo(f"  ✓ {path.name}")
+            ok += 1
+        except Exception as e:
+            errs.append((gid, str(e)))
+            click.echo(f"  ✗ {gid}: {e}", err=True)
+
+    click.echo(f"\nDone: {ok} built, {len(errs)} failed.")
+    if errs:
+        for gid, msg in errs:
+            click.echo(f"  - {gid}: {msg}", err=True)
+        raise click.Abort()
+
+
+@cli.command('build-ubergraph-ontologies')
+@click.option(
+    '--ontologies-url',
+    default=ONTOLOGIES_TXT_URL,
+    help=f'URL of ontologies.txt (default: {ONTOLOGIES_TXT_URL})'
+)
+@click.option(
+    '--ontologies-file',
+    type=click.Path(path_type=Path, exists=True),
+    default=None,
+    help='Local ontologies.txt file (overrides --ontologies-url if set)'
+)
+@click.option(
+    '--endpoint',
+    default=DEFAULT_UBERGRAPH_ENDPOINT,
+    help=f'Ubergraph SPARQL endpoint (default: {DEFAULT_UBERGRAPH_ENDPOINT})'
+)
+@click.option(
+    '--output-dir',
+    '-o',
+    type=click.Path(path_type=Path),
+    default=Path('dist/context'),
+    help='Output directory for context files (default: dist/context)'
+)
+@click.option(
+    '--format',
+    'output_format',
+    type=click.Choice(['json', 'yaml'], case_sensitive=False),
+    default='json',
+    help='Output format: json or yaml (default: json)'
+)
+@click.option(
+    '--limit',
+    type=int,
+    default=2000,
+    help='Maximum number of ontologies to process (default: 2000)'
+)
+@click.option(
+    '--skip-existing-config/--no-skip-existing-config',
+    default=True,
+    help='Skip graph_ids that already have a config file (default: on)'
+)
+@click.option(
+    '--write-configs',
+    is_flag=True,
+    help='Write generated configs to config/ for hand-editing'
+)
+def build_ubergraph_ontologies(
+    ontologies_url: str,
+    ontologies_file: Optional[Path],
+    endpoint: str,
+    output_dir: Path,
+    output_format: str,
+    limit: int,
+    skip_existing_config: bool,
+    write_configs: bool,
+):
+    """
+    Build context files for Ubergraph ontologies from ontologies.txt.
+
+    Reads ontology URLs from Ubergraph's ontologies.txt (or a local file),
+    derives graph_id from each URL, and builds a minimal config using
+    FROM <http://ubergraph.apps.renci.org/graphs/{graph_id}>.
+
+    Examples:
+        omnigraph-context-builder build-ubergraph-ontologies
+        omnigraph-context-builder build-ubergraph-ontologies --limit 5 --format yaml
+        omnigraph-context-builder build-ubergraph-ontologies --ontologies-file ./ontologies.txt
+    """
+    source = str(ontologies_file) if ontologies_file else ontologies_url
+    click.echo(f"Loading ontology list from {source}...")
+    try:
+        items = load_ontology_list(source)
+    except Exception as e:
+        click.echo(f"✗ Failed to load ontology list: {e}", err=True)
+        raise click.Abort()
+
+    items = items[:limit]
+    if not items:
+        click.echo("No ontologies to process.")
+        return
+
+    click.echo(f"Found {len(items)} ontology/ies. Building context files...")
+    config_dir = Path(__file__).parent / "config"
+    output_dir.mkdir(parents=True, exist_ok=True)
+    ok, errs = 0, []
+
+    for gid, named_uri in items:
+        if skip_existing_config and (config_dir / f"{gid}.yaml").exists():
+            click.echo(f"  [skip] {gid} (existing config)")
+            continue
+        cfg = build_ubergraph_ontology_config(gid, named_uri, endpoint)
+        if write_configs:
+            p = config_dir / f"{gid}.yaml"
+            p.parent.mkdir(parents=True, exist_ok=True)
+            with open(p, "w") as f:
+                yaml.dump(cfg, f, default_flow_style=False, sort_keys=False)
+            click.echo(f"  [wrote config] {p}")
+        try:
+            builder = ContextBuilder(gid, output_dir, output_format=output_format, config=cfg)
+            files = builder.build()
+            for _k, path in files.items():
+                click.echo(f"  ✓ {path.name}")
+            ok += 1
+        except Exception as e:
+            errs.append((gid, str(e)))
+            click.echo(f"  ✗ {gid}: {e}", err=True)
+
+    click.echo(f"\nDone: {ok} built, {len(errs)} failed.")
+    if errs:
+        for gid, msg in errs:
+            click.echo(f"  - {gid}: {msg}", err=True)
         raise click.Abort()
 
 

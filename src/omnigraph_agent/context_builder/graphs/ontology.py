@@ -58,9 +58,8 @@ class OntologyGraph(BaseGraph):
         PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
         PREFIX schema: <http://schema.org/>
         PREFIX dct: <http://purl.org/dc/terms/>
-        {graph_clause}
         SELECT ?property (COUNT(DISTINCT ?entity) as ?count) (SAMPLE(?value) as ?sample_value)
-        WHERE {{
+        {graph_clause}WHERE {{
             {entity_filter}
             {namespace_filter}
             {{
@@ -125,9 +124,8 @@ class OntologyGraph(BaseGraph):
         
         # Sample entity IRIs to extract identifier patterns
         query = f"""
-        {graph_clause}
         SELECT ?entity (COUNT(*) as ?count)
-        WHERE {{
+        {graph_clause}WHERE {{
             {entity_filter}
             {namespace_filter}
         }}
@@ -213,9 +211,8 @@ class OntologyGraph(BaseGraph):
         # Use smaller limit for ontologies to avoid timeouts
         # Also add namespace filter to limit scope
         query = f"""
-        {graph_clause}
         SELECT ?value (COUNT(DISTINCT ?entity) as ?count)
-        WHERE {{
+        {graph_clause}WHERE {{
             {entity_filter}
             {namespace_filter}
             ?entity {predicate_expanded} ?value .
@@ -343,8 +340,8 @@ class OntologyGraph(BaseGraph):
         
         query = f"""
         PREFIX {namespace_prefix} <{namespace_iri}>
-        {graph_clause}SELECT ?prop (COUNT(DISTINCT ?class) as ?count)
-        WHERE {{
+        SELECT ?prop (COUNT(DISTINCT ?class) as ?count)
+        {graph_clause}WHERE {{
             {entity_filter}
             {namespace_filter}
             ?class ?prop ?value .
@@ -438,8 +435,8 @@ class OntologyGraph(BaseGraph):
         
         query = f"""
         PREFIX owl: <http://www.w3.org/2002/07/owl#>
-        {graph_clause}SELECT DISTINCT ?annot_prop (COUNT(DISTINCT ?axiom) as ?count)
-        WHERE {{
+        SELECT DISTINCT ?annot_prop (COUNT(DISTINCT ?axiom) as ?count)
+        {graph_clause}WHERE {{
             ?axiom a owl:Axiom .
             ?axiom owl:annotatedSource ?class .
             {namespace_filter}
@@ -473,7 +470,9 @@ class OntologyGraph(BaseGraph):
             return annotations
         except Exception as e:
             # Query may timeout on large ontologies - return empty list
-            print(f"  Warning: Axiom annotation introspection timed out or failed: {e}")
+            g = getattr(self, 'graph_id', '') or ''
+            pre = f" [{g}]" if g else ""
+            print(f"  Warning:{pre} Axiom annotation introspection timed out or failed: {e}")
             return []
     
     def introspect_owl_restrictions(self, limit: int = 20) -> List[Dict[str, Any]]:
@@ -501,8 +500,8 @@ class OntologyGraph(BaseGraph):
         query = f"""
         PREFIX owl: <http://www.w3.org/2002/07/owl#>
         PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-        {graph_clause}SELECT ?obo_prop (COUNT(DISTINCT ?class) as ?count) (SAMPLE(?quantifier) as ?sample_quant)
-        WHERE {{
+        SELECT ?obo_prop (COUNT(DISTINCT ?class) as ?count) (SAMPLE(?quantifier) as ?sample_quant)
+        {graph_clause}WHERE {{
             {namespace_filter}
             ?class rdfs:subClassOf ?restriction .
             ?restriction a owl:Restriction .
@@ -562,7 +561,9 @@ class OntologyGraph(BaseGraph):
             return restrictions
         except Exception as e:
             # Query may timeout on large ontologies - return empty list
-            print(f"  Warning: OWL restriction introspection timed out or failed: {e}")
+            g = getattr(self, 'graph_id', '') or ''
+            pre = f" [{g}]" if g else ""
+            print(f"  Warning:{pre} OWL restriction introspection timed out or failed: {e}")
             return []
     
     def _get_obo_pattern_name(self, ontology_prefix: str, property_id: str) -> Optional[str]:
@@ -693,8 +694,9 @@ class OntologyGraph(BaseGraph):
                     query_patterns['direct_xref'] = "?class oboInOwl:hasDbXref ?xref ."
                 elif short_name == 'inSubset':
                     query_patterns['in_subset'] = "?class oboInOwl:inSubset ?subset ."
-        except Exception:
-            # If introspection fails, use default patterns
+        except Exception as e:
+            # If introspection fails (e.g. timeout on large ontologies), use default patterns
+            print(f"  Warning: [{self.graph_id}] OBO annotation introspection timed out or failed: {e}")
             pass
         
         # Try to introspect relations (direct properties)
@@ -711,7 +713,8 @@ class OntologyGraph(BaseGraph):
                         prop_uri = rel.get('property', '')
                         if prop_uri:
                             query_patterns['related_to'] = f"?class {prop_uri} ?related ."
-        except Exception:
+        except Exception as e:
+            print(f"  Warning: [{self.graph_id}] Relation introspection timed out or failed: {e}")
             pass
         
         # Try to introspect axiom annotations to find ontology-specific properties
@@ -748,8 +751,8 @@ class OntologyGraph(BaseGraph):
                             direct_pattern_name = f"{ontology_prefix.lower()}_{prop_id}"
                             query_patterns[direct_pattern_name] = f"?class {ontology_prefix}:{prop_id} ?value ."
         except Exception as e:
-            # If introspection fails, continue without axiom annotation patterns
-            print(f"  Warning: Failed to process axiom annotations: {e}")
+            # If introspection fails (e.g. timeout), continue without axiom annotation patterns
+            print(f"  Warning: [{self.graph_id}] Axiom annotation (ontology-specific) processing timed out or failed: {e}")
             pass
         
         # Try to introspect OWL restrictions (axiomatized patterns)
