@@ -129,6 +129,7 @@ def discover_named_graphs(
         query += f"\n    LIMIT {limit}"
 
     sparql = SPARQLWrapper(endpoint)
+    sparql.setTimeout(60)
     sparql.setReturnFormat(JSON)
     sparql.setQuery(query)
 
