@@ -1,0 +1,54 @@
+{
+  "graph_id": "biobricks-ice",
+  "endpoint": "https://frink.apps.renci.org/biobricks-ice/sparql",
+  "entity_types": [
+    "http://www.bioassayontology.org/bao#BAO_0000179",
+    "http://purl.obolibrary.org/obo/CHEMINF_000446",
+    "http://purl.obolibrary.org/obo/CHEMINF_000568",
+    "http://purl.obolibrary.org/obo/CHEMINF_000000",
+    "https://w3id.org/biolink/vocab/ChemicalEntity",
+    "http://www.bioassayontology.org/bao#BAO_0000040",
+    "http://www.bioassayontology.org/bao#BAO_0000015",
+    "http://edamontology.org/data_1027",
+    "http://edamontology.org/data_1181",
+    "http://www.bioassayontology.org/bao#BAO_0003064"
+  ],
+  "dimensions": [],
+  "graph_type": "knowledge_graph",
+  "prefixes": {
+    "schema": "http://schema.org/",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "obo": "http://purl.obolibrary.org/obo/",
+    "oboInOwl": "http://www.geneontology.org/formats/oboInOwl#"
+  },
+  "text_blurb": "Knowledge graph biobricks-ice from the FRINK registry (https://frink.renci.org/registry/).",
+  "good_for": [
+    "Instance lookup by type",
+    "Filtering by identifier (GSE, NCT, MONDO, etc.)",
+    "Finding entities by property value",
+    "Cross-referencing across data sources",
+    "Aggregating or faceting by dimension"
+  ],
+  "query_patterns": [
+    {
+      "pattern": "Find instances by type",
+      "description": "Filter entities by rdf:type; use entity_types from context",
+      "sparql_hint": "?entity a <http://www.bioassayontology.org/bao#BAO_0000179> .",
+      "note": "Replace with desired type from context.entity_types"
+    },
+    {
+      "pattern": "Find by identifier",
+      "description": "Look up entities by identifier (GSE, NCT, MONDO, etc.)",
+      "sparql_hint": "?entity schema:identifier ?id .",
+      "note": "Filter ?id by pattern from identifier_info; e.g. FILTER(CONTAINS(STR(?id), \"GSE\"))"
+    },
+    {
+      "pattern": "Filter by property value",
+      "description": "Restrict to entities with a given property value",
+      "sparql_hint": "?entity ?property ?value . FILTER(?value = <value_iri> || ?value = \"value\" )",
+      "note": "Use dimensions from context for typical properties"
+    }
+  ]
+}

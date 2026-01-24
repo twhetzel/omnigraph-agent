@@ -81,16 +81,37 @@ class LLMContextEnricher:
             "Taxonomic hierarchy traversal",
         ],
     }
+
+    # Knowledge-graph use cases (instance-level querying)
+    KG_USE_CASES: List[str] = [
+        "Instance lookup by type",
+        "Filtering by identifier (GSE, NCT, MONDO, etc.)",
+        "Finding entities by property value",
+        "Cross-referencing across data sources",
+        "Aggregating or faceting by dimension",
+    ]
     
+    def infer_kg_good_for(self, context: GlobalContext) -> List[str]:
+        """
+        Infer use cases (good_for) for knowledge graphs—instance-level querying.
+
+        Returns:
+            List of use case descriptions
+        """
+        use_cases = list(self.KG_USE_CASES)
+        if getattr(context, 'repo_filter_property', None) and str(context.repo_filter_property or '').strip():
+            use_cases.append("Filtering by catalog/repository")
+        return use_cases
+
     def infer_good_for(self, graph_id: str, domain: Optional[str] = None, obo_metadata: Optional[Dict[str, Any]] = None) -> List[str]:
         """
         Infer use cases (good_for) from ontology domain and structure.
-        
+
         Args:
             graph_id: Graph identifier
             domain: Domain classification from OBO Foundry
             obo_metadata: OBO Foundry metadata
-            
+
         Returns:
             List of use case descriptions
         """
@@ -98,14 +119,14 @@ class LLMContextEnricher:
         normalized_id = graph_id.lower()
         if normalized_id in self.ONTOLOGY_USE_CASES:
             return self.ONTOLOGY_USE_CASES[normalized_id]
-        
+
         # Use domain-based inference
         if domain:
             domain_lower = domain.lower()
             for key, use_cases in self.DOMAIN_USE_CASES.items():
                 if key in domain_lower:
                     return use_cases
-        
+
         # Fallback: generic ontology use cases
         return [
             "Entity lookup and resolution",
@@ -113,19 +134,89 @@ class LLMContextEnricher:
             "Cross-referencing to external databases",
         ]
     
-    def extract_query_patterns(self, graph_id: str, query_hints: Optional[Dict[str, Any]] = None) -> List[QueryPattern]:
+    def extract_kg_query_patterns(self, context: GlobalContext) -> List[QueryPattern]:
         """
-        Extract common query patterns from ontology structure.
-        
-        Args:
-            graph_id: Graph identifier
-            query_hints: Existing query hints
-            
+        Extract query patterns for knowledge graphs—instance-level lookup and filtering.
+
         Returns:
             List of QueryPattern objects
         """
         patterns = []
-        
+
+        # Find instances by type
+        if getattr(context, 'entity_types', None) and context.entity_types:
+            et = context.entity_types[0]
+            patterns.append(QueryPattern(
+                pattern="Find instances by type",
+                description="Filter entities by rdf:type; use entity_types from context",
+                sparql_hint=f"?entity a <{et}> .",
+                note="Replace with desired type from context.entity_types",
+            ))
+        else:
+            patterns.append(QueryPattern(
+                pattern="Find instances by type",
+                description="Filter entities by rdf:type",
+                sparql_hint="?entity a ?type .",
+                note="Bind ?type to a concrete IRI from the graph",
+            ))
+
+        # Find by identifier
+        id_pred = "schema:identifier"
+        if getattr(context, 'identifier_info', None) and context.identifier_info and context.identifier_info.predicates:
+            raw = context.identifier_info.predicates[0]
+            id_pred = f"<{raw}>" if (raw and raw.startswith("http")) else raw
+        patterns.append(QueryPattern(
+            pattern="Find by identifier",
+            description="Look up entities by identifier (GSE, NCT, MONDO, etc.)",
+            sparql_hint=f"?entity {id_pred} ?id .",
+            note="Filter ?id by pattern from identifier_info; e.g. FILTER(CONTAINS(STR(?id), \"GSE\"))",
+        ))
+
+        # Filter by catalog/repository (when repo_filter_property is set)
+        rfp = getattr(context, 'repo_filter_property', None) or ""
+        if rfp.strip():
+            patterns.append(QueryPattern(
+                pattern="Filter by catalog/source",
+                description="Scope to a specific catalog or repository",
+                sparql_hint=f"?entity {rfp} ?catalog .",
+                note="Bind ?catalog to a catalog IRI; use with get_repositories to see available catalogs",
+            ))
+
+        # Filter by property value
+        patterns.append(QueryPattern(
+            pattern="Filter by property value",
+            description="Restrict to entities with a given property value",
+            sparql_hint="?entity ?property ?value . FILTER(?value = <value_iri> || ?value = \"value\" )",
+            note="Use dimensions from context for typical properties",
+        ))
+
+        # List distinct values for a dimension
+        if getattr(context, 'dimensions', None) and context.dimensions:
+            dim = context.dimensions[0]
+            prop = getattr(dim, 'name', None) or str(dim)
+            prop_span = f"<{prop}>" if (prop and str(prop).startswith("http")) else (prop or "?property")
+            patterns.append(QueryPattern(
+                pattern="List distinct values for a dimension",
+                description="Get unique values of a dimension for faceting or dropdowns",
+                sparql_hint=f"SELECT DISTINCT ?val WHERE {{ ?entity {prop_span} ?val . }}",
+                note="Use dimension names from context.dimensions",
+            ))
+
+        return patterns
+
+    def extract_query_patterns(self, graph_id: str, query_hints: Optional[Dict[str, Any]] = None) -> List[QueryPattern]:
+        """
+        Extract common query patterns from ontology structure.
+
+        Args:
+            graph_id: Graph identifier
+            query_hints: Existing query hints
+
+        Returns:
+            List of QueryPattern objects
+        """
+        patterns = []
+
         # Generic patterns for OBO ontologies
         if query_hints and query_hints.get('namespace_scope'):
             # namespace_scope is already "FILTER STRSTARTS(STR(?class), \"IRI\")"; use ?term for this pattern
@@ -137,7 +228,7 @@ class LLMContextEnricher:
                 sparql_hint=sparql_hint,
                 note="Use namespace filter early to reduce result set"
             ))
-        
+
         # Hierarchy traversal pattern
         patterns.append(QueryPattern(
             pattern="Find all child terms",
@@ -145,7 +236,7 @@ class LLMContextEnricher:
             sparql_hint="?child rdfs:subClassOf+ ?parent .",
             note="Use property paths (rdfs:subClassOf+) for transitive hierarchies"
         ))
-        
+
         # Label lookup pattern
         if query_hints and query_hints.get('label_property'):
             label_prop = query_hints['label_property']
@@ -154,14 +245,14 @@ class LLMContextEnricher:
                 description="Retrieve human-readable labels",
                 sparql_hint=f"?term {label_prop} ?label .",
             ))
-        
+
         # Cross-reference pattern
         patterns.append(QueryPattern(
             pattern="Find cross-references to external databases",
             description="Link to external databases (UniProt, Ensembl, etc.)",
             sparql_hint="?term oboInOwl:hasDbXref ?xref .",
         ))
-        
+
         return patterns
     
     def discover_connections(self, graph_id: str, obo_metadata: Optional[Dict[str, Any]] = None) -> List[CrossOntologyConnection]:
@@ -252,38 +343,33 @@ class LLMContextEnricher:
     def enrich_context(self, context: GlobalContext, obo_metadata: Optional[Dict[str, Any]] = None) -> GlobalContext:
         """
         Enrich a GlobalContext with LLM-optimized metadata.
-        
-        Args:
-            context: GlobalContext to enrich
-            obo_metadata: Optional OBO Foundry metadata
-            
-        Returns:
-            Enriched GlobalContext
+
+        Uses ontology-oriented good_for and query_patterns when graph_type is
+        "ontology" or unset; uses knowledge-graph-oriented when graph_type is
+        "knowledge_graph".
         """
-        # Infer good_for use cases
-        domain = obo_metadata.get('domain') if obo_metadata else None
-        good_for = self.infer_good_for(context.graph_id, domain, obo_metadata)
-        
-        # Extract query patterns
-        query_hints_dict = context.query_hints.model_dump() if context.query_hints else {}
-        query_patterns = self.extract_query_patterns(context.graph_id, query_hints_dict)
-        
-        # Discover cross-ontology connections
-        connects_to = self.discover_connections(context.graph_id, obo_metadata)
-        
-        # Extract domains from OBO metadata
-        domains = None
-        if obo_metadata and obo_metadata.get('domain'):
-            # Parse domain string into list
-            domain_str = obo_metadata['domain']
-            if domain_str:
-                # Simple parsing - could be enhanced
-                domains = [d.strip() for d in domain_str.split(',') if d.strip()]
-        
-        # Create enriched context (update existing context)
+        is_kg = getattr(context, 'graph_type', None) == 'knowledge_graph'
+
+        if is_kg:
+            good_for = self.infer_kg_good_for(context)
+            query_patterns = self.extract_kg_query_patterns(context)
+            connects_to = []
+            domains = None
+        else:
+            domain = obo_metadata.get('domain') if obo_metadata else None
+            good_for = self.infer_good_for(context.graph_id, domain, obo_metadata)
+            query_hints_dict = context.query_hints.model_dump() if context.query_hints else {}
+            query_patterns = self.extract_query_patterns(context.graph_id, query_hints_dict)
+            connects_to = self.discover_connections(context.graph_id, obo_metadata)
+            domains = None
+            if obo_metadata and obo_metadata.get('domain'):
+                domain_str = obo_metadata['domain']
+                if domain_str:
+                    domains = [d.strip() for d in domain_str.split(',') if d.strip()]
+
         context.good_for = good_for
         context.query_patterns = query_patterns if query_patterns else None
         context.connects_to = connects_to if connects_to else None
         context.domains = domains
-        
+
         return context

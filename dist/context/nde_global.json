@@ -558,6 +558,8 @@
       ]
     }
   ],
+  "graph_type": "knowledge_graph",
+  "repo_filter_property": "schema:includedInDataCatalog",
   "prefixes": {
     "schema": "http://schema.org/",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
@@ -657,8 +659,8 @@
         "semantic_category": "disease",
         "semantically_related_prefixes": [
           "DOID",
-          "OMIM",
-          "Orphanet"
+          "Orphanet",
+          "OMIM"
         ]
       },
       {
@@ -671,8 +673,8 @@
         ],
         "semantic_category": "taxonomy",
         "semantically_related_prefixes": [
-          "NCBITaxon",
           "ITIS",
+          "NCBITaxon",
           "GBIF"
         ]
       }
@@ -681,5 +683,45 @@
       "http://schema.org/Dataset",
       "http://schema.org/DataCatalog"
     ]
-  }
+  },
+  "good_for": [
+    "Instance lookup by type",
+    "Filtering by identifier (GSE, NCT, MONDO, etc.)",
+    "Finding entities by property value",
+    "Cross-referencing across data sources",
+    "Aggregating or faceting by dimension",
+    "Filtering by catalog/repository"
+  ],
+  "query_patterns": [
+    {
+      "pattern": "Find instances by type",
+      "description": "Filter entities by rdf:type; use entity_types from context",
+      "sparql_hint": "?entity a <http://schema.org/Dataset> .",
+      "note": "Replace with desired type from context.entity_types"
+    },
+    {
+      "pattern": "Find by identifier",
+      "description": "Look up entities by identifier (GSE, NCT, MONDO, etc.)",
+      "sparql_hint": "?entity <http://schema.org/sameAs> ?id .",
+      "note": "Filter ?id by pattern from identifier_info; e.g. FILTER(CONTAINS(STR(?id), \"GSE\"))"
+    },
+    {
+      "pattern": "Filter by catalog/source",
+      "description": "Scope to a specific catalog or repository",
+      "sparql_hint": "?entity schema:includedInDataCatalog ?catalog .",
+      "note": "Bind ?catalog to a catalog IRI; use with get_repositories to see available catalogs"
+    },
+    {
+      "pattern": "Filter by property value",
+      "description": "Restrict to entities with a given property value",
+      "sparql_hint": "?entity ?property ?value . FILTER(?value = <value_iri> || ?value = \"value\" )",
+      "note": "Use dimensions from context for typical properties"
+    },
+    {
+      "pattern": "List distinct values for a dimension",
+      "description": "Get unique values of a dimension for faceting or dropdowns",
+      "sparql_hint": "SELECT DISTINCT ?val WHERE { ?entity schema:includedInDataCatalog ?val . }",
+      "note": "Use dimension names from context.dimensions"
+    }
+  ]
 }

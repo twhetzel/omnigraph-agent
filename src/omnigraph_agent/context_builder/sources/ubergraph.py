@@ -234,4 +234,5 @@ def build_ubergraph_ontology_config(
         "entity_types": ["http://www.w3.org/2002/07/owl#Class"],
         "dimensions": [],
         "text_blurb": f"Ontology {graph_id} from Ubergraph.",
+        "graph_type": "ontology",
     }

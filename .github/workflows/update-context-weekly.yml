@@ -1,13 +1,13 @@
-# Weekly: rebuild graph context files from Ubergraph (and key graphs with configs),
-# then open a PR to update dist/context/.
+# Weekly: rebuild graph context files from Ubergraph ontologies and FRINK knowledge
+# graphs, then open a PR to update dist/context/.
 #
-# - build-ubergraph-ontologies: fetches ontologies.txt, builds context for each
-#   (skips graph_ids that have an existing config, so only "no config" ontologies
-#   are rebuilt; nde, mondo, vbo have configs and are skipped here).
-# - build nde|mondo|vbo: refreshes those graphs using their configs.
+# Job 1 (build-ontologies): Ubergraph ontologies from ontologies.txt; mondo and vbo are
+#   built explicitly (they have custom configs and are skipped by build-ubergraph-ontologies).
+# Job 2 (build-knowledge-graphs): Downloads ontology artifact, runs build-frink (FRINK
+#   registry KGs including nde), creates the PR.
 #
 # Runs Thursdays 2:00 AM Pacific (10:00 UTC; 3:00 AM PT during PDT) to reduce
-# load on Ubergraph during low-traffic hours when large-ontology introspections run.
+# load on Ubergraph during low-traffic hours.
 
 name: Update context files (weekly)
 
@@ -21,7 +21,8 @@ permissions:
   pull-requests: write
 
 jobs:
-  update-context:
+  build-ontologies:
+    name: Build Ubergraph ontologies
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -37,25 +38,53 @@ jobs:
       - name: Build Ubergraph ontologies
         run: omnigraph-context-builder build-ubergraph-ontologies --format json
 
-      - name: Build nde
-        run: omnigraph-context-builder build nde --format json
-
+      # mondo and vbo have custom configs (namespace_scope, OBO/LLM enrichment) and are
+      # skipped by build-ubergraph-ontologies (--skip-existing-config). Build them
+      # explicitly so we use config/mondo.yaml and config/vbo.yaml.
       - name: Build mondo
         run: omnigraph-context-builder build mondo --format json
 
       - name: Build vbo
         run: omnigraph-context-builder build vbo --format json
 
+      - name: Upload context (ontologies)
+        uses: actions/upload-artifact@v4
+        with:
+          name: context-ontologies
+          path: dist/context
+
+  build-knowledge-graphs:
+    name: Build FRINK knowledge graphs and open PR
+    needs: build-ontologies
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download context (ontologies)
+        uses: actions/download-artifact@v4
+        with:
+          name: context-ontologies
+          path: dist/context
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install package
+        run: pip install -e .
+
+      - name: Build FRINK registry graphs
+        run: omnigraph-context-builder build-frink --format json
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
           paths: dist/context
-          commit-message: 'chore: weekly update of graph context files from Ubergraph'
+          commit-message: 'chore: weekly update of graph context files (Ubergraph + FRINK)'
           branch: weekly/update-context
           title: 'Weekly: update graph context files'
           body: |
             Context files in `dist/context/` were rebuilt from:
-            - **build-ubergraph-ontologies** (Ubergraph [ontologies.txt](https://github.com/INCATools/ubergraph/blob/master/ontologies.txt))
-            - **build nde** (NDE)
-            - **build mondo** (MONDO)
-            - **build vbo** (VBO)
+            - **build-ontologies** (Ubergraph [ontologies.txt](https://github.com/INCATools/ubergraph/blob/master/ontologies.txt), build mondo, build vbo)
+            - **build-frink** (FRINK registry [knowledge graphs](https://frink.renci.org/registry/), including nde)
