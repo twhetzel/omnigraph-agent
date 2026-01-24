@@ -1,8 +1,78 @@
 {
   "graph_id": "biobricks-tox21",
   "endpoint": "https://frink.apps.renci.org/biobricks-tox21/sparql",
-  "entity_types": [],
-  "dimensions": [],
+  "entity_types": [
+    "http://purl.obolibrary.org/obo/CHEMINF_000446"
+  ],
+  "dimensions": [
+    {
+      "name": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+      "coverage": 1.0,
+      "top_values": [
+        {
+          "value": "http://purl.obolibrary.org/obo/CHEMINF_000446",
+          "count": 8947
+        }
+      ]
+    },
+    {
+      "name": "http://www.w3.org/2000/01/rdf-schema#label",
+      "coverage": 1.0,
+      "top_values": [
+        {
+          "value": "Amiloride hydrochloride",
+          "count": 2
+        },
+        {
+          "value": "Amiodarone hydrochloride",
+          "count": 2
+        },
+        {
+          "value": "Betaine",
+          "count": 2
+        },
+        {
+          "value": "Betamethasone valerate",
+          "count": 2
+        },
+        {
+          "value": "Caffeine",
+          "count": 2
+        },
+        {
+          "value": "Clomipramine hydrochloride",
+          "count": 2
+        },
+        {
+          "value": "Dexamethasone",
+          "count": 2
+        },
+        {
+          "value": "Diethylstilbestrol",
+          "count": 2
+        },
+        {
+          "value": "Diphenhydramine hydrochloride",
+          "count": 2
+        },
+        {
+          "value": "Dopamine hydrochloride",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "name": "http://purl.org/dc/elements/1.1/source",
+      "coverage": 1.0,
+      "top_values": [
+        {
+          "value": "CAS",
+          "count": 8947
+        }
+      ]
+    }
+  ],
+  "graph_type": "knowledge_graph",
   "prefixes": {
     "schema": "http://schema.org/",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
@@ -12,20 +82,37 @@
     "oboInOwl": "http://www.geneontology.org/formats/oboInOwl#"
   },
   "text_blurb": "BioBricks Tox21 knowledge graph contains toxicology data from the Tox21 program. Links chemicals (ChEBI, PubChem), assays, and toxicological outcomes. May share chemical identifiers with NDE.",
-  "query_hints": {
-    "reasoning_mode": "no entailment; use explicit patterns and property paths (e.g., rdfs:subClassOf*)",
-    "exclude_obsoletes": true,
-    "label_property": "rdfs:label",
-    "definition_property": "IAO:0000115",
-    "default_behaviors": {
-      "consider_descendants": true,
-      "sort_results": true,
-      "use_distinct": true
+  "good_for": [
+    "Instance lookup by type",
+    "Filtering by identifier (GSE, NCT, MONDO, etc.)",
+    "Finding entities by property value",
+    "Cross-referencing across data sources",
+    "Aggregating or faceting by dimension"
+  ],
+  "query_patterns": [
+    {
+      "pattern": "Find instances by type",
+      "description": "Filter entities by rdf:type; use entity_types from context",
+      "sparql_hint": "?entity a <http://purl.obolibrary.org/obo/CHEMINF_000446> .",
+      "note": "Replace with desired type from context.entity_types"
     },
-    "output_rules": {
-      "extension_mode_token": "EXTENSION_MODE",
-      "extension_mode_format": "plain_text_no_backticks",
-      "normal_mode_format": "fenced_code_block_sparql"
+    {
+      "pattern": "Find by identifier",
+      "description": "Look up entities by identifier (GSE, NCT, MONDO, etc.)",
+      "sparql_hint": "?entity schema:identifier ?id .",
+      "note": "Filter ?id by pattern from identifier_info; e.g. FILTER(CONTAINS(STR(?id), \"GSE\"))"
+    },
+    {
+      "pattern": "Filter by property value",
+      "description": "Restrict to entities with a given property value",
+      "sparql_hint": "?entity ?property ?value . FILTER(?value = <value_iri> || ?value = \"value\" )",
+      "note": "Use dimensions from context for typical properties"
+    },
+    {
+      "pattern": "List distinct values for a dimension",
+      "description": "Get unique values of a dimension for faceting or dropdowns",
+      "sparql_hint": "SELECT DISTINCT ?val WHERE { ?entity <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?val . }",
+      "note": "Use dimension names from context.dimensions"
     }
-  }
+  ]
 }

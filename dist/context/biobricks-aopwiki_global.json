@@ -1,8 +1,288 @@
 {
   "graph_id": "biobricks-aopwiki",
   "endpoint": "https://frink.apps.renci.org/biobricks-aopwiki/sparql",
-  "entity_types": [],
-  "dimensions": [],
+  "entity_types": [
+    "http://edamontology.org/data_1025",
+    "http://edamontology.org/data_2291",
+    "http://aopkb.org/aop_ontology#KeyEventRelationship",
+    "http://edamontology.org/data_2298",
+    "http://edamontology.org/data_1027",
+    "http://edamontology.org/data_1033",
+    "http://aopkb.org/aop_ontology#KeyEvent",
+    "http://semanticscience.org/resource/CHEMINF_000407",
+    "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C54571",
+    "http://purl.obolibrary.org/obo/GO_0008150",
+    "http://aopkb.org/aop_ontology#AdverseOutcomePathway",
+    "http://semanticscience.org/resource/CHEMINF_000408",
+    "http://semanticscience.org/resource/CHEMINF_000405",
+    "http://semanticscience.org/resource/CHEMINF_000140",
+    "http://semanticscience.org/resource/CHEMINF_000567"
+  ],
+  "dimensions": [
+    {
+      "name": "http://purl.org/dc/elements/1.1/identifier",
+      "coverage": 1.0,
+      "top_values": [
+        {
+          "value": "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C25830",
+          "count": 1
+        },
+        {
+          "value": "http://purl.bioontology.org/ontology/NCBITAXON/1002698",
+          "count": 1
+        },
+        {
+          "value": "http://purl.bioontology.org/ontology/NCBITAXON/10036",
+          "count": 1
+        },
+        {
+          "value": "http://purl.bioontology.org/ontology/NCBITAXON/10090",
+          "count": 1
+        },
+        {
+          "value": "http://purl.bioontology.org/ontology/NCBITAXON/10095",
+          "count": 1
+        },
+        {
+          "value": "http://purl.bioontology.org/ontology/NCBITAXON/10116",
+          "count": 1
+        },
+        {
+          "value": "http://purl.bioontology.org/ontology/NCBITAXON/10117",
+          "count": 1
+        },
+        {
+          "value": "http://purl.bioontology.org/ontology/NCBITAXON/10118",
+          "count": 1
+        },
+        {
+          "value": "http://purl.bioontology.org/ontology/NCBITAXON/10141",
+          "count": 1
+        },
+        {
+          "value": "http://purl.bioontology.org/ontology/NCBITAXON/10185",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+      "coverage": 1.0,
+      "top_values": [
+        {
+          "value": "http://edamontology.org/data_1025",
+          "count": 12500
+        },
+        {
+          "value": "http://edamontology.org/data_2291",
+          "count": 7883
+        },
+        {
+          "value": "http://aopkb.org/aop_ontology#KeyEventRelationship",
+          "count": 2060
+        },
+        {
+          "value": "http://edamontology.org/data_2298",
+          "count": 1621
+        },
+        {
+          "value": "http://edamontology.org/data_1027",
+          "count": 1518
+        },
+        {
+          "value": "http://edamontology.org/data_1033",
+          "count": 1478
+        },
+        {
+          "value": "http://aopkb.org/aop_ontology#KeyEvent",
+          "count": 1469
+        },
+        {
+          "value": "http://semanticscience.org/resource/CHEMINF_000407",
+          "count": 799
+        },
+        {
+          "value": "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C54571",
+          "count": 658
+        },
+        {
+          "value": "http://purl.obolibrary.org/obo/GO_0008150",
+          "count": 504
+        }
+      ]
+    },
+    {
+      "name": "http://purl.org/dc/elements/1.1/source",
+      "coverage": 0.8746887966804979,
+      "top_values": [
+        {
+          "value": "UniProt",
+          "count": 7883
+        },
+        {
+          "value": "AOPWiki",
+          "count": 1962
+        },
+        {
+          "value": "HGNC",
+          "count": 1621
+        },
+        {
+          "value": "Entrez Gene",
+          "count": 1518
+        },
+        {
+          "value": "Ensembl",
+          "count": 1478
+        },
+        {
+          "value": "ChEBI",
+          "count": 799
+        },
+        {
+          "value": "HMDB",
+          "count": 408
+        },
+        {
+          "value": "ChemSpider",
+          "count": 406
+        },
+        {
+          "value": "PubChem",
+          "count": 403
+        },
+        {
+          "value": "Wikidata",
+          "count": 402
+        }
+      ]
+    },
+    {
+      "name": "http://www.w3.org/2000/01/rdf-schema#label",
+      "coverage": 0.2157676348547718,
+      "top_values": [
+        {
+          "value": "AOP 1",
+          "count": 1
+        },
+        {
+          "value": "AOP 10",
+          "count": 1
+        },
+        {
+          "value": "AOP 100",
+          "count": 1
+        },
+        {
+          "value": "AOP 101",
+          "count": 1
+        },
+        {
+          "value": "AOP 102",
+          "count": 1
+        },
+        {
+          "value": "AOP 103",
+          "count": 1
+        },
+        {
+          "value": "AOP 104",
+          "count": 1
+        },
+        {
+          "value": "AOP 105",
+          "count": 1
+        },
+        {
+          "value": "AOP 106",
+          "count": 1
+        },
+        {
+          "value": "AOP 107",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "http://www.w3.org/2000/01/rdf-schema#seeAlso",
+      "coverage": 0.20968188105117566,
+      "top_values": [
+        {
+          "value": "http://purl.uniprot.org/uniprot/A0A0R4IVV0",
+          "count": 1
+        },
+        {
+          "value": "http://purl.uniprot.org/uniprot/A2APX8",
+          "count": 1
+        },
+        {
+          "value": "http://purl.uniprot.org/uniprot/A6NNZ2",
+          "count": 1
+        },
+        {
+          "value": "http://purl.uniprot.org/uniprot/A9MC63",
+          "count": 1
+        },
+        {
+          "value": "http://purl.uniprot.org/uniprot/A9WZ73",
+          "count": 1
+        },
+        {
+          "value": "http://purl.uniprot.org/uniprot/C0RLT0",
+          "count": 1
+        },
+        {
+          "value": "http://purl.uniprot.org/uniprot/C7LIQ1",
+          "count": 1
+        },
+        {
+          "value": "http://purl.uniprot.org/uniprot/D1M7A7",
+          "count": 1
+        },
+        {
+          "value": "http://purl.uniprot.org/uniprot/D4A1W8",
+          "count": 1
+        },
+        {
+          "value": "http://purl.uniprot.org/uniprot/E1JI63",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "http://purl.org/dc/terms/isPartOf",
+      "coverage": 0.20018441678192717
+    },
+    {
+      "name": "http://purl.org/dc/elements/1.1/title",
+      "coverage": 0.17671738128169664
+    },
+    {
+      "name": "http://purl.org/dc/terms/created",
+      "coverage": 0.14804057169202398
+    },
+    {
+      "name": "http://purl.org/dc/terms/modified",
+      "coverage": 0.14804057169202398
+    },
+    {
+      "name": "http://purl.org/dc/terms/alternative",
+      "coverage": 0.10530198248040572
+    },
+    {
+      "name": "http://www.w3.org/2004/02/skos/core#exactMatch",
+      "coverage": 0.08598432457353619
+    },
+    {
+      "name": "http://purl.org/dc/elements/1.1/description",
+      "coverage": 0.0698478561549101
+    },
+    {
+      "name": "http://www.w3.org/2002/07/owl#sameAs",
+      "coverage": 0.024250806823420932
+    }
+  ],
+  "graph_type": "knowledge_graph",
   "prefixes": {
     "schema": "http://schema.org/",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
@@ -12,20 +292,90 @@
     "oboInOwl": "http://www.geneontology.org/formats/oboInOwl#"
   },
   "text_blurb": "BioBricks AOP Wiki is a knowledge graph of Adverse Outcome Pathways (AOPs) connecting chemicals, molecular events, and adverse outcomes. Links chemicals (ChEBI), diseases (MONDO, DOID), and pathways.",
-  "query_hints": {
-    "reasoning_mode": "no entailment; use explicit patterns and property paths (e.g., rdfs:subClassOf*)",
-    "exclude_obsoletes": true,
-    "label_property": "rdfs:label",
-    "definition_property": "IAO:0000115",
-    "default_behaviors": {
-      "consider_descendants": true,
-      "sort_results": true,
-      "use_distinct": true
+  "identifier_info": {
+    "predicates": [
+      "http://purl.org/dc/elements/1.1/identifier",
+      "http://www.w3.org/2004/02/skos/core#exactMatch",
+      "http://www.w3.org/2002/07/owl#sameAs",
+      "http://aopkb.org/aop_ontology#has_evidence"
+    ],
+    "patterns": [
+      {
+        "prefix": "KE",
+        "example": "KER 2569&nbsp; Activation of the AhR leads to decreased apoptosis\n\nSeveral studies have found that the activation of the AhR by stressors such as TCDD, can promote a decrease in apoptosis (KER2569), which is a deleterious event with regards to cancer (Al-Dhfyan et al., 2017 Jan 19,&nbsp;Bekki et al., 2015). Additionally, an increase in cell death was found when blocking the AhR pathway using AhR silencing (RNA interference or knock-out), knockout cell lines or antagonists (CH223191 or alpha-naphthoflavone) (Goode et al., 2013 Dec 15,&nbsp;Al-Dhfyan et al., 2017 Jan 19,&nbsp;Bekki et al., 2015,&nbsp;Regan Anderson et al., 2018). The most frequently used assay to evaluate apoptosis was&nbsp;cytometry&nbsp;with the use of Annexin V: this was performed with ER-positive cells lines (MCF-7, T-47D), triple negative cell lines (MDA-MB-231, HS 578), cells over-expressing the Her2 (SK-BR-3) and cells lines derived from cancer samples from patients (Goode et al., 2013 Dec 15,&nbsp;Al-Dhfyan et al., 2017 Jan 19,&nbsp;Bekki et al., 2015,&nbsp;Regan Anderson et al., 2018,&nbsp;Fujisawa et al., 2011).\n\nThe concordance of the evidence was classified as &ldquo;moderate&rdquo; since the aim of most studies was to evaluate the capacity to survive in an apoptosis-promoting environment (i.e., chemotherapeutic drugs). Indeed, they assessed the resistance to chemotherapy agents such as doxorubicin and paclitaxel and found that the concomitant inactivation of the AhR pathway could decrease the resistance to these chemotherapy agents through an increase in cell death when compared to cells with a functional (or expressed at sufficient levels) AhR (Goode et al., 2013 Dec 15,&nbsp;Al-Dhfyan et al., 2017 Jan 19,&nbsp;Bekki et al., 2015,&nbsp;Regan Anderson et al., 2018,&nbsp;Fujisawa et al., 2011). Since the environment was modified by the presence of chemotherapy, the hypothesis of an alternative pathway cannot be completely discarded. It must be noticed that the exact biological mechanisms linking the activation of the AhR to the decrease in apoptosis remains unclear. Indeed, Anderson&nbsp;et al. suggested that the AhR interacts with the&nbsp;glucocorticoid&nbsp;receptor (GR) and the hypoxia inducible factor-2&alpha; (HIF-2&alpha;) (Regan Anderson et al., 2018). The presence of the GR is associated with a poor prognosis, notably in triple negative breast cancer (Pan et al., 2011,&nbsp;Moran et al., 2000 Feb 15). Indeed, this receptor is involved in survival and resistance to chemotherapy through up-regulation of c-myc, Bcl2 and Kruppel-like factor 5 (Pan et al., 2011,&nbsp;Wu et al., 2004,&nbsp;Li et al., 2017). Both GR and HIF 2&alpha; could be up regulated by the AhR. They then activate Brk (also known as PTK6), a ligand of EGFR (epidermal growth factor receptor), involved in the inhibition of apoptosis (Regan Anderson et al., 2018,&nbsp;Li et al., 2012). Another possible mechanism suggested by Bekki et al. is that the decrease in apoptosis was caused by the induction of cyclooxygenase 2 (COX-2) and the NF-&kappa;B subunit RelB (Bekki et al., 2015). They both prevent apoptosis through induction of Bcl2, an anti-apoptotic factor (Tsujii and DuBois, 1995,&nbsp;Vogel et al., 2007,&nbsp;Thomas et al., 2020,&nbsp;Baud and Jacque, 2008 Dec,&nbsp;Demicco et al., 2005 Nov,&nbsp;Wang et al., 2007 Apr,&nbsp;Liu et al., 2001 May 25).\n\nKER 2577: Decreased apoptosis promotes tumor growth\n\nFor KER 2577,&nbsp;in vivo, Goode et al. showed that the knockout of the AhR in mice reduced tumor growth through an increase of cell apoptosis (Goode et al., 2013 Dec 15).\n\nThe relationship between decreased apoptosis and increase in tumor growth (KER 2577) is not detailed here due to extensive evidence in the scientific literature (Hanahan and Weinberg, 2011 Mar 4).\n\nKER 2570: Activation of the AhR leads to an increased cell motility\n\nThe activation of the AhR can modulate cell motility in different types of breast cancers such as: ER-positive cells lines (MCF-7, T-47D, ZR-75&ndash;1), triple negative (MDA-MB-231, MDA-MB-435, HS-578-T, SUM149), and cells overexpressing the Her2 (SK-BR-3) (Goode et al., 2013 Dec 15,&nbsp;Regan Anderson et al., 2018,&nbsp;Parks et al., 2014 Nov,&nbsp;Pontillo et al., 2011 Apr,&nbsp;Qin et al., 2011 Oct 20,&nbsp;Nguyen et al., 2016 Nov 15,&nbsp;Novikov et al., 2016 Nov,&nbsp;Miret et al., 2016 Jul,&nbsp;Shan et al., 2020 Nov,&nbsp;Dwyer et al., 2021 Feb,&nbsp;Narasimhan et al., 2018 May 7,&nbsp;Hsieh et al., 2012 Feb). Activation of the AhR with TCDD, butyl-benzyl&nbsp;phthalate, di-n-butyl phthalate, hexachlorobenzene, and benzo[a]pyrene can promote cell migration in different assays (Parks et al., 2014 Nov,&nbsp;Pontillo et al., 2011 Apr,&nbsp;Qin et al., 2011 Oct 20,&nbsp;Novikov et al., 2016 Nov,&nbsp;Miret et al., 2016 Jul,&nbsp;Shan et al., 2020 Nov,&nbsp;Narasimhan et al., 2018 May 7,&nbsp;Hsieh et al., 2012 Feb). On the other hand, the use of AhR antagonists, AhR silencing or AhR knockout reversed this effect (Goode et al., 2013 Dec 15,&nbsp;Regan Anderson et al., 2018,&nbsp;Parks et al., 2014 Nov,&nbsp;Pontillo et al., 2011 Apr,&nbsp;Qin et al., 2011 Oct 20,&nbsp;Novikov et al., 2016 Nov,&nbsp;Shan et al., 2020 Nov,&nbsp;Narasimhan et al., 2018 May 7,&nbsp;Hsieh et al., 2012 Feb). The most frequently used assays for evaluating cell migration were the scratch wound assay and the transwell chamber assay. Only three works evaluated the dose&ndash;response concordance of AhR activation with stressors and cell migration (Pontillo et al., 2011 Apr,&nbsp;Miret et al., 2016 Jul,&nbsp;Shan et al., 2020 Nov). The evidence was therefore classified as &ldquo;moderate&rdquo;.\n\n&nbsp;KER 2572: Activation of the AhR leads to an increased invasion\n\nDue to the extensive robust and concordant literature of the link between activation of the AhR-increased cell motility-increased invasion-breast cancer progression, the confidence in these key events was rated as high. However, due to the use of ligands to activate the AhR, it cannot be completely ruled out that alternative pathways (independent of the AhR) can also contribute to these features. For instance, 2 main pathways seem to explain this increase in migration and invasion: the c-Src/HER1/STAT5b, and ERK1/2&nbsp;pathways. Yet, these pathways seem only to explain the relation between the AhR activation and cell migration / invasion, when the ligand used is hexachlorobenzene, an organochlorinated pesticide (Pontillo et al., 2011 Apr,&nbsp;Miret et al., 2016 Jul,&nbsp;Pontillo et al., 2013 May 1). Even though alternative mechanisms may present themselves, all studies blocked the AhR pathway and found a decrease in cell migration/invasion. The evidence for alternative mechanisms was therefore classified as &ldquo;moderate&rdquo; and the biological plausibility of KER was also classified as &ldquo;moderate&rdquo;.\n\nKER 1306: Increased cell motility promotes organ invasion\n\nThe relation between cell migration and organ invasion has already been shown (KER-1306,&nbsp;https://aopwiki.org/relationships/1306). Since the 2 are closely linked, most articles studied both cell migration (chemo-tactic) and the capacity to invade the extra-cellular matrix. Cell invasion is indeed defined as the capacity of a cell to migrate and degrade/invade the extracellular matrix.&nbsp;In vitro, this process was evaluated mostly using transwell chamber with Matrigel&reg; and the presence of matrix metalloproteinases (MMP). This effect was found in ER-positive cells, triple negative cell lines and cells overexpressing the Her2.\n\n&nbsp;KER 2572: Activation of the AhR leads to an increased invasion\n\nThe activation of the AhR through the use of different ligands (benzophenone, butyl benzyl phthalate, di-n-butyl phthalate, hexachlorobenzene,&nbsp;chlorpyrifos, TCDD) or the blockage of the AhR (silencing, KO or antagonism) increased or decreased cell invasion, respectively (Parks et al., 2014 Nov,&nbsp;Qin et al., 2011 Oct 20,&nbsp;Nguyen et al., 2016 Nov 15,&nbsp;Miret et al., 2016 Jul,&nbsp;Shan et al., 2020 Nov,&nbsp;Narasimhan et al., 2018 May 7,&nbsp;Hsieh et al., 2012 Feb,&nbsp;Pontillo et al., 2013 May 1,&nbsp;Miller et al., 2005,&nbsp;Belguise et al., 2007 Dec 15,&nbsp;Yamashita et al., 2018 May 1,&nbsp;Miret et al., 2020 May). The dose&ndash;response concordance for cell invasion was demonstrated using increasing doses of hexachlorobenzene, benzo[a]pyrene, chlorpyrifos and TCDD (Miret et al., 2016 Jul,&nbsp;Shan et al., 2020 Nov,&nbsp;Pontillo et al., 2013 May 1,&nbsp;Miller et al., 2005,&nbsp;Miret et al., 2020 May). To further explore cell invasion, Nguyen et al. created a model of a lymphatic barrier using a three-dimensional lymph endothelial cell as a monolayer co-cultured with&nbsp;spheroids&nbsp;of MDA-MB231 cells (Nguyen et al., 2016 Nov 15). They found that silencing or antagonizing the AhR (DIM) or activating the AhR (FICZ) respectively decreased or increased invasion of the lymphatic barrier.\n\nOn an organ level,&nbsp;in vivo, an increase in metastasis has been found in mice and zebrafish after the activation of the AhR with different ligands (butyl benzyl phthalate, di-n-butyl phthalate, hexachlorobenzene, TCDD) (Goode et al., 2014,&nbsp;Shan et al., 2020 Nov,&nbsp;Narasimhan et al., 2018 May 7,&nbsp;Hsieh et al., 2012 Feb,&nbsp;Pontillo et al., 2013 May 1). In the zebrafish model, Narasimham et al. treated the animals either with triple negative MDA-MB-231 cells only (untreated) or with MDA-MB-231 cells treated with an AhR inhibitor (CB7993113 or CH22319) (Narasimhan et al., 2018 May 7). Untreated fish had significantly more metastasis (OR&nbsp;=&nbsp;9, IC95%=3&ndash;35). Similar results were found using mice models (Goode et al., 2014,&nbsp;Shan et al., 2020 Nov,&nbsp;Narasimhan et al., 2018 May 7,&nbsp;Hsieh et al., 2012 Feb,&nbsp;Pontillo et al., 2013 May 1).\n\nKER 2568: Activation of the AhR leads to an increased inflammation&nbsp;\n\nIn triple negative breast cell lines (MDA-MB436, MDA-MB-231) and ER-positive cell lines, it has been shown that the activation of the AhR can lead to an increase in inflammation. (Bekki et al., 2015,&nbsp;Miller et al., 2005,&nbsp;Yamashita et al., 2018 May 1,&nbsp;Degner et al., 2009 Jan,&nbsp;Vogel et al., 2011 Aug 1,&nbsp;Kolasa et al., 2013 Apr 25,&nbsp;Vacher et al., 2018,&nbsp;Malik et al., 2019 Oct). The stressors mainly used to activate the AhR were TCDD followed by benzo[a]pyrene and 2-amino-1-methyl-6-phenylimidazo [4, 5-b]&nbsp;pyridine&nbsp;(PhiP). After AhR inhibition (KO or antagonists), a decrease in inflammation biomarkers was found (Miller et al., 2005,&nbsp;Yamashita et al., 2018 May 1,&nbsp;Degner et al., 2009 Jan,&nbsp;Vogel et al., 2011 Aug 1,&nbsp;Kolasa et al., 2013 Apr 25). Assays evaluating cell inflammation were quantitative dosages of IL-6, IL-8 and Cox2 activity/expression. Cox-2 and IL-8 were amongst the top &ldquo;gene concepts&rdquo; retrieved by the PubTator Central tool, likewise, &ldquo;inflammation&rdquo; was frequently found as a disease concept. The most consensual pathway linking the AhR activation to cell inflammation was the NF-kB pathway (Vogel et al., 2011 Aug 1,&nbsp;Kolasa et al., 2013 Apr 25). Only half of the studies found a dose&ndash;response relationship (Miller et al., 2005,&nbsp;Kolasa et al., 2013 Apr 25,&nbsp;Malik et al., 2019 Oct). No studies were carried out&nbsp;in vivo&nbsp;for breast cancer and therefore the concordance and evidence were classified as &ldquo;moderate&rdquo;.\n\nAOP 21 also found the association between AhR activation and inflammation&nbsp;via&nbsp;COX 2 (Aryl hydrocarbon receptor activation leading to early life stage mortality, via increased COX-2) with a weight of evidence classified as &ldquo;high&rdquo;. Indeed, the AhR/ARNT heterodimer links to the dioxin responsive elements which in turn up-regulates COX-2 (66,67].\n\n&nbsp;KER 2573: Inflammation promotes organ invasion\n\nIn the specific setting of AhR activation, only 2 studies showed the continuum between AhR activation &ndash; increased inflammation &ndash; increased invasion (Miller et al., 2005,&nbsp;Yamashita et al., 2018 May 1). However, in general, there is extensive knowledge on the relationship between cell inflammation and organ invasion. First, COX-2 is expressed at higher levels in triple negative invasive breast cancers than in less aggressive ER-positive cancers (Gilhooly and Rose, 1999 Aug,&nbsp;Liu and Rose, 1996 Nov 15). COX-2 catalyzes the conversion of arachidonic acid into&nbsp;prostaglandin&nbsp;H2, a pro-inflammatory factor, and is therefore considered as a prognosis factor in breast cancer (Ristim&auml;ki et al., 2002 Feb 1,&nbsp;Parrett et al., 1997 Mar). Transfection with COX-2 triple negative MDA-MB-435 cells increased cell migration 2-fold compared to control cells in a transwell-Matrigel&reg; assay. Antagonism of COX-2 through an inhibitor (NS-398) reversed this action in a dose-dependent way (Singh et al., 2005 May). Second,&nbsp;in vivo, the use of anti-inflammatory treatments such as celecoxib (COX-2 inhibitor) can reduce tumor growth and spread (Harris et al., 2000 Apr 15). Finally, epidemiologic evidence suggests that inflammatory breast cancers have the worse prognosis. Indeed, the median overall survival of patients with inflammatory breast cancer compared with those with non-inflammatory breast cancer tumors is 4.75&nbsp;years&nbsp;versus&nbsp;13.40&nbsp;years for stage III disease and 2.27&nbsp;years&nbsp;versus&nbsp;3.40&nbsp;years for stage IV disease (Schlichting et al., 2012 Aug,&nbsp;Fouad et al., 2017 Apr).\n\nThe mechanism of action of COX-2 are consensual. COX-2 promotes cell invasion through upregulation of MMPs (notably 2 and 9) (Takahashi et al., 1999 Oct 22,&nbsp;Sivula et al., 2005 Feb,&nbsp;Larkins et al., 2006 Jul). Moreover, COX-2 could also activate the urokinase plasminogen activator (uPA) which degrades the basal membrane of epithelia (Singh et al., 2005 May,&nbsp;Takahashi et al., 1999 Oct 22,&nbsp;Larkins et al., 2006 Jul,&nbsp;Guyton et al., 2000 Mar).\n\nThe relationship between inflammation and invasion is well document therefore the evidence was classified as &ldquo;strong&rdquo;.\n\n&nbsp;KER 2574: Inflammation promotes angiogenesis\n\nLikewise, two studies evaluated the specific continuum AhR activation &ndash; increased inflammation &ndash; increased&nbsp;angiogenesis&nbsp;(Pontillo et al., 2015 Nov 19,&nbsp;Z&aacute;rate et al., 2020 Aug). As previously mentioned, the AhR activation increases inflammation, notably through an increase in COX 2 (Bekki et al., 2015,&nbsp;Miller et al., 2005,&nbsp;Degner et al., 2009 Jan,&nbsp;Pontillo et al., 2015 Nov 19,&nbsp;Z&aacute;rate et al., 2020 Aug).\n\nCOX-2 can promote angiogenesis through an increase in VEGF (Vascular endothelial growth factor) (Harris et al., 2014 Oct 10,&nbsp;Kirkpatrick et al., 2002).&nbsp;In a pathologic study characterizing 46 breast cancer specimen using immunochemistry, it was found that the density of microvessels was significantly higher in patients with COX-2 expression than in those without expression (p&nbsp;=&nbsp;0.03) (Costa et al., 2002 Jun). The relationship between COX-2 and angiogenesis has also been shown in gastric and colorectal cancer (Tsujii et al., 1998 May 29,&nbsp;Uefuji et al., 2000 Jan). Indeed, colon carcinoma cells overexpressing COX-2 produce proangiogenic factors (VEGF, bFGF, TBF-&beta;, PDGF, and endothelin-1), and stimulate endothelial migration and the formation of tube vessels. These effects were reversed by an inhibitor (NS-398).&nbsp;In vivo, Diclofenac, a COX-2 inhibitor, decreased angiogenesis in mice presenting a colorectal cancer (Seed et al., 1997 May 1). Likewise, in a murine model of breast cancer, celecoxib (a selective COX-2 inhibitor) reduced metastasis and tumor burden through a decrease of micro vessel density and VEGF (Yoshinaka et al., 2006 Dec,&nbsp;Zhang et al., 2004 Sep). In clinical studies, patients with inflammatory breast cancers have increased levels of genes involved in angiogenesis such as VEGF (Van der Auwera et al., 2004 Dec 1). Patients with an inflammatory breast cancer benefit the most from anti-angiogenic treatment bevacizumab (Pierga et al., 2012 Apr).\n\nThe evidence was classified as &ldquo;moderate&rdquo; due to the lack of dose response studies.\n\nKER 1266: Activation of the AhR leads to an increased endothelial migration&nbsp;\n\nThe activation of the AhR can lead to an increased endothelial cell migration. This was found when HMEC-1 or EA.hy926 cells were co-cultured with ER-positive MCF-7 cells and triple negative MDA-MB-231 cells (Pontillo et al., 2015 Nov 19,&nbsp;Z&aacute;rate et al., 2020 Aug). The assay mainly used was the Matrigel&reg; / tube formation assay. Only one study found an increase in endothelial cell proliferation and not migration, therefore it was not kept as a KE (Pontillo et al., 2015 Nov 19). The main pathway explaining this relationship was again related to the activation of COX2 and subsequently to the increase in VEGF. The association between the activation of the AhR and endothelial cell migration was classified as &ldquo;weak&rdquo; since only 2 studies explored this feature, and both used hexachlorobenzene as a stressor. However, these works were robust with strong evidence, and both found a reversed association after AhR blockage. No contradicting results were found in the scientific literature.\n\nAs opposed to our work, another AOP displayed a link between AhR activation and angiogenesis (AOP 150) and found that activation of the receptor could decrease VEGF production with moderate evidence and quantitative understanding. It must be noted that these AOPs applied only to chicken, zebrafish, and certain rodents whereas our AOP concerns humans. As detailed further, the AhR presents a variability between species which must be considered.\n\nKER&nbsp;1267: &nbsp;Increased endothelial migration promotes angiogenesis\n\nPontillo et al. treated mice with increasing doses of hexachlorobenzene and then calculated the vessel density in mammary fat pads (Pontillo et al., 2015 Nov 19). They found that mice treated with hexachlorobenzene had a higher vessel density with a dose&ndash;response concordance. Treatment by AhR antagonists completely reversed this association (Pontillo et al., 2015 Nov 19,&nbsp;Z&aacute;rate et al., 2020 Aug). The relationship between endothelial migration and angiogenesis was not detailed here since there is existing extensive knowledge (Lamalice et al., 2007 Mar 30,&nbsp;Norton and Popel, 2016 Nov 14,&nbsp;Ausprunk and Folkman, 1977 Jul 1). The KER 12 was considered as &ldquo;strong&rdquo;.\n\n&nbsp;KER 3137, 3138 and 3137: Increased tumor growth, increased invasion, and increased angiogenesis lead to breast cancer metastasis\n\nDue to extensive data in the scientific literature and the empirical evidence in favor of these KERs, these KERs were not detailed here.\n",
+        "count": 2,
+        "predicates": [
+          "http://aopkb.org/aop_ontology#has_evidence"
+        ],
+        "semantically_related_prefixes": []
+      },
+      {
+        "prefix": "GPE",
+        "example": "GPER\u6d3b\u5316\u88ab\u9274\u5b9a\u4e3aTPP\u901a\u8fc7GPER\u4fe1\u53f7\u901a\u8def\u8bf1\u5bfc\u7684\u8102\u8d28\u4ee3\u8c22\u5f02\u5e38\u4e2d\u7684\u4e3b\u8981MIE\u3002TPP\u53ef\u4ee5\u901a\u8fc7  \u5f71\u54cdTM6\u6765\u8bf1\u5bfc\u968f\u540e\u7684\u4fe1\u53f7\u901a\u8def\uff0c\u5305\u62ecPI3K-Akt / NCOR1\u548cmTOR / S6K2 / PPAR&alpha;\u4f5c\u4e3aKE1\uff08\u56fe6\uff09\u6765\u53d1\u6325GPER\u7684\u6fc0\u52a8\u4f5c\u7528\u3002CPT1A\u548cCPT2\uff09\u4e0e\u8102\u80aa\u9178\u6c27\u5316\u4ee3\u8c22\u6709\u5173\uff0c\u5e76\u4e0a\u8c03\u4e0e\u8102\u8d28\u548c\u8102\u80aa\u9178\u5408\u6210\uff08KE2\uff09\u76f8\u5173\u7684\u57fa\u56e0\uff08SREBF2\u548cSCD\uff09\u7684\u8868\u8fbe\u3002\u8fd9\u4e9bKLE\u6700\u7ec8\u901a\u8fc7\u4e0e\u8102\u8d28\u4ee3\u8c22\u5f02\u5e38\u7684\u5206\u5b50\u56e0\u679c\u5173\u7cfb\u5bfc\u81f4\u8102\u8d28\u8fc7\u5ea6\u79ef\u7d2f \n",
+        "count": 1,
+        "predicates": [
+          "http://aopkb.org/aop_ontology#has_evidence"
+        ],
+        "semantically_related_prefixes": []
+      },
+      {
+        "prefix": "KER",
+        "example": "KER4: Mitochondrial dysfunction (KE1) - Oxidative&nbsp;stress (KE2)\n\nThe biological plausibility: Pathological ROS levels result in oxidation and loss of function of proteins,&nbsp;lipids, and nucleic acids. The resulting oxidative stress directly, or via mitochondrial dysfunction, results in less mitochondrial biomass, intracellular ATP and respiratory complexes, elevated concentration of intracellular Ca2+ and activated Ca2+-dependent calpains, cellular dysfunction and eventually cell death [70, 136-138].\n\nThe empirical support: Oxidative imbalance is predominant in AD pathogenesis [139, 140]. Accumulated 8-oxoguanine (8-oxoG), oxidized guanine, a marker for nuclear and mitochondrial DNA damage, has been found in postmortem AD hippocampus [141, 142]. Enhanced lipid peroxidation, oxidized protein and nucleic acids, and a significant decrease in antioxidant enzyme activity are reported in AD [131, 136, 143]. Proteomic analysis shows a 2-fold increase in mitochondrial protein nitration and oxidation in subjects with MCI when compared to healthy subjects, but not in AD subjects, suggesting that mitochondrial dysfunction occurs during early development of disease [144]. Several studies report that neuronal stress increases cytosolic Ca2+-activated calpain expression leading to neuropathological diseases, such as AD [145-147].\n\nOverall assessment: Data suggest that GSH depletion and mitochondrial dysfunction are plausible causes for excessive ROS levels, but lack quantitative data about threshold, magnitude, and duration. KER4 describes the link between the upstream event &lsquo;mitochondrial dysfunction&rsquo; and the downstream event &lsquo;oxidative stress&rsquo;. Both events are considered adjacent, despite the evidence for this relation is classified as moderate due to some&nbsp; inconsistencies.\n\nKER5: Oxidative Stress (KE2) - p-tau (KE3)\n\nThe biological plausibility: The evidence suggest that ROS induced oxidative stress promotes pathological tau modifications and disruption of the mechanisms involved in proper mitochondrialfunctionality [139, 150-152]. Hyperphosphorylation of tau disrupts its affinity for microtubules,&nbsp;increases its resistance to degradation, and induces conformational changes promoting aggregation [49]. Hence, a proper regulation between tau protein phosphorylation and dephosphorylation of the many phosphorylation sites of tau is detrimental for a healthy neuronal cell physiology [153-155]. Under excessive oxidative stress Ca2+-dependent calpains activate cyclin-dependent kinase 5 (Cdk5) and GSK3&beta;, both involved in tau hyperphosphorylation and shown to be important for proper neural development, synaptic signaling, learning and memory [155, 156]. Cdk5 and GSK3&beta; interact with the truncated regulatory unit of p35 (p25), also a product of calpain activation [157]. Cdk5/p25 and GSK3&beta;/p25 mediated tau phosphorylation decreases the affinity of tau for microtubules, disrupts the cytoskeleton and causes apoptosis [158, 159]. The GSK3&beta;/p25 complex inhibits PP2A phosphorylation&nbsp;through increased inhibitory Tyr307 phosphorylation and decreases expression of PP2A [160]. The data suggest a GSK3&beta;-Cdk5-PP2A synergy in tauopathy, which is characterized by decreased affinity of tau for microtubules, abnormal hyperphosphorylation, aggregation and eventually synaptic dysfunction [161-164].&nbsp;\n\nThe empirical support: Mitochondrial dysfunction (KE1) and/or oxidative stress (KE2) activate the calpain signaling pathway, a process that precedes p-tau formation during the early stages of AD development [165]. Available evidence suggests that oxidative stress through tau hyperphosphorylation contributes to tau pathology and AD [166]. Calpain mediated activation of the&nbsp;tau kinases Cdk5 and GSK3&beta; correlates with the degree of pathology (Braak stage II-III) and precedes&nbsp;tau phosphorylation and synaptic loss [165]. Proteomic analysis suggests that loss of function of neuronal peptidyl prolyl cis-trans isomerase 1 (Pin1) by oxidative damage, and its downregulation in AD hippocampus, are linked to tau phosphorylation and AD neurofibrillary pathology [167]. The&nbsp;observation that human truncated tau protein expression leads to accumulation of ROS and cortical&nbsp;neuron death in rats, suggests that tau modification may also precede oxidative stress [168].\n\nOverall assessment: Data support that excessive ROS levels are a plausible cause for tau pathology, and that both events are adjacent. Even though it technologically is possible to measure ROS levels in&nbsp;vitro, it was not possible to find threshold and magnitude values, nor duration of exposure, that are&nbsp; required to result in a persistent adverse impact on p-tau levels.\n\nKER7: Dysfunctional autophagy (KE4) - cytosolic toxic tau (KE5)\n\nThe biological plausibility: Progressive dysfunction of neuronal autophagic capacity contributes to the formation of an initiating substrate complex needed for the initial seeding (or nucleation) of tau (and A&beta;) aggregation. As a result, cytosolic tau oligomers are formed, followed by UPS-mediated autocatalytic propagation of tau aggregation [33]. At synaptic sites, accumulated tau oligomers are&nbsp;correlated with accumulated ubiquitinated proteins, proteasomes and related chaperones [200].&nbsp;\n\nThe empirical support: Cytosolic toxic tau oligomers are observed at very early stages of the AD [173], with human AD brain containing more tau oligomers than control samples [201]. Inhibition of autophagy in a neuroblastoma cell model of tauopathy results in elevated levels of soluble and&nbsp;insoluble forms of tau [199]. Observations of internalized tau aggregates colocalizing with lysosomal&nbsp;markers suggest a plausible role of autophagy in tau degradation or lack thereof when dysfunctional.&nbsp;Supporting evidence is provided by a study showing that intracellular tau seed-induced aggregate&nbsp;formation is inhibited by activation of autophagy with rapamycin [202].&nbsp;\n\nOverall assessment: It is plausible that a decreasing capacity to exhibit effective autophagy (KE4), in&nbsp;an environment of elevated p-tau (KE3), plays an important role in the accumulation of cytosolic pathologic tau variants (KE5). While the data indicate that defective autophagy, elevated p-tau and cytosolic tau levels are adjacent, there were no quantitative data found concerning threshold,&nbsp;magnitude or duration required to observe an adverse effect driving the development of memory loss.\n\nKER8:&nbsp;Cytosolic toxic tau (KE5) -&nbsp;dysfunctional axonal transport (KE6), KER9:&nbsp;dysfunctional axonal transport (KE6) - dysfunctional synapses (KE7), KER10: dysfunctional synapses (KE7) - neuronal dysfunction (KE9)\n\nThe biological plausibility: Tau protein drives cognitive impairment by the &alpha;-amino-3-hydroxy-5-methyl-4-isoxazolepropionic acid (AMPA) and N-methyl-D-aspartate (NMDA) receptor pathways [203]. In the neuronal dendrites, p-tau targets Fyn kinase, a substrate for the NMDA receptor at postsynaptic compartments [204, 205]. This results in delocalization of tau from axon to synapses and somatodendritic compartments, which causes NFT formation and eventually synaptic dysfunction [153, 171]. Soluble tau oligomers exert more acute toxicity than the insoluble ones [206]. Especially dimers are effectively self-associating into large oligomeric tau nuclei of aggregation. These&nbsp;pathological tau aggregates are cytosolic, but also appear in the extracellular space, and correlate with synaptic dysfunction, neuronal toxicity, and degeneration [206, 207]. In human induced pluripotent stem cells (iPSC)-derived neurons, induction of tau oligomers, but not monomers, drives pathological p-tau aggregation and causes neurite retraction, synaptic loss, neurotransmitters imbalance and neuronal cell death [202]. In mice, subcortical injection of oligomers reduces the expression of synaptic vesicle-associated proteins leading to synaptic dysfunction. Pathogenic tau oligomers also negatively affect mitochondria, suggesting an amplifying circle of toxic Ca2+-mediated events linking KE3 and KE5, and leading to mitochondrial dysfunction and synaptic loss [208, 209]. Tau-induced mitochondrial dysfunction (KE1) is characterized by a decrease in mitochondrial complex I levels,&nbsp;activation of caspase-9 and the apoptotic mitochondrial pathway [208]. Toxic Tau35 may be implicated in intraneuronal insulin accumulation and impaired insulin signaling through interactions with phosphatase and tensin homolog protein (PTEN), which inhibits dephosphorylation of PIP3 to PIP2 [210, 211].\n\nThe empirical support: Synaptic loss is associated with early cognitive decline in the neocortex and&nbsp;limbic system, with reductions in synaptic density at preclinical and terminal stage in AD pathology of 25% and 55%, respectively [212, 213]. The levels of markers for presynaptic terminals, synaptic vesicle and synaptic protein are reduced in early stage of AD [214]. Along the same line, a tau transgenic mouse was found to exhibit a decreased expression of synaptic proteins, such as synaptophysin,&nbsp;synapsin, synaptojanin, and synaptobrevin [203]. An acute exposure to extracellular human tau&nbsp;oligomers caused memory impairment in mice [215] probably through inhibition of IRS1 and PTEN activities and subsequent insulin resistance. Abnormal inhibitory serine phosphorylation of IRS1 by INSR has been linked to brain insulin resistance in tauopathy, including AD pathology [211].\n\nOverall assessment: The evidence supports enhanced cytosolic toxic tau levels (KE5) being adjacent to dysfunctional axonal transport (KE6) which results subsequently in synaptic (KE7) and neural (KE9) dysfunction. Thresholds values, degree, and duration of dysfunction of these KEs required to drive this series KEs towards memory loss are not known.\n\nKER11: Toxic tau oligomers (KE5) - Neuroinflammation (KE8), KER12:&nbsp;Neuroinflammation (KE8) - Neuronal dysfunction (KE9)\n\nThe biological plausibility: Small soluble tau oligomers cause inflammatory signalling in the brain by activating microglia. These inflammatory responses are mediated by activated inflammasome and&nbsp;promote proinflammatory interleukin 1&beta; (IL-1&beta;) release, which is controlled by activation of caspase-1[217]. Activation of microglia and astroglia, and subsequent release of proinflammatory cytokines occur in the brain of humans and mice exposed to p-tau [218, 219]. Colocalization of activated&nbsp;microglia and astroglia, and proinflammatory cytokines with tau oligomers has been observed in mouse brain, suggesting that tau oligomers play a role in neuroinflammation and in accelerating neuronal dysfunction and neurodegeneration [220]. Tau oligomer levels correlate with High Mobility Group Box 1 (HMGB1) levels, an important pro-inflammatory marker in the brain [220], with&nbsp;recruitment of brain T-cells being linked to tau pathology and neuroinflammatory processes [221, 222].\n\nThe empirical support: Neuroinflammatory response in AD brain is driven by potent inflammatory mediators [223] and free radicals [224]. In a cross-sectional study of elderly adults with normal cognition and impaired cognition, six CSF neuroinflammatory markers (interleukin 15 (IL-15), monocyte chemoattractant protein-1 (MCP-1), vascular endothelial growth factor receptor 1 (VEGFR-1), soluble intercellular adhesion molecule-1 (sICAM1), soluble vascular cell adhesion molecule-1 (sVCAM-1), and vascular endothelial growth factor-D (VEGF-D)) correlated with tau levels in CSF, while none correlated with A&beta; levels in CSF [225].&nbsp;\n\nOverall assessment: There is strong evidence that processes resulting in increased cytosolic toxic tau levels (KE5) are adjacent to neuroinflammation (KE8), a condition that is widely accepted to play an&nbsp;important role in memory loss (AO) and neurodegeneration. The levels of cytotoxic tau, nor the duration of exposure, required to obtain a detectable inflammatory response sufficient to drive neuronal dysfunction are not known.\n\nKER13: Neuronal dysfunction (KE9) - Memory loss (AO)\n\nNeuronal dysfunction is one of the most well-characterized hallmarks in AD pathogenesis. Particularly,&nbsp;loss of memory at early stage of the disease is associated with neuronal dysfunction in the upper layer of entorhinal cortex, an early affected brain region in preclinical state of the disease [226]. Synaptic dysfunction results in cognitive impairment and neuronal cell death [202, 227, 228]. Brain insulin signaling impairment decreases AKT signaling, which is crucial for cell survival and function [229] and negatively affects synaptic plasticity and memory [230, 231]. A toxic relationship exists between soluble tau oligomers and neuroinflammation, which cause eventually neuronal damage, activating inflammatory mediators and free radicals [220, 223, 224]. In AD mouse models, chronic neuronal tumor necrosis factor &alpha; (TNF-&alpha;) expression correlates with neuronal death [232]. Significant loss in neuronal density occurs in the hippocampus and cerebral cortex of AD patients [233-235], and is AD-stage dependent [236].\n\nOverall assessment: Despite the lack of data on quantity and temporality data, the evidence supports neuronal dysfunction (KE9) to be adjacent to memory loss (AO).\n",
+        "count": 1,
+        "predicates": [
+          "http://aopkb.org/aop_ontology#has_evidence"
+        ],
+        "semantically_related_prefixes": []
+      },
+      {
+        "prefix": "NAS",
+        "example": "NASH is a well-known adverse event that has been well-studied in the toxicology literature, especially in support of pharmaceutical development. The key events involved in NASH are relatively well-studied. There are many forking paths that lead to NASH, with inhibition of fatty acid beta-oxidation being just one. The progression from pre-steatosis to steatohepatitis is reviewed in (6). The key events are generally well-known; however, what is less well-known are the exact molecular key event components that lead from steatosis to activation of the hepatic Kuppfer cells (liver macrophages) which activate hepatitis. However, for the purposes of the AOP, this level of granular knowledge is not required.\n\n&nbsp;\n",
+        "count": 1,
+        "predicates": [
+          "http://aopkb.org/aop_ontology#has_evidence"
+        ],
+        "semantically_related_prefixes": []
+      }
+    ],
+    "top_classes": [
+      "http://edamontology.org/data_1025",
+      "http://edamontology.org/data_2291",
+      "http://aopkb.org/aop_ontology#KeyEventRelationship",
+      "http://edamontology.org/data_2298",
+      "http://edamontology.org/data_1027"
+    ]
+  },
+  "good_for": [
+    "Instance lookup by type",
+    "Filtering by identifier (GSE, NCT, MONDO, etc.)",
+    "Finding entities by property value",
+    "Cross-referencing across data sources",
+    "Aggregating or faceting by dimension"
+  ],
+  "query_patterns": [
+    {
+      "pattern": "Find instances by type",
+      "description": "Filter entities by rdf:type; use entity_types from context",
+      "sparql_hint": "?entity a <http://edamontology.org/data_1025> .",
+      "note": "Replace with desired type from context.entity_types"
     },
-    "output_rules": {
-      "extension_mode_token": "EXTENSION_MODE",
-      "extension_mode_format": "plain_text_no_backticks",
-      "normal_mode_format": "fenced_code_block_sparql"
+    {
+      "pattern": "Find by identifier",
+      "description": "Look up entities by identifier (GSE, NCT, MONDO, etc.)",
+      "sparql_hint": "?entity <http://purl.org/dc/elements/1.1/identifier> ?id .",
+      "note": "Filter ?id by pattern from identifier_info; e.g. FILTER(CONTAINS(STR(?id), \"GSE\"))"
+    },
+    {
+      "pattern": "Filter by property value",
+      "description": "Restrict to entities with a given property value",
+      "sparql_hint": "?entity ?property ?value . FILTER(?value = <value_iri> || ?value = \"value\" )",
+      "note": "Use dimensions from context for typical properties"
+    },
+    {
+      "pattern": "List distinct values for a dimension",
+      "description": "Get unique values of a dimension for faceting or dropdowns",
+      "sparql_hint": "SELECT DISTINCT ?val WHERE { ?entity <http://purl.org/dc/elements/1.1/identifier> ?val . }",
+      "note": "Use dimension names from context.dimensions"
     }
-  }
+  ]
 }

@@ -21,7 +21,8 @@ from .model.context_schema import (
 from ..bridge.semantic_mappings import get_category, get_semantically_related_prefixes
 from .graphs import get_graph_handler
 from .graphs.base import APPROX_DISTINCT_THRESHOLD
-from .graphs.generic import GenericOntologyGraph
+from .graphs.generic import GenericGraph, GenericOntologyGraph
+from .graphs.ontology import OntologyGraph
 from .writers import JSONContextWriter, YAMLContextWriter
 from .sources import OBOfoundryClient
 from .enrichers import LLMContextEnricher
@@ -68,7 +69,14 @@ class ContextBuilder:
         self.llm_enricher = LLMContextEnricher()
         
         if config is not None:
-            self.graph = GenericOntologyGraph(config=config)
+            # In-memory config: choose KG vs ontology by graph_type or legacy hints
+            gt = config.get("graph_type")
+            if gt == "knowledge_graph":
+                self.graph = GenericGraph(config=config)
+            elif gt == "ontology" or config.get("named_graph") or config.get("namespace_scope"):
+                self.graph = GenericOntologyGraph(config=config)
+            else:
+                self.graph = GenericGraph(config=config)
         else:
             # Load graph handler via registry/factory
             handler_cls = get_graph_handler(graph_id)
@@ -100,28 +108,68 @@ class ContextBuilder:
     
     def build_global(self) -> Path:
         """Build global context file."""
-        dimensions = []
-        
-        # Introspect each dimension
-        for dim_config in self.graph.dimensions:
-            coverage = self.graph.get_dimension_coverage(dim_config)
-            distinct_count = self.graph.get_distinct_values_count(dim_config)
-            top_values = self.graph.get_top_values(dim_config, top_n=10)
-            
-            dimension = Dimension(
-                name=dim_config.get('property', dim_config['name']),
-                coverage=coverage,
-                approx_distinct_values=distinct_count if distinct_count < APPROX_DISTINCT_THRESHOLD else None,
-                top_values=top_values if top_values else None
-            )
-            dimensions.append(dimension)
-        
-        # Count total datasets
+        is_ontology = isinstance(self.graph, OntologyGraph)
+        effective_dimensions = list(self.graph.dimensions)
+        effective_entity_types = list(self.graph.entity_types) if self.graph.entity_types else []
+
+        # For knowledge graphs with empty config: discover dimensions and entity types from instances
+        if not is_ontology:
+            if not effective_dimensions:
+                try:
+                    print(f"  Discovering dimensions from instance data for {self.graph_id}...")
+                    props = self.graph.introspect_properties(limit=40)
+                    common = [p for p in props if any(v in p['property'] for v in ('schema.org', 'w3.org', 'purl.org', 'w3id.org'))]
+                    effective_dimensions = [
+                        {
+                            'name': p['property'].split('/')[-1] or p['property'].split('#')[-1] or p['property'],
+                            'property': p['property'],
+                            'filter': '',
+                            'count': p['count'],
+                        }
+                        for p in (common or props)[:20]
+                    ]
+                    if effective_dimensions:
+                        print(f"    Found {len(effective_dimensions)} dimension(s)")
+                except Exception as e:
+                    print(f"    Warning: [{self.graph_id}] Failed to discover dimensions: {e}")
+            if not effective_entity_types:
+                try:
+                    print(f"  Discovering entity types from instance data for {self.graph_id}...")
+                    ets = self.graph.introspect_entity_types(limit=25)
+                    skip = {'http://www.w3.org/2002/07/owl#Class', 'http://www.w3.org/2000/01/rdf-schema#Resource'}
+                    effective_entity_types = [e for e in ets if e not in skip][:15]
+                    if effective_entity_types:
+                        print(f"    Found {len(effective_entity_types)} entity type(s)")
+                except Exception as e:
+                    print(f"    Warning: [{self.graph_id}] Failed to discover entity types: {e}")
+
+        # Count total datasets (needed for discovered-dimension coverage and for repository stats)
         try:
             total_datasets = self.graph.count_datasets()
         except Exception as e:
-            print(f"    Warning: Failed to count datasets: {e}")
+            print(f"    Warning: [{self.graph_id}] Failed to count datasets: {e}")
             total_datasets = 0
+
+        dimensions = []
+        for i, dim_config in enumerate(effective_dimensions):
+            is_discovered = dim_config.get('count') is not None
+            if is_discovered:
+                total = total_datasets or 1
+                coverage = min(1.0, (dim_config['count'] / total)) if total > 0 else 0.0
+                approx = None
+                top_values = self.graph.get_top_values(dim_config, top_n=10) if i < 5 else None
+            else:
+                coverage = self.graph.get_dimension_coverage(dim_config)
+                distinct_count = self.graph.get_distinct_values_count(dim_config)
+                approx = distinct_count if distinct_count < APPROX_DISTINCT_THRESHOLD else None
+                top_values = self.graph.get_top_values(dim_config, top_n=10)
+            dimension = Dimension(
+                name=dim_config.get('property', dim_config.get('name', '')),
+                coverage=coverage,
+                approx_distinct_values=approx,
+                top_values=top_values if top_values else None
+            )
+            dimensions.append(dimension)
         
         # Get query hints: from config if present, or auto-generate for ontologies
         query_hints = None
@@ -147,8 +195,6 @@ class ContextBuilder:
             # Extract patterns from identifier predicates
             if identifier_predicates:
                 # For ontologies, use smaller limit and fewer predicates to avoid timeouts
-                from .graphs.ontology import OntologyGraph
-                is_ontology = isinstance(self.graph, OntologyGraph)
                 max_predicates = 5 if is_ontology else 10
                 limit = 300 if is_ontology else 500
                 
@@ -313,7 +359,7 @@ class ContextBuilder:
             
             if all_patterns:
                 # Get top classes that use these identifiers
-                top_classes = self.graph.entity_types[:5] if self.graph.entity_types else []
+                top_classes = effective_entity_types[:5] if effective_entity_types else []
                 
                 # Convert dict patterns to IdentifierPattern objects
                 pattern_objects = [IdentifierPattern(**p) if isinstance(p, dict) else p for p in all_patterns]
@@ -325,7 +371,7 @@ class ContextBuilder:
                 )
                 print(f"    Found {len(predicates_list)} identifier predicates, {len(all_patterns)} patterns")
         except Exception as e:
-            print(f"    Warning: Failed to introspect identifier information: {e}")
+            print(f"    Warning: [{self.graph_id}] Failed to introspect identifier information: {e}")
         
         # Fetch OBO Foundry metadata if available
         obo_metadata_dict = None
@@ -337,16 +383,21 @@ class ContextBuilder:
         except Exception as e:
             print(f"    Warning: Failed to fetch OBO Foundry metadata: {e}")
         
+        rfp = (getattr(self.graph, 'repo_filter_property', None) or '').strip()
+        repo_filter_property = rfp if (not is_ontology and rfp and rfp != 'rdf:type') else None
+
         global_context = GlobalContext(
             graph_id=self.graph_id,
             endpoint=self.graph.endpoint,
-            entity_types=self.graph.entity_types,
-            prefixes=self.graph.get_prefixes(),
+            entity_types=effective_entity_types,
             dimensions=dimensions,
+            prefixes=self.graph.get_prefixes(),
             text_blurb=self.graph.text_blurb,
             query_hints=query_hints,
             identifier_info=identifier_info,
-            obo_foundry_metadata=obo_metadata_obj
+            obo_foundry_metadata=obo_metadata_obj,
+            graph_type='ontology' if is_ontology else 'knowledge_graph',
+            repo_filter_property=repo_filter_property,
         )
         
         # Enrich with LLM-optimized metadata

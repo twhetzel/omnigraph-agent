@@ -24,6 +24,8 @@ from .sources import (
     graph_uri_to_graph_id,
     build_ubergraph_ontology_config,
     load_ontology_list,
+    get_frink_graph_list,
+    build_frink_kg_config,
     DEFAULT_UBERGRAPH_ENDPOINT,
     UBERGRAPH_GRAPHS_PREFIX,
     ONTOLOGIES_TXT_URL,
@@ -303,6 +305,96 @@ def build_ubergraph_ontologies(
             files = builder.build()
             for _k, path in files.items():
                 click.echo(f"  ✓ {path.name}")
+            ok += 1
+        except Exception as e:
+            errs.append((gid, str(e)))
+            click.echo(f"  ✗ {gid}: {e}", err=True)
+
+    click.echo(f"\nDone: {ok} built, {len(errs)} failed.")
+    if errs:
+        for gid, msg in errs:
+            click.echo(f"  - {gid}: {msg}", err=True)
+        raise click.Abort()
+
+
+@cli.command('build-frink')
+@click.option(
+    '--output-dir',
+    '-o',
+    type=click.Path(path_type=Path),
+    default=Path('dist/context'),
+    help='Output directory for context files (default: dist/context)'
+)
+@click.option(
+    '--format',
+    'output_format',
+    type=click.Choice(['json', 'yaml'], case_sensitive=False),
+    default='json',
+    help='Output format: json or yaml (default: json)'
+)
+@click.option(
+    '--limit',
+    type=int,
+    default=None,
+    help='Maximum number of FRINK graphs to process (default: all)'
+)
+@click.option(
+    '--write-configs',
+    is_flag=True,
+    help='Write generated configs to config/ for graphs that do not yet have one'
+)
+def build_frink(
+    output_dir: Path,
+    output_format: str,
+    limit: Optional[int],
+    write_configs: bool,
+):
+    """
+    Build context files for FRINK registry knowledge graphs.
+
+    Uses the FRINK registry list (https://frink.renci.org/registry/). For each
+    graph, loads config from config/{graph_id}.yaml if it exists; otherwise
+    builds a minimal config from the FRINK endpoint. Always builds (refreshes)
+    context; use config files to customize nde, spoke-okn, etc.
+
+    The same pattern can be reused for other knowledge-graph registries.
+
+    Examples:
+        omnigraph-context-builder build-frink --format json
+        omnigraph-context-builder build-frink --limit 5 --write-configs
+    """
+    click.echo("Loading FRINK graph list...")
+    try:
+        items = get_frink_graph_list(limit=limit)
+    except Exception as e:
+        click.echo(f"✗ Failed to load FRINK graph list: {e}", err=True)
+        raise click.Abort()
+
+    if not items:
+        click.echo("No FRINK graphs to process.")
+        return
+
+    config_dir = Path(__file__).parent / "config"
+    output_dir.mkdir(parents=True, exist_ok=True)
+    ok, errs = 0, []
+
+    for gid, endpoint in items:
+        config_path = config_dir / f"{gid}.yaml"
+        if config_path.exists():
+            with open(config_path) as f:
+                cfg = yaml.safe_load(f)
+        else:
+            cfg = build_frink_kg_config(gid, endpoint)
+            if write_configs:
+                config_path.parent.mkdir(parents=True, exist_ok=True)
+                with open(config_path, "w") as f:
+                    yaml.dump(cfg, f, default_flow_style=False, sort_keys=False)
+                click.echo(f"  [wrote config] {config_path}")
+        try:
+            builder = ContextBuilder(gid, output_dir, output_format=output_format, config=cfg)
+            files = builder.build()
+            for _k, path in files.items():
+                click.echo(f"  ✓ {gid}: {path.name}")
             ok += 1
         except Exception as e:
             errs.append((gid, str(e)))

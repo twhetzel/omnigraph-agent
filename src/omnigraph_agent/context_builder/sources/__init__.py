@@ -12,6 +12,12 @@ from .ubergraph import (
     UBERGRAPH_GRAPHS_PREFIX,
     ONTOLOGIES_TXT_URL,
 )
+from .frink import (
+    get_frink_graph_list,
+    build_frink_kg_config,
+    FRINK_GRAPH_IDS,
+    ENDPOINT_OVERRIDES,
+)
 
 __all__ = [
     'OBOfoundryClient',
@@ -24,4 +30,8 @@ __all__ = [
     'DEFAULT_UBERGRAPH_ENDPOINT',
     'UBERGRAPH_GRAPHS_PREFIX',
     'ONTOLOGIES_TXT_URL',
+    'get_frink_graph_list',
+    'build_frink_kg_config',
+    'FRINK_GRAPH_IDS',
+    'ENDPOINT_OVERRIDES',
 ]

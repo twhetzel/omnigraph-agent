@@ -6,7 +6,7 @@ FRINK registry graphs without needing to create a custom handler class.
 """
 
 from pathlib import Path
-from typing import List, Dict, Optional, Any
+from typing import Any, Dict, List, Optional
 from .knowledge_graph import KnowledgeGraph
 from .ontology import OntologyGraph
 
@@ -19,18 +19,27 @@ class GenericGraph(KnowledgeGraph):
     from the config file. Use this for FRINK registry graphs that
     don't need custom logic.
     """
-    
-    def __init__(self, config_path: Optional[Path] = None, graph_id: Optional[str] = None):
+
+    def __init__(
+        self,
+        config_path: Optional[Path] = None,
+        graph_id: Optional[str] = None,
+        config: Optional[Dict[str, Any]] = None,
+    ):
         """
         Initialize generic graph handler with configuration.
-        
+
         Args:
             config_path: Path to YAML config file (auto-discovered if graph_id provided)
             graph_id: Graph identifier (used to auto-discover config_path if not provided)
+            config: In-memory config dict (takes precedence; for build-frink, etc.)
         """
+        if config is not None:
+            super().__init__(config=config)
+            return
         if config_path is None:
             if graph_id is None:
-                raise ValueError("Either config_path or graph_id must be provided")
+                raise ValueError("Either config_path, graph_id, or config must be provided")
             # Auto-discover config path
             config_dir = Path(__file__).parent.parent / "config"
             config_path = config_dir / f"{graph_id}.yaml"

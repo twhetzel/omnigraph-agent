@@ -15,7 +15,7 @@ uv venv
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 
 # Install the package in editable mode
-uv pip install -e ".[dev]"
+uv pip install -e .
 ```
 
 ### Using pip (Alternative)
@@ -24,6 +24,8 @@ Install the package in editable mode for local development:
 
 ```bash
 pip install -e .
+# Or with dev dependencies (pytest, black, ruff):
+pip install -e ".[dev]"
 ```
 
 This will install all dependencies specified in `pyproject.toml` and allow you to modify the code without reinstalling.
@@ -38,8 +40,9 @@ The `context_builder` module generates JSON context files describing the structu
 - `python -m omnigraph_agent.context_builder.cli build <graph_id>` — build one graph (e.g. `nde`, `mondo`, `vbo`)
 - `python -m omnigraph_agent.context_builder.cli build <graph_id> --format yaml` — YAML output
 - `omnigraph-context-builder build-ubergraph-ontologies` — build all Ubergraph ontologies from [ontologies.txt](https://github.com/INCATools/ubergraph/blob/master/ontologies.txt) (writes to `dist/context/`)
+- `omnigraph-context-builder build-frink` — build context for [FRINK registry](https://frink.renci.org/registry/) knowledge graphs (writes to `dist/context/`)
 
-A **GitHub Action** runs `build-ubergraph-ontologies` plus `build nde`, `build mondo`, `build vbo` weekly (Thursdays 2:00 AM PT) and opens a PR to update `dist/context/` (see [.github/workflows/update-context-weekly.yml](.github/workflows/update-context-weekly.yml)).
+A **GitHub Action** runs `build-ubergraph-ontologies`, `build nde`, `build mondo`, `build vbo`, and `build-frink` weekly (Thursdays 2:00 AM PT) and opens a PR to update `dist/context/` (see [.github/workflows/update-context-weekly.yml](.github/workflows/update-context-weekly.yml)).
 
 #### For Knowledge Graphs (e.g., NDE)
 
@@ -141,6 +144,27 @@ omnigraph-context-builder build-ubergraph-ontologies --ontologies-url https://..
 - `--ontologies-file` – Local file (overrides `--ontologies-url` when set)
 - `--endpoint`, `-o`, `--format`, `--limit`, `--skip-existing-config`, `--write-configs` – Same as `build-ubergraph`
 
+#### Build FRINK registry knowledge graphs
+
+The [FRINK registry](https://frink.renci.org/registry/) hosts many OKN knowledge graphs (NDE, spoke-okn, biobricks-*, biohealth, geoconnex, wikidata, etc.). Use `build-frink` to generate context files for all of them. For each graph, if `config/{graph_id}.yaml` exists it is used; otherwise a minimal config is generated from the FRINK endpoint (`https://frink.apps.renci.org/{graph_id}/sparql`). Context is always built (refreshed), so existing configs like nde or spoke-okn are applied on every run. The same pattern can be extended to other knowledge-graph registries.
+
+```bash
+# Build context for all FRINK graphs (default: JSON to dist/context)
+omnigraph-context-builder build-frink
+
+# Limit to first N graphs and output YAML
+omnigraph-context-builder build-frink --limit 5 --format yaml
+
+# Write generated configs to config/ for graphs that don't have one yet
+omnigraph-context-builder build-frink --write-configs
+```
+
+**Options:**
+- `--output-dir`, `-o` – Output directory (default: `dist/context`)
+- `--format` – `json` or `yaml` (default: `json`)
+- `--limit` – Max number of FRINK graphs to process (default: all)
+- `--write-configs` – Write generated configs to `config/` only when a graph has no existing config
+
 ### Introspection
 
 Discover properties and structure of a graph/ontology:
@@ -191,6 +215,8 @@ text_blurb: "Description of your ontology"
 **Configuration fields:**
 - `repo_filter_property`: Set to `""` (empty string) for ontologies. Ontologies don't have repositories, so this isn't used.
 - `entity_types`: For OBO ontologies, typically `http://www.w3.org/2002/07/owl#Class`. This represents the ontology classes you want to query.
+
+**Ontologies at other SPARQL endpoints:** `endpoint` can be any SPARQL endpoint URL (not only Ubergraph). For a multi-graph endpoint, add `named_graph` with the graph URI. For a single-graph or file-backed endpoint, omit `named_graph`. Create `config/{graph_id}.yaml` and run `omnigraph-context-builder build {graph_id}`.
 
 #### Step 2: Build Context Files (Generic Handler)
 

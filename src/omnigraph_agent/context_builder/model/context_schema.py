@@ -135,6 +135,14 @@ class GlobalContext(BaseModel):
     endpoint: str = Field(..., description="SPARQL endpoint URL")
     entity_types: List[str] = Field(default_factory=list, description="Main entity types in the graph")
     dimensions: List[Dimension] = Field(default_factory=list, description="Available dimensions")
+    graph_type: Optional[str] = Field(
+        None,
+        description="'ontology' or 'knowledge_graph'; used to select good_for and query_patterns"
+    )
+    repo_filter_property: Optional[str] = Field(
+        None,
+        description="Property linking entities to catalogs/repositories (for knowledge graphs)"
+    )
     prefixes: Dict[str, str] = Field(default_factory=dict, description="Prefix to IRI mappings used in this context")
     text_blurb: Optional[str] = Field(None, description="Human-readable description of the graph")
     query_hints: Optional[QueryGenerationHints] = Field(

@@ -1,0 +1,45 @@
+{
+  "graph_id": "biobricks-pubchem-annotations",
+  "endpoint": "https://frink.apps.renci.org/biobricks-pubchem-annotations/sparql",
+  "entity_types": [
+    "http://www.w3.org/ns/oa#Annotation"
+  ],
+  "dimensions": [],
+  "graph_type": "knowledge_graph",
+  "prefixes": {
+    "schema": "http://schema.org/",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "obo": "http://purl.obolibrary.org/obo/",
+    "oboInOwl": "http://www.geneontology.org/formats/oboInOwl#"
+  },
+  "text_blurb": "Knowledge graph biobricks-pubchem-annotations from the FRINK registry (https://frink.renci.org/registry/).",
+  "good_for": [
+    "Instance lookup by type",
+    "Filtering by identifier (GSE, NCT, MONDO, etc.)",
+    "Finding entities by property value",
+    "Cross-referencing across data sources",
+    "Aggregating or faceting by dimension"
+  ],
+  "query_patterns": [
+    {
+      "pattern": "Find instances by type",
+      "description": "Filter entities by rdf:type; use entity_types from context",
+      "sparql_hint": "?entity a <http://www.w3.org/ns/oa#Annotation> .",
+      "note": "Replace with desired type from context.entity_types"
+    },
+    {
+      "pattern": "Find by identifier",
+      "description": "Look up entities by identifier (GSE, NCT, MONDO, etc.)",
+      "sparql_hint": "?entity schema:identifier ?id .",
+      "note": "Filter ?id by pattern from identifier_info; e.g. FILTER(CONTAINS(STR(?id), \"GSE\"))"
+    },
+    {
+      "pattern": "Filter by property value",
+      "description": "Restrict to entities with a given property value",
+      "sparql_hint": "?entity ?property ?value . FILTER(?value = <value_iri> || ?value = \"value\" )",
+      "note": "Use dimensions from context for typical properties"
+    }
+  ]
+}
